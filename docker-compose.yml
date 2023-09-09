@@ -1,0 +1,15 @@
+version: "3.8"
+services:
+  database:
+    image: postgres:alpine
+    container_name: dev-postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123456
+      - POSTGRES_DB=ds_noxus
+    ports:
+      - 5432:5432
+    volumes:
+      - pg-data:/var/lib/postgresql/data
+volumes:
+  pg-data:
