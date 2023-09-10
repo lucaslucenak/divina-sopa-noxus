@@ -21,26 +21,26 @@ public class AddressFullDto {
     @NotBlank(message = "Field streetName shouldn't be blank")
     private String streetName;
 
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field streetNumber shouldn't be null")
+    @NotEmpty(message = "Field streetNumber shouldn't be empty")
+    @NotBlank(message = "Field streetNumber shouldn't be blank")
     private String streetNumber;
 
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field city shouldn't be null")
+    @NotEmpty(message = "Field city shouldn't be empty")
+    @NotBlank(message = "Field city shouldn't be blank")
     private String city;
 
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field cep shouldn't be null")
+    @NotEmpty(message = "Field cep shouldn't be empty")
+    @NotBlank(message = "Field cep shouldn't be blank")
     private String cep;
 
     private String complement;
 
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field referencePoint shouldn't be null")
+    @NotEmpty(message = "Field referencePoint shouldn't be empty")
+    @NotBlank(message = "Field referencePoint shouldn't be blank")
     private String referencePoint;
 
     @NotNull(message = "Field neighbourhood shouldn't be null")

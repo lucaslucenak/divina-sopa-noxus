@@ -19,23 +19,23 @@ public class NeighbourhoodFullDto {
 
     private Long id;
 
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field neighbourhood shouldn't be null")
+    @NotEmpty(message = "Field neighbourhood shouldn't be empty")
+    @NotBlank(message = "Field neighbourhood shouldn't be blank")
     private NeighbourhoodEnum neighbourhood;
 
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field deliveryTax shouldn't be null")
+    @NotEmpty(message = "Field deliveryTax shouldn't be empty")
+    @NotBlank(message = "Field deliveryTax shouldn't be blank")
     private Double deliveryTax;
 
-    @NotNull(message = "Field streetName shouldn't be null")
+    @NotNull(message = "Field addresses shouldn't be null")
     private List<AddressModel> addresses;
 
-    @NotNull(message = "Field streetName shouldn't be null")
+    @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
 
-    @NotNull(message = "Field streetName shouldn't be null")
+    @NotNull(message = "Field updatedAt shouldn't be null")
     private LocalDateTime updatedAt;
 
 

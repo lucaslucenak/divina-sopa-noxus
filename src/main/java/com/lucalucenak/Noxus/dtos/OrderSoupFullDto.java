@@ -13,15 +13,15 @@ public class OrderSoupFullDto {
 
     private OrderSoupPk id;
 
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field quantity shouldn't be null")
+    @NotEmpty(message = "Field quantity shouldn't be empty")
+    @NotBlank(message = "Field quantity shouldn't be blank")
     private Integer quantity;
 
-    @NotNull(message = "Field streetName shouldn't be null")
+    @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
 
-    @NotNull(message = "Field streetName shouldn't be null")
+    @NotNull(message = "Field updatedAt shouldn't be null")
     private LocalDateTime updatedAt;
 
     public OrderSoupFullDto() {

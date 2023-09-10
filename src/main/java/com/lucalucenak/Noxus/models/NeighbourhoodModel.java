@@ -1,11 +1,13 @@
 package com.lucalucenak.Noxus.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lucalucenak.Noxus.dtos.NeighbourhoodFullDto;
 import com.lucalucenak.Noxus.enums.NeighbourhoodEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -46,6 +48,10 @@ public class NeighbourhoodModel {
     private LocalDateTime updatedAt;
 
     public NeighbourhoodModel() {
+    }
+
+    public NeighbourhoodModel(NeighbourhoodFullDto neighbourhoodFullDto) {
+        BeanUtils.copyProperties(neighbourhoodFullDto, this);
     }
 
     public NeighbourhoodModel(Long id, NeighbourhoodEnum neighbourhood, Double deliveryTax, LocalDateTime createdAt, LocalDateTime updatedAt) {

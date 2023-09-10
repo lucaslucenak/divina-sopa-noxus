@@ -1,10 +1,13 @@
 package com.lucalucenak.Noxus.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lucalucenak.Noxus.dtos.AddressFullDto;
+import com.lucalucenak.Noxus.dtos.post.AddressPostDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -68,6 +71,14 @@ public class AddressModel {
     private LocalDateTime updatedAt;
 
     public AddressModel() {
+    }
+
+    public AddressModel(AddressFullDto addressFullDto) {
+        BeanUtils.copyProperties(addressFullDto, this);
+    }
+
+    public AddressModel(AddressPostDto addressPostDto) {
+        BeanUtils.copyProperties(addressPostDto, this);
     }
 
     public AddressModel(Long id, String streetName, String streetNumber, String city, String cep, String complement, String referencePoint, NeighbourhoodModel neighbourhood, ClientAccountModel clientAccount, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {

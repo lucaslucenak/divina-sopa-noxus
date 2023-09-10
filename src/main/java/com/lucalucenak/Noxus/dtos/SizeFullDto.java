@@ -19,18 +19,18 @@ public class SizeFullDto {
 
     private Long id;
 
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field size shouldn't be null")
+    @NotEmpty(message = "Field size shouldn't be empty")
+    @NotBlank(message = "Field size shouldn't be blank")
     private SizeEnum size;
 
-    @NotNull(message = "Field streetName shouldn't be null")
+    @NotNull(message = "Field soups shouldn't be null")
     private List<SoupModel> soups;
 
-    @NotNull(message = "Field streetName shouldn't be null")
+    @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
 
-    @NotNull(message = "Field streetName shouldn't be null")
+    @NotNull(message = "Field updatedAt shouldn't be null")
     private LocalDateTime updatedAt;
 
     public SizeFullDto() {
