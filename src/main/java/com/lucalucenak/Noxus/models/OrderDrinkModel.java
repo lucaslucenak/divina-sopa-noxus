@@ -2,6 +2,9 @@ package com.lucalucenak.Noxus.models;
 
 import com.lucalucenak.Noxus.models.pks.OrderDrinkPk;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -18,6 +21,9 @@ public class OrderDrinkModel {
     private OrderDrinkPk id = new OrderDrinkPk();
 
     @Column(nullable = false)
+    @NotNull(message = "Field streetName shouldn't be null")
+    @NotEmpty(message = "Field streetName shouldn't be empty")
+    @NotBlank(message = "Field streetName shouldn't be blank")
     private Integer quantity;
 
     @CreatedDate
