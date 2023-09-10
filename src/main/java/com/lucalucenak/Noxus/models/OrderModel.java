@@ -50,4 +50,118 @@ public class OrderModel {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    public OrderModel() {
+    }
+
+    public OrderModel(Long id, Double orderPrice, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, StatusModel status, AddressModel address, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, DeliveryTypeModel deliveryType, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.orderPrice = orderPrice;
+        this.observation = observation;
+        this.dispatchTime = dispatchTime;
+        this.arrivalForecast = arrivalForecast;
+        this.status = status;
+        this.address = address;
+        this.clientAccount = clientAccount;
+        this.paymentMethod = paymentMethod;
+        this.deliveryType = deliveryType;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Double getOrderPrice() {
+        return orderPrice;
+    }
+
+    public void setOrderPrice(Double orderPrice) {
+        this.orderPrice = orderPrice;
+    }
+
+    public String getObservation() {
+        return observation;
+    }
+
+    public void setObservation(String observation) {
+        this.observation = observation;
+    }
+
+    public LocalDateTime getDispatchTime() {
+        return dispatchTime;
+    }
+
+    public void setDispatchTime(LocalDateTime dispatchTime) {
+        this.dispatchTime = dispatchTime;
+    }
+
+    public LocalDateTime getArrivalForecast() {
+        return arrivalForecast;
+    }
+
+    public void setArrivalForecast(LocalDateTime arrivalForecast) {
+        this.arrivalForecast = arrivalForecast;
+    }
+
+    public StatusModel getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusModel status) {
+        this.status = status;
+    }
+
+    public AddressModel getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressModel address) {
+        this.address = address;
+    }
+
+    public ClientAccountModel getClientAccount() {
+        return clientAccount;
+    }
+
+    public void setClientAccount(ClientAccountModel clientAccount) {
+        this.clientAccount = clientAccount;
+    }
+
+    public PaymentMethodModel getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(PaymentMethodModel paymentMethod) {
+        this.paymentMethod = paymentMethod;
+    }
+
+    public DeliveryTypeModel getDeliveryType() {
+        return deliveryType;
+    }
+
+    public void setDeliveryType(DeliveryTypeModel deliveryType) {
+        this.deliveryType = deliveryType;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }

@@ -32,4 +32,55 @@ public class SizeModel {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    public SizeModel() {
+    }
+
+    public SizeModel(Long id, SizeEnum size, List<SoupModel> soups, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.size = size;
+        this.soups = soups;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public SizeEnum getSize() {
+        return size;
+    }
+
+    public void setSize(SizeEnum size) {
+        this.size = size;
+    }
+
+    public List<SoupModel> getSoups() {
+        return soups;
+    }
+
+    public void setSoups(List<SoupModel> soups) {
+        this.soups = soups;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }
