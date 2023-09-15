@@ -1,10 +1,12 @@
 package com.lucalucenak.Noxus.models;
 
+import com.lucalucenak.Noxus.dtos.OrderSoupFullDto;
 import com.lucalucenak.Noxus.models.pks.OrderSoupPk;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -20,9 +22,9 @@ public class OrderSoupModel {
     private OrderSoupPk id = new OrderSoupPk();
 
     @Column(nullable = false)
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field quantity shouldn't be null")
+    @NotEmpty(message = "Field quantity shouldn't be empty")
+    @NotBlank(message = "Field quantity shouldn't be blank")
     private Integer quantity;
 
     @CreatedDate
@@ -32,6 +34,10 @@ public class OrderSoupModel {
     private LocalDateTime updatedAt;
 
     public OrderSoupModel() {
+    }
+
+    public OrderSoupModel(OrderSoupFullDto orderSoupFullDto) {
+        BeanUtils.copyProperties(orderSoupFullDto, this);
     }
 
     public OrderSoupModel(OrderSoupPk id, Integer quantity, LocalDateTime createdAt, LocalDateTime updatedAt) {

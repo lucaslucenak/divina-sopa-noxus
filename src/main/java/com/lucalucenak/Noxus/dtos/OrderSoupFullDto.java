@@ -38,6 +38,11 @@ public class OrderSoupFullDto {
         this.updatedAt = updatedAt;
     }
 
+    public OrderSoupFullDto(OrderSoupPk id, Integer quantity) {
+        this.id = id;
+        this.quantity = quantity;
+    }
+
     public OrderSoupPk getId() {
         return id;
     }

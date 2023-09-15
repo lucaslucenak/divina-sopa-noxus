@@ -1,11 +1,13 @@
 package com.lucalucenak.Noxus.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lucalucenak.Noxus.dtos.PaymentMethodFullDto;
 import com.lucalucenak.Noxus.enums.PaymentMethodEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -24,9 +26,9 @@ public class PaymentMethodModel {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field paymentMethod shouldn't be null")
+    @NotEmpty(message = "Field paymentMethod shouldn't be empty")
+    @NotBlank(message = "Field paymentMethod shouldn't be blank")
     private PaymentMethodEnum paymentMethod;
 
     @JsonIgnore
@@ -40,6 +42,10 @@ public class PaymentMethodModel {
     private LocalDateTime updatedAt;
 
     public PaymentMethodModel() {
+    }
+
+    public PaymentMethodModel(PaymentMethodFullDto paymentMethodFullDto) {
+        BeanUtils.copyProperties(paymentMethodFullDto, this);
     }
 
     public PaymentMethodModel(Long id, PaymentMethodEnum paymentMethod, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {

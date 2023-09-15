@@ -2,7 +2,6 @@ package com.lucalucenak.Noxus.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lucalucenak.Noxus.dtos.NeighbourhoodFullDto;
-import com.lucalucenak.Noxus.enums.NeighbourhoodEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -25,16 +24,15 @@ public class NeighbourhoodModel {
     private Long id;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
-    private NeighbourhoodEnum neighbourhood;
+    @NotNull(message = "Field neighbourhood shouldn't be null")
+    @NotEmpty(message = "Field neighbourhood shouldn't be empty")
+    @NotBlank(message = "Field neighbourhood shouldn't be blank")
+    private String neighbourhood;
 
     @Column(nullable = false)
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field deliveryTax shouldn't be null")
+    @NotEmpty(message = "Field deliveryTax shouldn't be empty")
+    @NotBlank(message = "Field deliveryTax shouldn't be blank")
     private Double deliveryTax;
 
     @JsonIgnore
@@ -54,10 +52,11 @@ public class NeighbourhoodModel {
         BeanUtils.copyProperties(neighbourhoodFullDto, this);
     }
 
-    public NeighbourhoodModel(Long id, NeighbourhoodEnum neighbourhood, Double deliveryTax, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public NeighbourhoodModel(Long id, String neighbourhood, Double deliveryTax, List<AddressModel> addresses, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.neighbourhood = neighbourhood;
         this.deliveryTax = deliveryTax;
+        this.addresses = addresses;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -70,11 +69,11 @@ public class NeighbourhoodModel {
         this.id = id;
     }
 
-    public NeighbourhoodEnum getNeighbourhood() {
+    public String getNeighbourhood() {
         return neighbourhood;
     }
 
-    public void setNeighbourhood(NeighbourhoodEnum neighbourhood) {
+    public void setNeighbourhood(String neighbourhood) {
         this.neighbourhood = neighbourhood;
     }
 

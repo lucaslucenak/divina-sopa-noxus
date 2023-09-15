@@ -41,6 +41,11 @@ public class OrderDrinkFullDto {
         this.updatedAt = updatedAt;
     }
 
+    public OrderDrinkFullDto(OrderDrinkPk id, Integer quantity) {
+        this.id = id;
+        this.quantity = quantity;
+    }
+
     public OrderDrinkPk getId() {
         return id;
     }

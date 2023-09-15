@@ -1,11 +1,13 @@
 package com.lucalucenak.Noxus.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lucalucenak.Noxus.dtos.StatusFullDto;
 import com.lucalucenak.Noxus.enums.StatusEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -24,9 +26,9 @@ public class StatusModel {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field status shouldn't be null")
+    @NotEmpty(message = "Field status shouldn't be empty")
+    @NotBlank(message = "Field status shouldn't be blank")
     private StatusEnum status;
 
     @JsonIgnore
@@ -44,6 +46,10 @@ public class StatusModel {
     private LocalDateTime updatedAt;
 
     public StatusModel() {
+    }
+
+    public StatusModel(StatusFullDto statusFullDto) {
+        BeanUtils.copyProperties(statusFullDto, this);
     }
 
     public StatusModel(Long id, StatusEnum status, List<ClientAccountModel> clientAccounts, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {

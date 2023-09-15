@@ -19,4 +19,28 @@ public class OrderDrinkPk implements Serializable {
     @ManyToOne
     @JoinColumn(name = "drink_id")
     private DrinkModel drink;
+
+    public OrderDrinkPk() {
+    }
+
+    public OrderDrinkPk(OrderModel order, DrinkModel drink) {
+        this.order = order;
+        this.drink = drink;
+    }
+
+    public OrderModel getOrder() {
+        return order;
+    }
+
+    public void setOrder(OrderModel order) {
+        this.order = order;
+    }
+
+    public DrinkModel getDrink() {
+        return drink;
+    }
+
+    public void setDrink(DrinkModel drink) {
+        this.drink = drink;
+    }
 }
