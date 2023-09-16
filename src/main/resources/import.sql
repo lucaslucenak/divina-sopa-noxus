@@ -1,0 +1,3 @@
+--insert into status(status, created_at, updated_at) values ('ACTIVE', NOW(), NOW());
+--
+--insert into neighbourhood(neighbourhood, created_at, updated_at) values ('SAO_JOSE', NOW(), NOW());

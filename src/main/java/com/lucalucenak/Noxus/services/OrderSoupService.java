@@ -51,4 +51,9 @@ public class OrderSoupService {
         OrderSoupModel orderSoupModel = new OrderSoupModel(orderSoupFullDto);
         return new OrderSoupFullDto(orderSoupRepository.save(orderSoupModel));
     }
+
+    @Transactional
+    public void deleteOrderSoupByOrderId(Long orderId) {
+
+    }
 }

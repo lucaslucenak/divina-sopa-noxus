@@ -9,6 +9,7 @@ import com.lucalucenak.Noxus.models.*;
 import com.lucalucenak.Noxus.models.pks.OrderDrinkPk;
 import com.lucalucenak.Noxus.models.pks.OrderSoupPk;
 import com.lucalucenak.Noxus.repositories.OrderRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -119,6 +120,78 @@ public class OrderService {
 
         // Setting Return
         OrderReturnDto orderReturnDto = new OrderReturnDto(orderModel);
+        orderReturnDto.setSoups(soups);
+        orderReturnDto.setDrinks(drinks);
+
+        return orderReturnDto;
+    }
+
+    @Transactional
+    public OrderReturnDto updateOrder(Long orderId, OrderPostDto orderPostDto) {
+        OrderModel existentOrderModel = new OrderModel(this.findOrderById(orderId));
+        OrderModel updatedOrderModel = new OrderModel(orderPostDto);
+        OrderModel orderModel = new OrderModel(orderPostDto);
+        Double orderPrice = 0.0;
+
+        AddressModel addressModel = new AddressModel(addressService.findAddressById(orderPostDto.getAddressId()));
+        updatedOrderModel.setAddress(addressModel);
+        ClientAccountModel clientAccountModel = new ClientAccountModel(clientAccountService.findClientAccountById(orderPostDto.getClientAccountId()));
+        updatedOrderModel.setClientAccount(clientAccountModel);
+        PaymentMethodModel paymentMethodModel = new PaymentMethodModel(paymentMethodService.findPaymentMethodById(orderPostDto.getPaymentMethodId()));
+        updatedOrderModel.setPaymentMethod(paymentMethodModel);
+        DeliveryTypeModel deliveryTypeModel = new DeliveryTypeModel(deliveryTypeService.findDeliveryTypeById(orderPostDto.getDeliveryTypeId()));
+        updatedOrderModel.setDeliveryType(deliveryTypeModel);
+
+        // Setting Order Price
+        if (deliveryTypeModel.getDeliveryType().equals(DeliveryTypeEnum.DELIVERY)) {
+            orderPrice += addressModel.getNeighbourhood().getDeliveryTax();
+        }
+
+        for (Map.Entry<Long, Integer> i : orderPostDto.getSoupsIdsAndQuantities().entrySet()) {
+            SoupModel soupModel = new SoupModel(soupService.findSoupById(i.getKey()));
+            Integer soupQuantity = i.getValue();
+
+            orderPrice += soupModel.getPrice() * soupQuantity;
+        }
+
+        for (Map.Entry<Long, Integer> i : orderPostDto.getDrinksIdsAndQuantities().entrySet()) {
+            DrinkModel drinkModel = new DrinkModel(drinkService.findDrinkById(i.getKey()));
+            Integer drinkQuantity = i.getValue();
+
+            orderPrice += drinkModel.getPrice() * drinkQuantity;
+        }
+        orderModel.setOrderPrice(orderPrice);
+
+        //Saving Order
+        BeanUtils.copyProperties(updatedOrderModel, existentOrderModel, "id");
+        orderRepository.save(existentOrderModel);
+
+        // Saving Order Soup
+        Map<SoupFullDto, Integer> soups = new HashMap<>();
+        for (Map.Entry<Long, Integer> i : orderPostDto.getSoupsIdsAndQuantities().entrySet()) {
+            SoupModel soupModel = new SoupModel(soupService.findSoupById(i.getKey()));
+            Integer soupQuantity = i.getValue();
+
+            OrderSoupPk orderSoupPk = new OrderSoupPk(orderModel, soupModel);
+
+            OrderSoupFullDto orderSoupFullDto = orderSoupService.saveOrderSoup(new OrderSoupFullDto(orderSoupPk, soupQuantity));
+            soups.put(new SoupFullDto(soupModel), soupQuantity);
+        }
+
+        // Saving Order Drink
+        Map<DrinkFullDto, Integer> drinks = new HashMap<>();
+        for (Map.Entry<Long, Integer> i : orderPostDto.getDrinksIdsAndQuantities().entrySet()) {
+            DrinkModel drinkModel = new DrinkModel(drinkService.findDrinkById(i.getKey()));
+            Integer drinkQuantity = i.getValue();
+
+            OrderDrinkPk orderDrinkPk = new OrderDrinkPk(orderModel, drinkModel);
+
+            OrderDrinkFullDto orderDrinkFullDto = orderDrinkService.saveOrderDrink(new OrderDrinkFullDto(orderDrinkPk, drinkQuantity));
+            drinks.put(new DrinkFullDto(drinkModel), drinkQuantity);
+        }
+
+        // Setting Return
+        OrderReturnDto orderReturnDto = new OrderReturnDto(existentOrderModel);
         orderReturnDto.setSoups(soups);
         orderReturnDto.setDrinks(drinks);
 

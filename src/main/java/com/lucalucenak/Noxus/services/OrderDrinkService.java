@@ -51,4 +51,9 @@ public class OrderDrinkService {
         OrderDrinkModel orderDrinkModel = new OrderDrinkModel(orderDrinkFullDto);
         return new OrderDrinkFullDto(orderDrinkRepository.save(orderDrinkModel));
     }
+
+    @Transactional
+    public void deleteOrderDrinkByOrderId(Long orderId) {
+
+    }
 }
