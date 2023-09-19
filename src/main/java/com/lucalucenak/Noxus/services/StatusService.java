@@ -31,6 +31,17 @@ public class StatusService {
     }
 
     @Transactional
+    public StatusFullDto findStatusByStatus(String status) {
+        Optional<StatusModel> statusOptional = statusRepository.findByStatus(status);
+
+        if (statusOptional.isPresent()) {
+            return new StatusFullDto(statusOptional.get());
+        } else {
+            throw new ResourceNotFoundException("Resource: Status. Not found with status: " + status);
+        }
+    }
+
+    @Transactional
     public Page<StatusFullDto> findAllStatusPaginated(Pageable pageable) {
         Page<StatusModel> pagedStatus = statusRepository.findAll(pageable);
         return pagedStatus.map(StatusFullDto::new);

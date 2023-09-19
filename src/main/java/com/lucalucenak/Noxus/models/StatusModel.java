@@ -2,7 +2,6 @@ package com.lucalucenak.Noxus.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lucalucenak.Noxus.dtos.StatusFullDto;
-import com.lucalucenak.Noxus.enums.StatusEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -25,11 +24,10 @@ public class StatusModel {
     private Long id;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
     @NotNull(message = "Field status shouldn't be null")
     @NotEmpty(message = "Field status shouldn't be empty")
     @NotBlank(message = "Field status shouldn't be blank")
-    private StatusEnum status;
+    private String status;
 
     @JsonIgnore
     @OneToMany(mappedBy = "status", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -52,7 +50,7 @@ public class StatusModel {
         BeanUtils.copyProperties(statusFullDto, this);
     }
 
-    public StatusModel(Long id, StatusEnum status, List<ClientAccountModel> clientAccounts, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public StatusModel(Long id, String status, List<ClientAccountModel> clientAccounts, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.status = status;
         this.clientAccounts = clientAccounts;
@@ -69,11 +67,11 @@ public class StatusModel {
         this.id = id;
     }
 
-    public StatusEnum getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(StatusEnum status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

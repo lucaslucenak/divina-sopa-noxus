@@ -2,8 +2,6 @@ package com.lucalucenak.Noxus.dtos;
 
 import com.lucalucenak.Noxus.models.OrderSoupModel;
 import com.lucalucenak.Noxus.models.pks.OrderSoupPk;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.BeanUtils;
 
@@ -14,8 +12,6 @@ public class OrderSoupFullDto {
     private OrderSoupPk id;
 
     @NotNull(message = "Field quantity shouldn't be null")
-    @NotEmpty(message = "Field quantity shouldn't be empty")
-    @NotBlank(message = "Field quantity shouldn't be blank")
     private Integer quantity;
 
     @NotNull(message = "Field createdAt shouldn't be null")

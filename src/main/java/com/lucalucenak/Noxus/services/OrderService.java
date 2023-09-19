@@ -39,6 +39,8 @@ public class OrderService {
     private OrderSoupService orderSoupService;
     @Autowired
     private OrderDrinkService orderDrinkService;
+    @Autowired
+    private StatusService statusService;
 
     @Transactional
     public OrderFullDto findOrderById(Long orderId) {
@@ -70,20 +72,22 @@ public class OrderService {
         orderModel.setPaymentMethod(paymentMethodModel);
         DeliveryTypeModel deliveryTypeModel = new DeliveryTypeModel(deliveryTypeService.findDeliveryTypeById(orderPostDto.getDeliveryTypeId()));
         orderModel.setDeliveryType(deliveryTypeModel);
+        StatusModel statusModel = new StatusModel(statusService.findStatusByStatus("ORDERED"));
+        orderModel.setStatus(statusModel);
 
         // Setting Order Price
         if (deliveryTypeModel.getDeliveryType().equals(DeliveryTypeEnum.DELIVERY)) {
             orderPrice += addressModel.getNeighbourhood().getDeliveryTax();
         }
 
-        for (Map.Entry<Long, Integer> i : orderPostDto.getSoupsIdsAndQuantities().entrySet()) {
+        for (Map.Entry<Long, Integer> i : orderPostDto.getSoupsIds().entrySet()) {
             SoupModel soupModel = new SoupModel(soupService.findSoupById(i.getKey()));
             Integer soupQuantity = i.getValue();
 
             orderPrice += soupModel.getPrice() * soupQuantity;
         }
 
-        for (Map.Entry<Long, Integer> i : orderPostDto.getDrinksIdsAndQuantities().entrySet()) {
+        for (Map.Entry<Long, Integer> i : orderPostDto.getDrinksIds().entrySet()) {
             DrinkModel drinkModel = new DrinkModel(drinkService.findDrinkById(i.getKey()));
             Integer drinkQuantity = i.getValue();
 
@@ -96,7 +100,7 @@ public class OrderService {
 
         // Saving Order Soup
         Map<SoupFullDto, Integer> soups = new HashMap<>();
-        for (Map.Entry<Long, Integer> i : orderPostDto.getSoupsIdsAndQuantities().entrySet()) {
+        for (Map.Entry<Long, Integer> i : orderPostDto.getSoupsIds().entrySet()) {
             SoupModel soupModel = new SoupModel(soupService.findSoupById(i.getKey()));
             Integer soupQuantity = i.getValue();
 
@@ -108,7 +112,7 @@ public class OrderService {
 
         // Saving Order Drink
         Map<DrinkFullDto, Integer> drinks = new HashMap<>();
-        for (Map.Entry<Long, Integer> i : orderPostDto.getDrinksIdsAndQuantities().entrySet()) {
+        for (Map.Entry<Long, Integer> i : orderPostDto.getDrinksIds().entrySet()) {
             DrinkModel drinkModel = new DrinkModel(drinkService.findDrinkById(i.getKey()));
             Integer drinkQuantity = i.getValue();
 
@@ -147,14 +151,14 @@ public class OrderService {
             orderPrice += addressModel.getNeighbourhood().getDeliveryTax();
         }
 
-        for (Map.Entry<Long, Integer> i : orderPostDto.getSoupsIdsAndQuantities().entrySet()) {
+        for (Map.Entry<Long, Integer> i : orderPostDto.getSoupsIds().entrySet()) {
             SoupModel soupModel = new SoupModel(soupService.findSoupById(i.getKey()));
             Integer soupQuantity = i.getValue();
 
             orderPrice += soupModel.getPrice() * soupQuantity;
         }
 
-        for (Map.Entry<Long, Integer> i : orderPostDto.getDrinksIdsAndQuantities().entrySet()) {
+        for (Map.Entry<Long, Integer> i : orderPostDto.getDrinksIds().entrySet()) {
             DrinkModel drinkModel = new DrinkModel(drinkService.findDrinkById(i.getKey()));
             Integer drinkQuantity = i.getValue();
 
@@ -168,7 +172,7 @@ public class OrderService {
 
         // Saving Order Soup
         Map<SoupFullDto, Integer> soups = new HashMap<>();
-        for (Map.Entry<Long, Integer> i : orderPostDto.getSoupsIdsAndQuantities().entrySet()) {
+        for (Map.Entry<Long, Integer> i : orderPostDto.getSoupsIds().entrySet()) {
             SoupModel soupModel = new SoupModel(soupService.findSoupById(i.getKey()));
             Integer soupQuantity = i.getValue();
 
@@ -180,7 +184,7 @@ public class OrderService {
 
         // Saving Order Drink
         Map<DrinkFullDto, Integer> drinks = new HashMap<>();
-        for (Map.Entry<Long, Integer> i : orderPostDto.getDrinksIdsAndQuantities().entrySet()) {
+        for (Map.Entry<Long, Integer> i : orderPostDto.getDrinksIds().entrySet()) {
             DrinkModel drinkModel = new DrinkModel(drinkService.findDrinkById(i.getKey()));
             Integer drinkQuantity = i.getValue();
 

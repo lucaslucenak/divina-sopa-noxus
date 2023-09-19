@@ -3,8 +3,6 @@ package com.lucalucenak.Noxus.models;
 import com.lucalucenak.Noxus.dtos.OrderSoupFullDto;
 import com.lucalucenak.Noxus.models.pks.OrderSoupPk;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
@@ -23,8 +21,6 @@ public class OrderSoupModel {
 
     @Column(nullable = false)
     @NotNull(message = "Field quantity shouldn't be null")
-    @NotEmpty(message = "Field quantity shouldn't be empty")
-    @NotBlank(message = "Field quantity shouldn't be blank")
     private Integer quantity;
 
     @CreatedDate

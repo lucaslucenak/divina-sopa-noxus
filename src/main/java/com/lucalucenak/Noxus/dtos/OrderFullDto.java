@@ -1,15 +1,9 @@
 package com.lucalucenak.Noxus.dtos;
 
 import com.lucalucenak.Noxus.models.*;
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
@@ -18,20 +12,14 @@ public class OrderFullDto {
     private Long id;
 
     @NotNull(message = "Field orderPrice shouldn't be null")
-    @NotEmpty(message = "Field orderPrice shouldn't be empty")
-    @NotBlank(message = "Field orderPrice shouldn't be blank")
     private Double orderPrice;
 
     private String observation;
 
     @NotNull(message = "Field dispatchTime shouldn't be null")
-    @NotEmpty(message = "Field dispatchTime shouldn't be empty")
-    @NotBlank(message = "Field dispatchTime shouldn't be blank")
     private LocalDateTime dispatchTime;
 
     @NotNull(message = "Field arrivalForecast shouldn't be null")
-    @NotEmpty(message = "Field arrivalForecast shouldn't be empty")
-    @NotBlank(message = "Field arrivalForecast shouldn't be blank")
     private LocalDateTime arrivalForecast;
 
     @NotNull(message = "Field status shouldn't be null")

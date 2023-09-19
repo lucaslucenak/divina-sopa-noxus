@@ -3,7 +3,6 @@ package com.lucalucenak.Noxus.dtos.post;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Map;
 
 public class OrderPostDto {
@@ -103,19 +102,19 @@ public class OrderPostDto {
         this.deliveryTypeId = deliveryTypeId;
     }
 
-    public Map<Long, Integer> getSoupsIdsAndQuantities() {
+    public Map<Long, Integer> getSoupsIds() {
         return soupsIds;
     }
 
-    public void setSoupsIdsAndQuantities(Map<Long, Integer> soupsIds) {
+    public void setSoupsIds(Map<Long, Integer> soupsIds) {
         this.soupsIds = soupsIds;
     }
 
-    public Map<Long, Integer> getDrinksIdsAndQuantities() {
+    public Map<Long, Integer> getDrinksIds() {
         return drinksIds;
     }
 
-    public void setDrinksIdsAndQuantities(Map<Long, Integer> drinksIds) {
+    public void setDrinksIds(Map<Long, Integer> drinksIds) {
         this.drinksIds = drinksIds;
     }
 }

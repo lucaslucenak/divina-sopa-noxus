@@ -4,7 +4,6 @@ import com.lucalucenak.Noxus.dtos.OrderFullDto;
 import com.lucalucenak.Noxus.dtos.post.OrderPostDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
@@ -24,20 +23,17 @@ public class OrderModel {
 
     @Column(nullable = false)
     @NotNull(message = "Field orderPrice shouldn't be null")
-    @NotEmpty(message = "Field orderPrice shouldn't be empty")
-    @NotBlank(message = "Field orderPrice shouldn't be blank")
     private Double orderPrice;
+
     @Column(nullable = true)
     private String observation;
+
     @Column(nullable = false)
     @NotNull(message = "Field dispatchTime shouldn't be null")
-    @NotEmpty(message = "Field dispatchTime shouldn't be empty")
-    @NotBlank(message = "Field dispatchTime shouldn't be blank")
     private LocalDateTime dispatchTime;
+
     @Column(nullable = false)
     @NotNull(message = "Field arrivalForecast shouldn't be null")
-    @NotEmpty(message = "Field arrivalForecast shouldn't be empty")
-    @NotBlank(message = "Field arrivalForecast shouldn't be blank")
     private LocalDateTime arrivalForecast;
 
     @ManyToOne
@@ -49,7 +45,7 @@ public class OrderModel {
     private AddressModel address;
 
     @ManyToOne
-    @JoinColumn(name = "client_Account_id", nullable = false)
+    @JoinColumn(name = "client_account_id", nullable = false)
     private ClientAccountModel clientAccount;
 
     @ManyToOne

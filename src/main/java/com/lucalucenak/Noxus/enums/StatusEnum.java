@@ -1,7 +1,8 @@
-package com.lucalucenak.Noxus.enums;
-
-public enum StatusEnum {
-    ACTIVE,
-    INACTIVE,
-    FINISHED
-}
+//package com.lucalucenak.Noxus.enums;
+//
+//public enum StatusEnum {
+//    ACTIVE,
+//    INACTIVE,
+//    FINISHED,
+//    ORDERED
+//}
