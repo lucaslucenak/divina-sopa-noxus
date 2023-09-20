@@ -13,6 +13,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -33,6 +35,21 @@ public class OrderSoupService {
             return new OrderSoupFullDto(orderSoupOptional.get());
         } else {
             throw new ResourceNotFoundException("Resource: OrderSoup. Not found with order id: "+ orderSoupPk.getOrder().getId() + " and soup id: " + orderSoupPk.getSoup().getId());
+        }
+    }
+
+    @Transactional
+    public List<OrderSoupFullDto> findOrderSoupsByOrderId(Long orderId) {
+        List<Optional<OrderSoupModel>> orderSoupsOptional = orderSoupRepository.findByIdOrderId(orderId);
+
+        if (orderSoupsOptional.size() < 1) {
+            throw new ResourceNotFoundException("Resource: OrderSoup. Not found with order id: " + orderId);
+        } else {
+            List<OrderSoupFullDto> orderSoupFullDtos = new ArrayList<>();
+            for (Optional<OrderSoupModel> i : orderSoupsOptional) {
+                orderSoupFullDtos.add(new OrderSoupFullDto(i.get()));
+            }
+            return orderSoupFullDtos;
         }
     }
 

@@ -5,9 +5,13 @@ import com.lucalucenak.Noxus.models.pks.OrderSoupPk;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface OrderSoupRepository extends JpaRepository<OrderSoupModel, OrderSoupPk> {
 
     void deleteByIdOrderId(Long orderId);
     boolean existsByIdOrderId(Long orderId);
+    List<Optional<OrderSoupModel>> findByIdOrderId(Long orderId);
 }
