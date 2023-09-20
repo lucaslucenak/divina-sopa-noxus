@@ -255,4 +255,12 @@ public class OrderService {
 
         return orderReturnDto;
     }
+
+    public void deleteOrderById(Long orderId) {
+        if (orderRepository.existsById(orderId)) {
+            orderRepository.deleteById(orderId);
+        } else {
+            throw new ResourceNotFoundException("Resource: Order. Not found with id: " + orderId);
+        }
+    }
 }
