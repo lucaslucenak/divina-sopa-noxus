@@ -54,6 +54,11 @@ public class OrderSoupService {
 
     @Transactional
     public void deleteOrderSoupByOrderId(Long orderId) {
-
+        if (orderSoupRepository.existsByIdOrderId(orderId)) {
+            orderSoupRepository.deleteByIdOrderId(orderId);
+        }
+        else {
+            throw new ResourceNotFoundException("Resource: OrderSoup. Not found with order id: " + orderId);
+        }
     }
 }

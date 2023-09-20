@@ -134,7 +134,6 @@ public class OrderService {
     public OrderReturnDto updateOrder(Long orderId, OrderPostDto orderPostDto) {
         OrderModel existentOrderModel = new OrderModel(this.findOrderById(orderId));
         OrderModel updatedOrderModel = new OrderModel(orderPostDto);
-        OrderModel orderModel = new OrderModel(orderPostDto);
         Double orderPrice = 0.0;
 
         AddressModel addressModel = new AddressModel(addressService.findAddressById(orderPostDto.getAddressId()));
@@ -145,6 +144,9 @@ public class OrderService {
         updatedOrderModel.setPaymentMethod(paymentMethodModel);
         DeliveryTypeModel deliveryTypeModel = new DeliveryTypeModel(deliveryTypeService.findDeliveryTypeById(orderPostDto.getDeliveryTypeId()));
         updatedOrderModel.setDeliveryType(deliveryTypeModel);
+        StatusModel statusModel = new StatusModel(statusService.findStatusByStatus("ORDERED"));
+        updatedOrderModel.setStatus(statusModel);
+
 
         // Setting Order Price
         if (deliveryTypeModel.getDeliveryType().equals(DeliveryTypeEnum.DELIVERY)) {
@@ -164,31 +166,33 @@ public class OrderService {
 
             orderPrice += drinkModel.getPrice() * drinkQuantity;
         }
-        orderModel.setOrderPrice(orderPrice);
+        updatedOrderModel.setOrderPrice(orderPrice);
 
         //Saving Order
         BeanUtils.copyProperties(updatedOrderModel, existentOrderModel, "id");
         orderRepository.save(existentOrderModel);
 
         // Saving Order Soup
+        orderSoupService.deleteOrderSoupByOrderId(orderId); // Delete existent relationships and recreate
         Map<SoupFullDto, Integer> soups = new HashMap<>();
         for (Map.Entry<Long, Integer> i : orderPostDto.getSoupsIds().entrySet()) {
             SoupModel soupModel = new SoupModel(soupService.findSoupById(i.getKey()));
             Integer soupQuantity = i.getValue();
 
-            OrderSoupPk orderSoupPk = new OrderSoupPk(orderModel, soupModel);
+            OrderSoupPk orderSoupPk = new OrderSoupPk(existentOrderModel, soupModel);
 
             OrderSoupFullDto orderSoupFullDto = orderSoupService.saveOrderSoup(new OrderSoupFullDto(orderSoupPk, soupQuantity));
             soups.put(new SoupFullDto(soupModel), soupQuantity);
         }
 
         // Saving Order Drink
+        orderDrinkService.deleteOrderDrinkByOrderId(orderId); // Delete existent relationships and recreate
         Map<DrinkFullDto, Integer> drinks = new HashMap<>();
         for (Map.Entry<Long, Integer> i : orderPostDto.getDrinksIds().entrySet()) {
             DrinkModel drinkModel = new DrinkModel(drinkService.findDrinkById(i.getKey()));
             Integer drinkQuantity = i.getValue();
 
-            OrderDrinkPk orderDrinkPk = new OrderDrinkPk(orderModel, drinkModel);
+            OrderDrinkPk orderDrinkPk = new OrderDrinkPk(existentOrderModel, drinkModel);
 
             OrderDrinkFullDto orderDrinkFullDto = orderDrinkService.saveOrderDrink(new OrderDrinkFullDto(orderDrinkPk, drinkQuantity));
             drinks.put(new DrinkFullDto(drinkModel), drinkQuantity);

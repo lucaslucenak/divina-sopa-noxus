@@ -7,4 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface OrderSoupRepository extends JpaRepository<OrderSoupModel, OrderSoupPk> {
+
+    void deleteByIdOrderId(Long orderId);
+    boolean existsByIdOrderId(Long orderId);
 }

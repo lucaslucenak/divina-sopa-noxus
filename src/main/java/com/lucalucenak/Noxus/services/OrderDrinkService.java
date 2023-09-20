@@ -54,6 +54,11 @@ public class OrderDrinkService {
 
     @Transactional
     public void deleteOrderDrinkByOrderId(Long orderId) {
-
+        if (orderDrinkRepository.existsByIdOrderId(orderId)) {
+            orderDrinkRepository.deleteByIdOrderId(orderId);
+        }
+        else {
+            throw new ResourceNotFoundException("Resource: OrderDrink. Not found with order id: " + orderId);
+        }
     }
 }
