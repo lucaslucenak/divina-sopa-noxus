@@ -26,17 +26,13 @@ public class OrderDrinkService {
     private DrinkService drinkService;
 
     @Transactional
-    public OrderDrinkFullDto findOrderDrinkById(Long orderId, Long drinkId) {
-        OrderModel orderModel = new OrderModel(orderService.findOrderById(orderId));
-        DrinkModel drinkModel = new DrinkModel(drinkService.findDrinkById(drinkId));
-        OrderDrinkPk orderDrinkPk = new OrderDrinkPk(orderModel, drinkModel);
-
+    public OrderDrinkFullDto findOrderDrinkById(OrderDrinkPk orderDrinkPk) {
         Optional<OrderDrinkModel> orderDrinkOptional = orderDrinkRepository.findById(orderDrinkPk);
 
         if (orderDrinkOptional.isPresent()) {
             return new OrderDrinkFullDto(orderDrinkOptional.get());
         } else {
-            throw new ResourceNotFoundException("Resource: OrderDrink. Not found with order id: "+ orderId + " and drink id: " + drinkId);
+            throw new ResourceNotFoundException("Resource: OrderDrink. Not found with order id: "+ orderDrinkPk.getOrder().getId() + " and drink id: " + orderDrinkPk.getDrink().getId());
         }
     }
 
