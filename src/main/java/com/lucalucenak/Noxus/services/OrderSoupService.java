@@ -26,17 +26,13 @@ public class OrderSoupService {
     private SoupService soupService;
 
     @Transactional
-    public OrderSoupFullDto findOrderSoupById(Long orderId, Long soupId) {
-        OrderModel orderModel = new OrderModel(orderService.findOrderById(orderId));
-        SoupModel soupModel = new SoupModel(soupService.findSoupById(soupId));
-        OrderSoupPk orderSoupPk = new OrderSoupPk(orderModel, soupModel);
-
+    public OrderSoupFullDto findOrderSoupById(OrderSoupPk orderSoupPk) {
         Optional<OrderSoupModel> orderSoupOptional = orderSoupRepository.findById(orderSoupPk);
 
         if (orderSoupOptional.isPresent()) {
             return new OrderSoupFullDto(orderSoupOptional.get());
         } else {
-            throw new ResourceNotFoundException("Resource: OrderSoup. Not found with order id: "+ orderId + " and soup id: " + soupId);
+            throw new ResourceNotFoundException("Resource: OrderSoup. Not found with order id: "+ orderSoupPk.getOrder().getId() + " and soup id: " + orderSoupPk.getSoup().getId());
         }
     }
 
