@@ -21,10 +21,10 @@ public class AddressFullDto {
     @NotBlank(message = "Field streetName shouldn't be blank")
     private String streetName;
 
-    @NotNull(message = "Field streetNumber shouldn't be null")
-    @NotEmpty(message = "Field streetNumber shouldn't be empty")
-    @NotBlank(message = "Field streetNumber shouldn't be blank")
-    private String streetNumber;
+    @NotNull(message = "Field houseNumber shouldn't be null")
+    @NotEmpty(message = "Field houseNumber shouldn't be empty")
+    @NotBlank(message = "Field houseNumber shouldn't be blank")
+    private String houseNumber;
 
     @NotNull(message = "Field city shouldn't be null")
     @NotEmpty(message = "Field city shouldn't be empty")
@@ -65,10 +65,10 @@ public class AddressFullDto {
         BeanUtils.copyProperties(addressModel, this);
     }
 
-    public AddressFullDto(Long id, String streetName, String streetNumber, String city, String cep, String complement, String referencePoint, NeighbourhoodModel neighbourhood, ClientAccountModel clientAccount, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public AddressFullDto(Long id, String streetName, String houseNumber, String city, String cep, String complement, String referencePoint, NeighbourhoodModel neighbourhood, ClientAccountModel clientAccount, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.streetName = streetName;
-        this.streetNumber = streetNumber;
+        this.houseNumber = houseNumber;
         this.city = city;
         this.cep = cep;
         this.complement = complement;
@@ -97,12 +97,12 @@ public class AddressFullDto {
         this.streetName = streetName;
     }
 
-    public String getStreetNumber() {
-        return streetNumber;
+    public String getHouseNumber() {
+        return houseNumber;
     }
 
-    public void setStreetNumber(String streetNumber) {
-        this.streetNumber = streetNumber;
+    public void setHouseNumber(String streetNumber) {
+        this.houseNumber = streetNumber;
     }
 
     public String getCity() {

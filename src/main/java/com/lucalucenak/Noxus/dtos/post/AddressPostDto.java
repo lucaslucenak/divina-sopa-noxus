@@ -14,32 +14,32 @@ public class AddressPostDto {
     @NotBlank(message = "Field streetName shouldn't be blank")
     private String streetName;
 
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
-    private String streetNumber;
+    @NotNull(message = "Field houseNumber shouldn't be null")
+    @NotEmpty(message = "Field houseNumber shouldn't be empty")
+    @NotBlank(message = "Field houseNumber shouldn't be blank")
+    private String houseNumber;
 
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field city shouldn't be null")
+    @NotEmpty(message = "Field city shouldn't be empty")
+    @NotBlank(message = "Field city shouldn't be blank")
     private String city;
 
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field cep shouldn't be null")
+    @NotEmpty(message = "Field cep shouldn't be empty")
+    @NotBlank(message = "Field cep shouldn't be blank")
     private String cep;
 
     private String complement;
 
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field referencePoint shouldn't be null")
+    @NotEmpty(message = "Field referencePoint shouldn't be empty")
+    @NotBlank(message = "Field referencePoint shouldn't be blank")
     private String referencePoint;
 
-    @NotNull(message = "Field neighbourhood shouldn't be null")
+    @NotNull(message = "Field neighbourhoodId shouldn't be null")
     private Long neighbourhoodId;
 
-    @NotNull(message = "Field clientAccount shouldn't be null")
+    @NotNull(message = "Field clientAccountId shouldn't be null")
     private Long clientAccountId;
 
     public AddressPostDto() {
@@ -49,9 +49,9 @@ public class AddressPostDto {
         BeanUtils.copyProperties(addressModel, this);
     }
 
-    public AddressPostDto(String streetName, String streetNumber, String city, String cep, String complement, String referencePoint, Long neighbourhoodId, Long clientAccountId) {
+    public AddressPostDto(String streetName, String houseNumber, String city, String cep, String complement, String referencePoint, Long neighbourhoodId, Long clientAccountId) {
         this.streetName = streetName;
-        this.streetNumber = streetNumber;
+        this.houseNumber = houseNumber;
         this.city = city;
         this.cep = cep;
         this.complement = complement;
@@ -68,12 +68,12 @@ public class AddressPostDto {
         this.streetName = streetName;
     }
 
-    public String getStreetNumber() {
-        return streetNumber;
+    public String getHouseNumber() {
+        return houseNumber;
     }
 
-    public void setStreetNumber(String streetNumber) {
-        this.streetNumber = streetNumber;
+    public void setHouseNumber(String streetNumber) {
+        this.houseNumber = streetNumber;
     }
 
     public String getCity() {

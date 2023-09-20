@@ -1,92 +1,66 @@
-package com.lucalucenak.Noxus.models;
+package com.lucalucenak.Noxus.dtos.response;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.lucalucenak.Noxus.dtos.AddressFullDto;
-import com.lucalucenak.Noxus.dtos.post.AddressPostDto;
-import com.lucalucenak.Noxus.dtos.response.AddressReturnDto;
-import jakarta.persistence.*;
+import com.lucalucenak.Noxus.models.AddressModel;
+import com.lucalucenak.Noxus.models.ClientAccountModel;
+import com.lucalucenak.Noxus.models.NeighbourhoodModel;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-@Entity
-@Table(name = "address")
-@EntityListeners(AuditingEntityListener.class)
-public class AddressModel {
+public class AddressReturnDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     @NotNull(message = "Field streetName shouldn't be null")
     @NotEmpty(message = "Field streetName shouldn't be empty")
     @NotBlank(message = "Field streetName shouldn't be blank")
     private String streetName;
-    @Column(nullable = false)
+
     @NotNull(message = "Field houseNumber shouldn't be null")
     @NotEmpty(message = "Field houseNumber shouldn't be empty")
     @NotBlank(message = "Field houseNumber shouldn't be blank")
     private String houseNumber;
-    @Column(nullable = false)
+
     @NotNull(message = "Field city shouldn't be null")
     @NotEmpty(message = "Field city shouldn't be empty")
     @NotBlank(message = "Field city shouldn't be blank")
     private String city;
-    @Column(nullable = false)
+
     @NotNull(message = "Field cep shouldn't be null")
     @NotEmpty(message = "Field cep shouldn't be empty")
     @NotBlank(message = "Field cep shouldn't be blank")
     private String cep;
-    @Column(nullable = true)
+
     private String complement;
-    @Column(nullable = false)
+
     @NotNull(message = "Field referencePoint shouldn't be null")
     @NotEmpty(message = "Field referencePoint shouldn't be empty")
     @NotBlank(message = "Field referencePoint shouldn't be blank")
     private String referencePoint;
 
-    @ManyToOne
-    @JoinColumn(name = "neighbourhood_id", nullable = false)
+    @NotNull(message = "Field neighbourhood shouldn't be null")
     private NeighbourhoodModel neighbourhood;
 
-    @ManyToOne
-    @JoinColumn(name = "client_account_id", nullable = false)
+    @NotNull(message = "Field clientAccount shouldn't be null")
     private ClientAccountModel clientAccount;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "address", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<OrderModel> orders;
-
-    @CreatedDate
+    @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
 
-    @LastModifiedDate
+    @NotNull(message = "Field updatedAt shouldn't be null")
     private LocalDateTime updatedAt;
 
-    public AddressModel() {
+    public AddressReturnDto() {
     }
 
-    public AddressModel(AddressReturnDto addressReturnDto) {
-        BeanUtils.copyProperties(addressReturnDto, this);
+    public AddressReturnDto(AddressModel addressModel) {
+        BeanUtils.copyProperties(addressModel, this);
     }
 
-    public AddressModel(AddressFullDto addressFullDto) {
-        BeanUtils.copyProperties(addressFullDto, this);
-    }
-
-    public AddressModel(AddressPostDto addressPostDto) {
-        BeanUtils.copyProperties(addressPostDto, this);
-    }
-
-    public AddressModel(Long id, String streetName, String houseNumber, String city, String cep, String complement, String referencePoint, NeighbourhoodModel neighbourhood, ClientAccountModel clientAccount, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public AddressReturnDto(Long id, String streetName, String houseNumber, String city, String cep, String complement, String referencePoint, NeighbourhoodModel neighbourhood, ClientAccountModel clientAccount, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.streetName = streetName;
         this.houseNumber = houseNumber;
@@ -96,7 +70,6 @@ public class AddressModel {
         this.referencePoint = referencePoint;
         this.neighbourhood = neighbourhood;
         this.clientAccount = clientAccount;
-        this.orders = orders;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -117,7 +90,7 @@ public class AddressModel {
         this.streetName = streetName;
     }
 
-    public String getStreetNumber() {
+    public String getHouseNumber() {
         return houseNumber;
     }
 
@@ -171,14 +144,6 @@ public class AddressModel {
 
     public void setClientAccount(ClientAccountModel clientAccount) {
         this.clientAccount = clientAccount;
-    }
-
-    public List<OrderModel> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<OrderModel> orders) {
-        this.orders = orders;
     }
 
     public LocalDateTime getCreatedAt() {
