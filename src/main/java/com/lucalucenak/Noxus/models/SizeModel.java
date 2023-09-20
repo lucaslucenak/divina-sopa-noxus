@@ -24,9 +24,9 @@ public class SizeModel {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field size shouldn't be null")
+    @NotEmpty(message = "Field size shouldn't be empty")
+    @NotBlank(message = "Field size shouldn't be blank")
     private SizeEnum size;
 
     @JsonIgnore

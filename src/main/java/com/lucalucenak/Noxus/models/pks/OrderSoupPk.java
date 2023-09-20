@@ -18,4 +18,28 @@ public class OrderSoupPk implements Serializable {
     @ManyToOne
     @JoinColumn(name = "soup_id")
     private SoupModel soup;
+
+    public OrderSoupPk() {
+    }
+
+    public OrderSoupPk(OrderModel order, SoupModel soup) {
+        this.order = order;
+        this.soup = soup;
+    }
+
+    public OrderModel getOrder() {
+        return order;
+    }
+
+    public void setOrder(OrderModel order) {
+        this.order = order;
+    }
+
+    public SoupModel getSoup() {
+        return soup;
+    }
+
+    public void setSoup(SoupModel soup) {
+        this.soup = soup;
+    }
 }

@@ -1,10 +1,12 @@
 package com.lucalucenak.Noxus.models;
 
+import com.lucalucenak.Noxus.dtos.DrinkFullDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -21,12 +23,12 @@ public class DrinkModel {
     private Long id;
 
     @Column(nullable = false)
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field name shouldn't be null")
+    @NotEmpty(message = "Field name shouldn't be empty")
+    @NotBlank(message = "Field name shouldn't be blank")
     private String name;
     @Column(nullable = false)
-    @NotNull(message = "Field streetName shouldn't be null")
+    @NotNull(message = "Field price shouldn't be null")
     @DecimalMin(value = "0.0", inclusive = true)
     private Double price;
 
@@ -37,6 +39,10 @@ public class DrinkModel {
     private LocalDateTime updatedAt;
 
     public DrinkModel() {
+    }
+
+    public DrinkModel(DrinkFullDto drinkFullDto) {
+        BeanUtils.copyProperties(drinkFullDto, this);
     }
 
     public DrinkModel(Long id, String name, Double price, LocalDateTime createdAt, LocalDateTime updatedAt) {

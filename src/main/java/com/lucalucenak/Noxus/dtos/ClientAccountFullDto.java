@@ -22,25 +22,25 @@ public class ClientAccountFullDto {
 
     private Long id;
 
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field firstName shouldn't be null")
+    @NotEmpty(message = "Field firstName shouldn't be empty")
+    @NotBlank(message = "Field firstName shouldn't be blank")
     private String firstName;
 
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field lastName shouldn't be null")
+    @NotEmpty(message = "Field lastName shouldn't be empty")
+    @NotBlank(message = "Field lastName shouldn't be blank")
     private String lastName;
 
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field cpf shouldn't be null")
+    @NotEmpty(message = "Field cpf shouldn't be empty")
+    @NotBlank(message = "Field cpf shouldn't be blank")
     @CPF
     private String cpf;
 
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field email shouldn't be null")
+    @NotEmpty(message = "Field email shouldn't be empty")
+    @NotBlank(message = "Field email shouldn't be blank")
     @Email
     private String email;
 

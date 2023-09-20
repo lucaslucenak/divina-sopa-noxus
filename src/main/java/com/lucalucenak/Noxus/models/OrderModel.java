@@ -1,9 +1,11 @@
 package com.lucalucenak.Noxus.models;
 
+import com.lucalucenak.Noxus.dtos.OrderFullDto;
+import com.lucalucenak.Noxus.dtos.post.OrderPostDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -20,21 +22,18 @@ public class OrderModel {
     private Long id;
 
     @Column(nullable = false)
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field orderPrice shouldn't be null")
     private Double orderPrice;
+
     @Column(nullable = true)
     private String observation;
+
     @Column(nullable = false)
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field dispatchTime shouldn't be null")
     private LocalDateTime dispatchTime;
+
     @Column(nullable = false)
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field arrivalForecast shouldn't be null")
     private LocalDateTime arrivalForecast;
 
     @ManyToOne
@@ -46,7 +45,7 @@ public class OrderModel {
     private AddressModel address;
 
     @ManyToOne
-    @JoinColumn(name = "client_Account_id", nullable = false)
+    @JoinColumn(name = "client_account_id", nullable = false)
     private ClientAccountModel clientAccount;
 
     @ManyToOne
@@ -64,6 +63,14 @@ public class OrderModel {
     private LocalDateTime updatedAt;
 
     public OrderModel() {
+    }
+
+    public OrderModel(OrderFullDto orderFullDto) {
+        BeanUtils.copyProperties(orderFullDto, this);
+    }
+
+    public OrderModel(OrderPostDto orderPostDto) {
+        BeanUtils.copyProperties(orderPostDto, this);
     }
 
     public OrderModel(Long id, Double orderPrice, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, StatusModel status, AddressModel address, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, DeliveryTypeModel deliveryType, LocalDateTime createdAt, LocalDateTime updatedAt) {

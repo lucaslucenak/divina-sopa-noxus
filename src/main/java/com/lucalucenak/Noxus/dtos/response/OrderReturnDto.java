@@ -1,26 +1,30 @@
-package com.lucalucenak.Noxus.dtos;
+package com.lucalucenak.Noxus.dtos.response;
 
+import com.lucalucenak.Noxus.dtos.DrinkFullDto;
+import com.lucalucenak.Noxus.dtos.SoupFullDto;
 import com.lucalucenak.Noxus.models.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
-public class OrderFullDto {
+public class OrderReturnDto {
 
     private Long id;
 
     @NotNull(message = "Field orderPrice shouldn't be null")
+    @NotEmpty(message = "Field orderPrice shouldn't be empty")
+    @NotBlank(message = "Field orderPrice shouldn't be blank")
     private Double orderPrice;
 
     private String observation;
 
-    @NotNull(message = "Field dispatchTime shouldn't be null")
-    private LocalDateTime dispatchTime;
+    private Map<SoupFullDto, Integer> soups;
 
-    @NotNull(message = "Field arrivalForecast shouldn't be null")
-    private LocalDateTime arrivalForecast;
+    private Map<DrinkFullDto, Integer> drinks;
 
     @NotNull(message = "Field status shouldn't be null")
     private StatusModel status;
@@ -43,19 +47,29 @@ public class OrderFullDto {
     @NotNull(message = "Field updatedAt shouldn't be null")
     private LocalDateTime updatedAt;
 
-    public OrderFullDto() {
+    @NotNull(message = "Field dispatchTime shouldn't be null")
+    @NotEmpty(message = "Field dispatchTime shouldn't be empty")
+    @NotBlank(message = "Field dispatchTime shouldn't be blank")
+    private LocalDateTime dispatchTime;
+
+    @NotNull(message = "Field arrivalForecast shouldn't be null")
+    @NotEmpty(message = "Field arrivalForecast shouldn't be empty")
+    @NotBlank(message = "Field arrivalForecast shouldn't be blank")
+    private LocalDateTime arrivalForecast;
+
+    public OrderReturnDto() {
     }
 
-    public OrderFullDto(OrderModel orderModel) {
+    public OrderReturnDto(OrderModel orderModel) {
         BeanUtils.copyProperties(orderModel, this);
     }
 
-    public OrderFullDto(Long id, Double orderPrice, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, StatusModel status, AddressModel address, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, DeliveryTypeModel deliveryType, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public OrderReturnDto(Long id, Double orderPrice, String observation, Map<SoupFullDto, Integer> soups, Map<DrinkFullDto, Integer> drinks, StatusModel status, AddressModel address, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, DeliveryTypeModel deliveryType, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime dispatchTime, LocalDateTime arrivalForecast) {
         this.id = id;
         this.orderPrice = orderPrice;
         this.observation = observation;
-        this.dispatchTime = dispatchTime;
-        this.arrivalForecast = arrivalForecast;
+        this.soups = soups;
+        this.drinks = drinks;
         this.status = status;
         this.address = address;
         this.clientAccount = clientAccount;
@@ -63,6 +77,8 @@ public class OrderFullDto {
         this.deliveryType = deliveryType;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.dispatchTime = dispatchTime;
+        this.arrivalForecast = arrivalForecast;
     }
 
     public Long getId() {
@@ -89,20 +105,20 @@ public class OrderFullDto {
         this.observation = observation;
     }
 
-    public LocalDateTime getDispatchTime() {
-        return dispatchTime;
+    public Map<SoupFullDto, Integer> getSoups() {
+        return soups;
     }
 
-    public void setDispatchTime(LocalDateTime dispatchTime) {
-        this.dispatchTime = dispatchTime;
+    public void setSoups(Map<SoupFullDto, Integer> soups) {
+        this.soups = soups;
     }
 
-    public LocalDateTime getArrivalForecast() {
-        return arrivalForecast;
+    public Map<DrinkFullDto, Integer> getDrinks() {
+        return drinks;
     }
 
-    public void setArrivalForecast(LocalDateTime arrivalForecast) {
-        this.arrivalForecast = arrivalForecast;
+    public void setDrinks(Map<DrinkFullDto, Integer> drinks) {
+        this.drinks = drinks;
     }
 
     public StatusModel getStatus() {
@@ -159,5 +175,21 @@ public class OrderFullDto {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public LocalDateTime getDispatchTime() {
+        return dispatchTime;
+    }
+
+    public void setDispatchTime(LocalDateTime dispatchTime) {
+        this.dispatchTime = dispatchTime;
+    }
+
+    public LocalDateTime getArrivalForecast() {
+        return arrivalForecast;
+    }
+
+    public void setArrivalForecast(LocalDateTime arrivalForecast) {
+        this.arrivalForecast = arrivalForecast;
     }
 }

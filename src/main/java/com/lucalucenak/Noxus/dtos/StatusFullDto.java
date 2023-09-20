@@ -1,17 +1,12 @@
 package com.lucalucenak.Noxus.dtos;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.lucalucenak.Noxus.enums.StatusEnum;
 import com.lucalucenak.Noxus.models.ClientAccountModel;
 import com.lucalucenak.Noxus.models.OrderModel;
 import com.lucalucenak.Noxus.models.StatusModel;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -20,21 +15,21 @@ public class StatusFullDto {
 
     private Long id;
 
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
-    private StatusEnum status;
+    @NotNull(message = "Field status shouldn't be null")
+    @NotEmpty(message = "Field status shouldn't be empty")
+    @NotBlank(message = "Field status shouldn't be blank")
+    private String status;
 
-    @NotNull(message = "Field streetName shouldn't be null")
+    @NotNull(message = "Field clientAccounts shouldn't be null")
     private List<ClientAccountModel> clientAccounts;
 
-    @NotNull(message = "Field streetName shouldn't be null")
+    @NotNull(message = "Field orders shouldn't be null")
     private List<OrderModel> orders;
 
-    @NotNull(message = "Field streetName shouldn't be null")
+    @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
 
-    @NotNull(message = "Field streetName shouldn't be null")
+    @NotNull(message = "Field updatedAt shouldn't be null")
     private LocalDateTime updatedAt;
 
     public StatusFullDto() {
@@ -44,7 +39,7 @@ public class StatusFullDto {
         BeanUtils.copyProperties(statusModel, this);
     }
 
-    public StatusFullDto(Long id, StatusEnum status, List<ClientAccountModel> clientAccounts, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public StatusFullDto(Long id, String status, List<ClientAccountModel> clientAccounts, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.status = status;
         this.clientAccounts = clientAccounts;
@@ -61,11 +56,11 @@ public class StatusFullDto {
         this.id = id;
     }
 
-    public StatusEnum getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(StatusEnum status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

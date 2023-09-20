@@ -2,8 +2,6 @@ package com.lucalucenak.Noxus.dtos;
 
 import com.lucalucenak.Noxus.models.OrderSoupModel;
 import com.lucalucenak.Noxus.models.pks.OrderSoupPk;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.BeanUtils;
 
@@ -13,15 +11,13 @@ public class OrderSoupFullDto {
 
     private OrderSoupPk id;
 
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field quantity shouldn't be null")
     private Integer quantity;
 
-    @NotNull(message = "Field streetName shouldn't be null")
+    @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
 
-    @NotNull(message = "Field streetName shouldn't be null")
+    @NotNull(message = "Field updatedAt shouldn't be null")
     private LocalDateTime updatedAt;
 
     public OrderSoupFullDto() {
@@ -36,6 +32,11 @@ public class OrderSoupFullDto {
         this.quantity = quantity;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public OrderSoupFullDto(OrderSoupPk id, Integer quantity) {
+        this.id = id;
+        this.quantity = quantity;
     }
 
     public OrderSoupPk getId() {

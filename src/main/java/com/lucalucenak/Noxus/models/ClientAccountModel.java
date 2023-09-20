@@ -1,12 +1,14 @@
 package com.lucalucenak.Noxus.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lucalucenak.Noxus.dtos.ClientAccountFullDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.br.CPF;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -24,35 +26,35 @@ public class ClientAccountModel {
     private Long id;
 
     @Column(nullable = false)
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field firstName shouldn't be null")
+    @NotEmpty(message = "Field firstName shouldn't be empty")
+    @NotBlank(message = "Field firstName shouldn't be blank")
     private String firstName;
 
     @Column(nullable = false)
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field lastName shouldn't be null")
+    @NotEmpty(message = "Field lastName shouldn't be empty")
+    @NotBlank(message = "Field lastName shouldn't be blank")
     private String lastName;
 
     @Column(nullable = false)
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field cpf shouldn't be null")
+    @NotEmpty(message = "Field cpf shouldn't be empty")
+    @NotBlank(message = "Field cpf shouldn't be blank")
     @CPF
     private String cpf;
 
     @Column(nullable = false)
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field email shouldn't be null")
+    @NotEmpty(message = "Field email shouldn't be empty")
+    @NotBlank(message = "Field email shouldn't be blank")
     @Email
     private String email;
 
     @Column(nullable = false)
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field placedOrdersQuantity shouldn't be null")
+    @NotEmpty(message = "Field placedOrdersQuantity shouldn't be empty")
+    @NotBlank(message = "Field placedOrdersQuantity shouldn't be blank")
     private Integer placedOrdersQuantity;
 
     @ManyToOne
@@ -74,6 +76,10 @@ public class ClientAccountModel {
     private LocalDateTime updatedAt;
 
     public ClientAccountModel() {
+    }
+
+    public ClientAccountModel(ClientAccountFullDto clientAccountFullDto) {
+        BeanUtils.copyProperties(clientAccountFullDto, this);
     }
 
     public ClientAccountModel(Long id, String firstName, String lastName, String cpf, String email, Integer placedOrdersQuantity, StatusModel status, List<AddressModel> addresses, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {

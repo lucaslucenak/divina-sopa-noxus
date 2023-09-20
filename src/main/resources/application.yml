@@ -3,8 +3,8 @@ spring:
     active: ${APP_PROFILE:test}
   jpa:
     open-in-view: false
-#  main:
-#    allow-circular-references: true
+  main:
+    allow-circular-references: true
 
 cors:
   origins: ${CORS_ORIGINS:http://localhost:5173,http://localhost:3000}

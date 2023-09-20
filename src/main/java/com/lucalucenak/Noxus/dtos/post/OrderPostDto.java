@@ -3,7 +3,7 @@ package com.lucalucenak.Noxus.dtos.post;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Map;
 
 public class OrderPostDto {
 
@@ -27,14 +27,14 @@ public class OrderPostDto {
     @NotNull(message = "Field streetName shouldn't be null")
     private Long deliveryTypeId;
 
-    private List<Long> soupsIds;
+    private Map<Long, Integer> soupsIds; // ID | Quantity
 
-    private List<Long> drinksIds;
+    private Map<Long, Integer> drinksIds; // ID | Quantity
 
     public OrderPostDto() {
     }
 
-    public OrderPostDto(String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, Long addressId, Long clientAccountId, Long paymentMethodId, Long deliveryTypeId, List<Long> soupsIds, List<Long> drinksIds) {
+    public OrderPostDto(String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, Long addressId, Long clientAccountId, Long paymentMethodId, Long deliveryTypeId, Map<Long, Integer> soupsIds, Map<Long, Integer> drinksIds) {
         this.observation = observation;
         this.dispatchTime = dispatchTime;
         this.arrivalForecast = arrivalForecast;
@@ -102,19 +102,19 @@ public class OrderPostDto {
         this.deliveryTypeId = deliveryTypeId;
     }
 
-    public List<Long> getSoupsIds() {
+    public Map<Long, Integer> getSoupsIds() {
         return soupsIds;
     }
 
-    public void setSoupsIds(List<Long> soupsIds) {
+    public void setSoupsIds(Map<Long, Integer> soupsIds) {
         this.soupsIds = soupsIds;
     }
 
-    public List<Long> getDrinksIds() {
+    public Map<Long, Integer> getDrinksIds() {
         return drinksIds;
     }
 
-    public void setDrinksIds(List<Long> drinksIds) {
+    public void setDrinksIds(Map<Long, Integer> drinksIds) {
         this.drinksIds = drinksIds;
     }
 }

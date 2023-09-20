@@ -1,10 +1,13 @@
 package com.lucalucenak.Noxus.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lucalucenak.Noxus.dtos.AddressFullDto;
+import com.lucalucenak.Noxus.dtos.post.AddressPostDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -27,26 +30,26 @@ public class AddressModel {
     @NotBlank(message = "Field streetName shouldn't be blank")
     private String streetName;
     @Column(nullable = false)
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field streetNumber shouldn't be null")
+    @NotEmpty(message = "Field streetNumber shouldn't be empty")
+    @NotBlank(message = "Field streetNumber shouldn't be blank")
     private String streetNumber;
     @Column(nullable = false)
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field city shouldn't be null")
+    @NotEmpty(message = "Field city shouldn't be empty")
+    @NotBlank(message = "Field city shouldn't be blank")
     private String city;
     @Column(nullable = false)
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field cep shouldn't be null")
+    @NotEmpty(message = "Field cep shouldn't be empty")
+    @NotBlank(message = "Field cep shouldn't be blank")
     private String cep;
     @Column(nullable = true)
     private String complement;
     @Column(nullable = false)
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    @NotNull(message = "Field referencePoint shouldn't be null")
+    @NotEmpty(message = "Field referencePoint shouldn't be empty")
+    @NotBlank(message = "Field referencePoint shouldn't be blank")
     private String referencePoint;
 
     @ManyToOne
@@ -68,6 +71,14 @@ public class AddressModel {
     private LocalDateTime updatedAt;
 
     public AddressModel() {
+    }
+
+    public AddressModel(AddressFullDto addressFullDto) {
+        BeanUtils.copyProperties(addressFullDto, this);
+    }
+
+    public AddressModel(AddressPostDto addressPostDto) {
+        BeanUtils.copyProperties(addressPostDto, this);
     }
 
     public AddressModel(Long id, String streetName, String streetNumber, String city, String cep, String complement, String referencePoint, NeighbourhoodModel neighbourhood, ClientAccountModel clientAccount, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {

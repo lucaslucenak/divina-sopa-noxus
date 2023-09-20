@@ -1,11 +1,12 @@
 package com.lucalucenak.Noxus.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.lucalucenak.Noxus.enums.StatusEnum;
+import com.lucalucenak.Noxus.dtos.StatusFullDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -23,11 +24,10 @@ public class StatusModel {
     private Long id;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
-    private StatusEnum status;
+    @NotNull(message = "Field status shouldn't be null")
+    @NotEmpty(message = "Field status shouldn't be empty")
+    @NotBlank(message = "Field status shouldn't be blank")
+    private String status;
 
     @JsonIgnore
     @OneToMany(mappedBy = "status", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -46,7 +46,11 @@ public class StatusModel {
     public StatusModel() {
     }
 
-    public StatusModel(Long id, StatusEnum status, List<ClientAccountModel> clientAccounts, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public StatusModel(StatusFullDto statusFullDto) {
+        BeanUtils.copyProperties(statusFullDto, this);
+    }
+
+    public StatusModel(Long id, String status, List<ClientAccountModel> clientAccounts, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.status = status;
         this.clientAccounts = clientAccounts;
@@ -63,11 +67,11 @@ public class StatusModel {
         this.id = id;
     }
 
-    public StatusEnum getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(StatusEnum status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
