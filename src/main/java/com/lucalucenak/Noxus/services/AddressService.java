@@ -81,11 +81,13 @@ public class AddressService {
         AddressModel updatedAddressModel = new AddressModel(addressPostDto);
         ClientAccountModel clientAccountModel = new ClientAccountModel(clientAccountService.findClientAccountById(addressPostDto.getClientAccountId()));
         updatedAddressModel.setClientAccount(clientAccountModel);
-        BeanUtils.copyProperties(existentAddressModel, updatedAddressModel);
+        NeighbourhoodModel neighbourhoodModel = new NeighbourhoodModel(neighbourhoodService.findNeighbourhoodById(addressPostDto.getNeighbourhoodId()));
+        updatedAddressModel.setNeighbourhood(neighbourhoodModel);
+        BeanUtils.copyProperties(updatedAddressModel, existentAddressModel, "id");
 
-        addressRepository.save(updatedAddressModel);
+        addressRepository.save(existentAddressModel);
 
-        AddressReturnDto addressReturnDto = new AddressReturnDto(updatedAddressModel);
+        AddressReturnDto addressReturnDto = new AddressReturnDto(existentAddressModel);
         return addressReturnDto;
     }
 
