@@ -34,7 +34,7 @@ public class AddressService {
     @Autowired
     private NeighbourhoodService neighbourhoodService;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public AddressReturnDto findAddressById(Long addressId) {
         Optional<AddressModel> addressOptional = addressRepository.findById(addressId);
 
@@ -45,7 +45,7 @@ public class AddressService {
         }
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<AddressReturnDto> findAllAddressesPaginated(Pageable pageable) {
         Page<AddressModel> pagedAddresses = addressRepository.findAll(pageable);
 
@@ -89,8 +89,8 @@ public class AddressService {
         return addressReturnDto;
     }
 
-    @Transactional
     public void deleteAddressById(Long addressId) {
+        System.out.println(addressId);
         if (addressRepository.existsById(addressId)) {
             addressRepository.deleteById(addressId);
         } else {

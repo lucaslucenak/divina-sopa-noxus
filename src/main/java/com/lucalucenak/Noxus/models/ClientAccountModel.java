@@ -2,6 +2,8 @@ package com.lucalucenak.Noxus.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lucalucenak.Noxus.dtos.ClientAccountFullDto;
+import com.lucalucenak.Noxus.dtos.post.ClientAccountPostDto;
+import com.lucalucenak.Noxus.dtos.response.ClientAccountReturnDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -52,9 +54,6 @@ public class ClientAccountModel {
     private String email;
 
     @Column(nullable = false)
-    @NotNull(message = "Field placedOrdersQuantity shouldn't be null")
-    @NotEmpty(message = "Field placedOrdersQuantity shouldn't be empty")
-    @NotBlank(message = "Field placedOrdersQuantity shouldn't be blank")
     private Integer placedOrdersQuantity;
 
     @ManyToOne
@@ -80,6 +79,14 @@ public class ClientAccountModel {
 
     public ClientAccountModel(ClientAccountFullDto clientAccountFullDto) {
         BeanUtils.copyProperties(clientAccountFullDto, this);
+    }
+
+    public ClientAccountModel(ClientAccountPostDto clientAccountPostDto) {
+        BeanUtils.copyProperties(clientAccountPostDto, this);
+    }
+
+    public ClientAccountModel(ClientAccountReturnDto clientAccountReturnDto) {
+        BeanUtils.copyProperties(clientAccountReturnDto, this);
     }
 
     public ClientAccountModel(Long id, String firstName, String lastName, String cpf, String email, Integer placedOrdersQuantity, StatusModel status, List<AddressModel> addresses, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {

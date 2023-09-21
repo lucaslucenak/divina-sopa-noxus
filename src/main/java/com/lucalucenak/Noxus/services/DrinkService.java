@@ -19,7 +19,7 @@ public class DrinkService {
     @Autowired
     private DrinkRepository drinkRepository;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public DrinkFullDto findDrinkById(Long drinkId) {
         Optional<DrinkModel> drinkOptional = drinkRepository.findById(drinkId);
 
@@ -30,7 +30,7 @@ public class DrinkService {
         }
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<DrinkFullDto> findAllDrinksPaginated(Pageable pageable) {
         Page<DrinkModel> pagedDrinks = drinkRepository.findAll(pageable);
         return pagedDrinks.map(DrinkFullDto::new);

@@ -117,7 +117,7 @@ public class AddressModel {
         this.streetName = streetName;
     }
 
-    public String getStreetNumber() {
+    public String getHouseNumber() {
         return houseNumber;
     }
 

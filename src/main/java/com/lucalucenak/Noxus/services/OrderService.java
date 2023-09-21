@@ -259,8 +259,20 @@ public class OrderService {
     public void deleteOrderById(Long orderId) {
         if (orderRepository.existsById(orderId)) {
             orderRepository.deleteById(orderId);
+            orderSoupService.deleteOrderSoupByOrderId(orderId);
+            orderDrinkService.deleteOrderDrinkByOrderId(orderId);
         } else {
             throw new ResourceNotFoundException("Resource: Order. Not found with id: " + orderId);
         }
+    }
+
+    public OrderReturnDto finishOrder(Long orderId) {
+        OrderModel orderModel = new OrderModel(this.findOrderById(orderId));
+        orderModel.setStatus(new StatusModel(statusService.findStatusByStatus("FINISHED")));
+        orderRepository.save(orderModel);
+
+        clientAccountService.increasePlacedOrdersQuantityByClientAccountId(orderModel.getClientAccount().getId());
+
+        return new OrderReturnDto(orderModel);
     }
 }

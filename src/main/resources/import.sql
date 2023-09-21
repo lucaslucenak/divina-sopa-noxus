@@ -1,5 +1,6 @@
 insert into status(status, created_at, updated_at) values ('ACTIVE', NOW(), NOW());
 insert into status(status, created_at, updated_at) values ('ORDERED', NOW(), NOW());
+insert into status(status, created_at, updated_at) values ('FINISHED', NOW(), NOW());
 insert into delivery_type(delivery_type, created_at, updated_at) values ('DELIVERY', NOW(), NOW());
 insert into size(size, created_at, updated_at) values ('ML_300', NOW(), NOW());
 insert into payment_method(payment_method, created_at, updated_at) values ('CASH', NOW(), NOW());

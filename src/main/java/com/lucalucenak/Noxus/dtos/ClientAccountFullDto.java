@@ -44,9 +44,6 @@ public class ClientAccountFullDto {
     @Email
     private String email;
 
-    @NotNull(message = "Field placedOrdersQuantity shouldn't be null")
-    @NotEmpty(message = "Field placedOrdersQuantity shouldn't be empty")
-    @NotBlank(message = "Field placedOrdersQuantity shouldn't be blank")
     private Integer placedOrdersQuantity;
 
     @NotNull(message = "Field status shouldn't be null")

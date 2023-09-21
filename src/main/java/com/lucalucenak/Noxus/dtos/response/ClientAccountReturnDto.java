@@ -1,6 +1,9 @@
-package com.lucalucenak.Noxus.dtos.post;
+package com.lucalucenak.Noxus.dtos.response;
 
+import com.lucalucenak.Noxus.models.AddressModel;
 import com.lucalucenak.Noxus.models.ClientAccountModel;
+import com.lucalucenak.Noxus.models.OrderModel;
+import com.lucalucenak.Noxus.models.StatusModel;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -8,7 +11,12 @@ import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.beans.BeanUtils;
 
-public class ClientAccountPostDto {
+import java.time.LocalDateTime;
+import java.util.List;
+
+public class ClientAccountReturnDto {
+
+    private Long id;
 
     @NotNull(message = "Field firstName shouldn't be null")
     @NotEmpty(message = "Field firstName shouldn't be empty")
@@ -32,22 +40,42 @@ public class ClientAccountPostDto {
     @Email
     private String email;
 
-    @NotNull(message = "Field statusId shouldn't be null")
-    private Long statusId;
+    private Integer placedOrdersQuantity;
 
-    public ClientAccountPostDto() {
+    @NotNull(message = "Field status shouldn't be null")
+    private StatusModel status;
+
+    @NotNull(message = "Field createdAt shouldn't be null")
+    private LocalDateTime createdAt;
+
+    @NotNull(message = "Field updatedAt shouldn't be null")
+    private LocalDateTime updatedAt;
+
+    public ClientAccountReturnDto() {
     }
 
-    public ClientAccountPostDto(ClientAccountModel clientAccountModel) {
+    public ClientAccountReturnDto(ClientAccountModel clientAccountModel) {
         BeanUtils.copyProperties(clientAccountModel, this);
     }
 
-    public ClientAccountPostDto(String firstName, String lastName, String cpf, String email, Long statusId) {
+    public ClientAccountReturnDto(Long id, String firstName, String lastName, String cpf, String email, Integer placedOrdersQuantity, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.cpf = cpf;
         this.email = email;
-        this.statusId = statusId;
+        this.placedOrdersQuantity = placedOrdersQuantity;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {
@@ -82,11 +110,35 @@ public class ClientAccountPostDto {
         this.email = email;
     }
 
-    public Long getStatusId() {
-        return statusId;
+    public Integer getPlacedOrdersQuantity() {
+        return placedOrdersQuantity;
     }
 
-    public void setStatusId(Long statusId) {
-        this.statusId = statusId;
+    public void setPlacedOrdersQuantity(Integer placedOrdersQuantity) {
+        this.placedOrdersQuantity = placedOrdersQuantity;
+    }
+
+    public StatusModel getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusModel status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }

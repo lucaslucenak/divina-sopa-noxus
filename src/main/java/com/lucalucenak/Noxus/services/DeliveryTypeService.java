@@ -19,7 +19,7 @@ public class DeliveryTypeService {
     @Autowired
     private DeliveryTypeRepository deliveryTypeRepository;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public DeliveryTypeFullDto findDeliveryTypeById(Long deliveryTypeId) {
         Optional<DeliveryTypeModel> deliveryTypeOptional = deliveryTypeRepository.findById(deliveryTypeId);
 
@@ -30,7 +30,7 @@ public class DeliveryTypeService {
         }
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Page<DeliveryTypeFullDto> findAllDeliveryTypesPaginated(Pageable pageable) {
         Page<DeliveryTypeModel> pagedDeliveryTypes = deliveryTypeRepository.findAll(pageable);
         return pagedDeliveryTypes.map(DeliveryTypeFullDto::new);
