@@ -83,7 +83,7 @@ public class AddressService {
         updatedAddressModel.setClientAccount(clientAccountModel);
         NeighbourhoodModel neighbourhoodModel = new NeighbourhoodModel(neighbourhoodService.findNeighbourhoodById(addressPostDto.getNeighbourhoodId()));
         updatedAddressModel.setNeighbourhood(neighbourhoodModel);
-        BeanUtils.copyProperties(updatedAddressModel, existentAddressModel, "id");
+        BeanUtils.copyProperties(updatedAddressModel, existentAddressModel, "id, createdAt, updatedAt");
 
         addressRepository.save(existentAddressModel);
 
@@ -92,7 +92,6 @@ public class AddressService {
     }
 
     public void deleteAddressById(Long addressId) {
-        System.out.println(addressId);
         if (addressRepository.existsById(addressId)) {
             addressRepository.deleteById(addressId);
         } else {

@@ -77,7 +77,7 @@ public class ClientAccountService {
         StatusModel statusModel = new StatusModel(statusService.findStatusById(clientAccountPostDto.getStatusId()));
         updatedClientAccountModel.setStatus(statusModel);
         updatedClientAccountModel.setPlacedOrdersQuantity(existentClientAccountModel.getPlacedOrdersQuantity());
-        BeanUtils.copyProperties(updatedClientAccountModel, existentClientAccountModel, "id");
+        BeanUtils.copyProperties(updatedClientAccountModel, existentClientAccountModel, "id, createdAt, updatedAt");
 
         clientAccountRepository.save(existentClientAccountModel);
 

@@ -144,6 +144,7 @@ public class OrderService {
 
         //Saving Order
         orderRepository.save(orderModel);
+        clientAccountService.increasePlacedOrdersQuantityByClientAccountId(clientAccountModel.getId());
 
         // Saving Order Soup
         Map<SoupFullDto, Integer> soups = new HashMap<>();
@@ -215,11 +216,8 @@ public class OrderService {
         }
         updatedOrderModel.setOrderPrice(orderPrice);
 
-        updatedOrderModel.setCreatedAt(existentOrderModel.getCreatedAt());
-        updatedOrderModel.setUpdatedAt(LocalDateTime.now());
-
         //Saving Order
-        BeanUtils.copyProperties(updatedOrderModel, existentOrderModel, "id");
+        BeanUtils.copyProperties(updatedOrderModel, existentOrderModel, "id, createdAt, updatedAt");
         orderRepository.save(existentOrderModel);
 
         // Saving Order Soup
