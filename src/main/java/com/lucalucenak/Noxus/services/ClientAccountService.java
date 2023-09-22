@@ -4,6 +4,7 @@ import com.lucalucenak.Noxus.dtos.ClientAccountFullDto;
 import com.lucalucenak.Noxus.dtos.ClientAccountFullDto;
 import com.lucalucenak.Noxus.dtos.post.ClientAccountPostDto;
 import com.lucalucenak.Noxus.dtos.response.ClientAccountReturnDto;
+import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.ClientAccountModel;
 import com.lucalucenak.Noxus.models.ClientAccountModel;
@@ -64,6 +65,10 @@ public class ClientAccountService {
 
     @Transactional
     public ClientAccountReturnDto updateClientAccount(Long clientAccountId, ClientAccountPostDto clientAccountPostDto) {
+        if (!clientAccountId.equals(clientAccountPostDto.getId())) {
+            throw new IncompatibleIdsException("Path param Id and body Id must be equals. Path Param Id: " + clientAccountId + ", Body Id: " + clientAccountPostDto.getId());
+        }
+
         ClientAccountModel existentClientAccountModel = new ClientAccountModel(this.findClientAccountById(clientAccountId));
 
         // Updating ClientAccount

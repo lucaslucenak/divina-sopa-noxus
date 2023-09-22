@@ -6,6 +6,7 @@ import com.lucalucenak.Noxus.dtos.post.ClientAccountPostDto;
 import com.lucalucenak.Noxus.dtos.response.AddressReturnDto;
 import com.lucalucenak.Noxus.dtos.response.ClientAccountReturnDto;
 import com.lucalucenak.Noxus.services.ClientAccountService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -40,12 +41,12 @@ public class ClientAccountController {
     }
 
     @PostMapping
-    public ResponseEntity<ClientAccountReturnDto> saveClientAccount(@RequestBody ClientAccountPostDto clientAccountPostDto) {
+    public ResponseEntity<ClientAccountReturnDto> saveClientAccount(@RequestBody @Valid ClientAccountPostDto clientAccountPostDto) {
         return ResponseEntity.ok().body(clientAccountService.saveClientAccount(clientAccountPostDto));
     }
 
     @PutMapping(value = "/{clientAccountId}")
-    public ResponseEntity<ClientAccountReturnDto> updateClientAccount(@PathVariable Long clientAccountId, @RequestBody ClientAccountPostDto clientAccountPostDto) {
+    public ResponseEntity<ClientAccountReturnDto> updateClientAccount(@PathVariable Long clientAccountId, @RequestBody @Valid ClientAccountPostDto clientAccountPostDto) {
         return ResponseEntity.ok().body(clientAccountService.updateClientAccount(clientAccountId, clientAccountPostDto));
     }
 

@@ -4,6 +4,7 @@ import com.lucalucenak.Noxus.dtos.AddressFullDto;
 import com.lucalucenak.Noxus.dtos.SizeFullDto;
 import com.lucalucenak.Noxus.dtos.SizeFullDto;
 import com.lucalucenak.Noxus.dtos.post.SizePostDto;
+import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.AddressModel;
 import com.lucalucenak.Noxus.models.SizeModel;
@@ -49,6 +50,9 @@ public class SizeService {
 
     @Transactional
     public SizeFullDto updateSize(Long sizeId, SizePostDto sizePostDto) {
+        if (!sizeId.equals(sizePostDto.getId())) {
+            throw new IncompatibleIdsException("Path param Id and body Id must be equals. Path Param Id: " + sizeId + ", Body Id: " + sizePostDto.getId());
+        }
 
         SizeModel existingSizeModel = new SizeModel(this.findSizeById(sizeId));
         SizeModel updatedSizeModel = new SizeModel(sizePostDto);

@@ -4,6 +4,7 @@ import com.lucalucenak.Noxus.dtos.SoupFullDto;
 import com.lucalucenak.Noxus.dtos.post.SoupPostDto;
 import com.lucalucenak.Noxus.dtos.response.SoupReturnDto;
 import com.lucalucenak.Noxus.services.SoupService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -38,12 +39,12 @@ public class SoupController {
     }
 
     @PostMapping
-    public ResponseEntity<SoupReturnDto> saveSoup(@RequestBody SoupPostDto soupPostDto) {
+    public ResponseEntity<SoupReturnDto> saveSoup(@RequestBody @Valid SoupPostDto soupPostDto) {
         return ResponseEntity.ok().body(new SoupReturnDto(soupService.saveSoup(soupPostDto)));
     }
 
     @PutMapping(value = "/{soupId}")
-    public ResponseEntity<SoupReturnDto> updateSoup(@PathVariable Long soupId, @RequestBody SoupPostDto soupPostDto) throws Exception {
+    public ResponseEntity<SoupReturnDto> updateSoup(@PathVariable Long soupId, @RequestBody @Valid SoupPostDto soupPostDto) throws Exception {
         return ResponseEntity.ok().body(new SoupReturnDto(soupService.updateSoup(soupId, soupPostDto)));
     }
 

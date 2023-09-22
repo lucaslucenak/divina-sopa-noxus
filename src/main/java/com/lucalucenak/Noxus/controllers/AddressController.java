@@ -6,6 +6,7 @@ import com.lucalucenak.Noxus.dtos.post.AddressPostDto;
 import com.lucalucenak.Noxus.dtos.response.AddressReturnDto;
 import com.lucalucenak.Noxus.dtos.response.DrinkReturnDto;
 import com.lucalucenak.Noxus.services.AddressService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -40,12 +41,12 @@ public class AddressController {
     }
 
     @PostMapping
-    public ResponseEntity<AddressReturnDto> saveAddress(@RequestBody AddressPostDto addressPostDto) {
+    public ResponseEntity<AddressReturnDto> saveAddress(@RequestBody @Valid AddressPostDto addressPostDto) {
         return ResponseEntity.ok().body(addressService.saveAddress(addressPostDto));
     }
 
     @PutMapping(value = "/{addressId}")
-    public ResponseEntity<AddressReturnDto> updateAddress(@PathVariable Long addressId, @RequestBody AddressPostDto addressPostDto) {
+    public ResponseEntity<AddressReturnDto> updateAddress(@PathVariable Long addressId, @RequestBody @Valid AddressPostDto addressPostDto) {
         return ResponseEntity.ok().body(addressService.updateAddress(addressId, addressPostDto));
     }
 

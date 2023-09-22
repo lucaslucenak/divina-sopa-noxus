@@ -1,5 +1,7 @@
 package com.lucalucenak.Noxus.dtos.post;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -9,16 +11,22 @@ public class OrderPostDto {
 
     private String observation;
 
+    @NotNull(message = "Field dispatchTime shouldn't be null")
     private LocalDateTime dispatchTime;
 
+    @NotNull(message = "Field dispatchTime shouldn't be null")
     private LocalDateTime arrivalForecast;
 
+    @NotNull(message = "Field addressId shouldn't be null")
     private Long addressId;
 
+    @NotNull(message = "Field clientAccountId shouldn't be null")
     private Long clientAccountId;
 
+    @NotNull(message = "Field paymentMethodId shouldn't be null")
     private Long paymentMethodId;
 
+    @NotNull(message = "Field deliveryTypeId shouldn't be null")
     private Long deliveryTypeId;
 
     private Map<Long, Integer> soupsIds; // ID | Quantity

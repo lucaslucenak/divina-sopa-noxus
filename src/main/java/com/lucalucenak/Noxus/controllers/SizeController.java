@@ -4,6 +4,7 @@ import com.lucalucenak.Noxus.dtos.SizeFullDto;
 import com.lucalucenak.Noxus.dtos.post.SizePostDto;
 import com.lucalucenak.Noxus.dtos.response.SizeReturnDto;
 import com.lucalucenak.Noxus.services.SizeService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -38,12 +39,12 @@ public class SizeController {
     }
 
     @PostMapping
-    public ResponseEntity<SizeReturnDto> saveSize(@RequestBody SizePostDto sizePostDto) {
+    public ResponseEntity<SizeReturnDto> saveSize(@RequestBody @Valid SizePostDto sizePostDto) {
         return ResponseEntity.ok().body(new SizeReturnDto(sizeService.saveSize(sizePostDto)));
     }
 
     @PutMapping(value = "/{sizeId}")
-    public ResponseEntity<SizeReturnDto> updateSize(@PathVariable Long sizeId, @RequestBody SizePostDto sizePostDto) throws Exception {
+    public ResponseEntity<SizeReturnDto> updateSize(@PathVariable Long sizeId, @RequestBody @Valid SizePostDto sizePostDto) throws Exception {
         return ResponseEntity.ok().body(new SizeReturnDto(sizeService.updateSize(sizeId, sizePostDto)));
     }
 

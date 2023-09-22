@@ -2,6 +2,7 @@ package com.lucalucenak.Noxus.services;
 
 import com.lucalucenak.Noxus.dtos.SoupFullDto;
 import com.lucalucenak.Noxus.dtos.post.SoupPostDto;
+import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.SizeModel;
 import com.lucalucenak.Noxus.models.SoupModel;
@@ -51,6 +52,10 @@ public class SoupService {
 
     @Transactional
     public SoupFullDto updateSoup(Long soupId, SoupPostDto soupPostDto) {
+        if (!soupId.equals(soupPostDto.getId())) {
+            throw new IncompatibleIdsException("Path param Id and body Id must be equals. Path Param Id: " + soupId + ", Body Id: " + soupPostDto.getId());
+        }
+
         SoupModel existingSoupModel = new SoupModel(this.findSoupById(soupId));
         SoupModel updatedSoupModel = new SoupModel(soupPostDto);
 

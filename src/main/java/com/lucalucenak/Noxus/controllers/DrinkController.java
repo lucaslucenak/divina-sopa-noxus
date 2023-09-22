@@ -4,6 +4,7 @@ import com.lucalucenak.Noxus.dtos.DrinkFullDto;
 import com.lucalucenak.Noxus.dtos.post.DrinkPostDto;
 import com.lucalucenak.Noxus.dtos.response.DrinkReturnDto;
 import com.lucalucenak.Noxus.services.DrinkService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -38,12 +39,12 @@ public class DrinkController {
     }
 
     @PostMapping
-    public ResponseEntity<DrinkReturnDto> saveDrink(@RequestBody DrinkPostDto drinkPostDto) {
+    public ResponseEntity<DrinkReturnDto> saveDrink(@RequestBody @Valid DrinkPostDto drinkPostDto) {
         return ResponseEntity.ok().body(new DrinkReturnDto(drinkService.saveDrink(drinkPostDto)));
     }
 
     @PutMapping(value = "/{drinkId}")
-    public ResponseEntity<DrinkReturnDto> updateDrink(@PathVariable Long drinkId, @RequestBody DrinkPostDto drinkPostDto) {
+    public ResponseEntity<DrinkReturnDto> updateDrink(@PathVariable Long drinkId, @RequestBody @Valid DrinkPostDto drinkPostDto) {
         return ResponseEntity.ok().body(new DrinkReturnDto(drinkService.updateDrink(drinkId, drinkPostDto)));
     }
 

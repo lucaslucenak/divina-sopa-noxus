@@ -1,6 +1,7 @@
 package com.lucalucenak.Noxus.services;
 
 import com.lucalucenak.Noxus.dtos.PaymentMethodFullDto;
+import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.PaymentMethodModel;
 import com.lucalucenak.Noxus.repositories.PaymentMethodRepository;
@@ -44,6 +45,10 @@ public class PaymentMethodService {
 
     @Transactional
     public PaymentMethodFullDto updatePaymentMethod(Long paymentMethodId, PaymentMethodFullDto paymentMethodFullDto) {
+        if (!paymentMethodId.equals(paymentMethodFullDto.getId())) {
+            throw new IncompatibleIdsException("Path param Id and body Id must be equals. Path Param Id: " + paymentMethodId + ", Body Id: " + paymentMethodFullDto.getId());
+        }
+
         PaymentMethodModel existingPaymentMethodModel = new PaymentMethodModel(this.findPaymentMethodById(paymentMethodId));
         PaymentMethodModel updatedPaymentMethodModel = new PaymentMethodModel(paymentMethodFullDto);
 
