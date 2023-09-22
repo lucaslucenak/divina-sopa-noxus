@@ -182,7 +182,6 @@ public class OrderService {
     public OrderReturnDto updateOrder(Long orderId, OrderPostDto orderPostDto) {
         OrderModel existentOrderModel = new OrderModel(this.findOrderById(orderId));
         OrderModel updatedOrderModel = new OrderModel(orderPostDto);
-        updatedOrderModel.setId(existentOrderModel.getId());
         Double orderPrice = 0.0;
 
         AddressModel addressModel = new AddressModel(addressService.findAddressById(orderPostDto.getAddressId()));

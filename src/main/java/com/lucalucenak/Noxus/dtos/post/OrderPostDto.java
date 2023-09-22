@@ -7,6 +7,9 @@ import java.util.Map;
 
 public class OrderPostDto {
 
+    @NotNull(message = "Field streetName shouldn't be null")
+    Long id;
+
     private String observation;
 
     @NotNull(message = "Field streetName shouldn't be null")
@@ -34,7 +37,8 @@ public class OrderPostDto {
     public OrderPostDto() {
     }
 
-    public OrderPostDto(String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, Long addressId, Long clientAccountId, Long paymentMethodId, Long deliveryTypeId, Map<Long, Integer> soupsIds, Map<Long, Integer> drinksIds) {
+    public OrderPostDto(Long id, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, Long addressId, Long clientAccountId, Long paymentMethodId, Long deliveryTypeId, Map<Long, Integer> soupsIds, Map<Long, Integer> drinksIds) {
+        this.id = id;
         this.observation = observation;
         this.dispatchTime = dispatchTime;
         this.arrivalForecast = arrivalForecast;
@@ -44,6 +48,14 @@ public class OrderPostDto {
         this.deliveryTypeId = deliveryTypeId;
         this.soupsIds = soupsIds;
         this.drinksIds = drinksIds;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getObservation() {

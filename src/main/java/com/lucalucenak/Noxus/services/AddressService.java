@@ -79,7 +79,6 @@ public class AddressService {
 
         // Updating Address
         AddressModel updatedAddressModel = new AddressModel(addressPostDto);
-        updatedAddressModel.setId(existentAddressModel.getId());
         ClientAccountModel clientAccountModel = new ClientAccountModel(clientAccountService.findClientAccountById(addressPostDto.getClientAccountId()));
         updatedAddressModel.setClientAccount(clientAccountModel);
         NeighbourhoodModel neighbourhoodModel = new NeighbourhoodModel(neighbourhoodService.findNeighbourhoodById(addressPostDto.getNeighbourhoodId()));

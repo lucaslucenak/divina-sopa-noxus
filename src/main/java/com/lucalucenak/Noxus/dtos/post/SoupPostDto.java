@@ -8,6 +8,9 @@ import jakarta.validation.constraints.NotNull;
 public class SoupPostDto {
 
     @NotNull(message = "Field streetName shouldn't be null")
+    Long id;
+
+    @NotNull(message = "Field streetName shouldn't be null")
     @NotEmpty(message = "Field streetName shouldn't be empty")
     @NotBlank(message = "Field streetName shouldn't be blank")
     private String name;
@@ -22,10 +25,19 @@ public class SoupPostDto {
     public SoupPostDto() {
     }
 
-    public SoupPostDto(String name, Double price, Long sizeId) {
+    public SoupPostDto(Long id, String name, Double price, Long sizeId) {
+        this.id = id;
         this.name = name;
         this.price = price;
         this.sizeId = sizeId;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

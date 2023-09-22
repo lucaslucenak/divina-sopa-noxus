@@ -1,6 +1,7 @@
 package com.lucalucenak.Noxus.services;
 
 import com.lucalucenak.Noxus.dtos.NeighbourhoodFullDto;
+import com.lucalucenak.Noxus.dtos.post.NeighbourhoodPostDto;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.NeighbourhoodModel;
 import com.lucalucenak.Noxus.repositories.NeighbourhoodRepository;
@@ -37,18 +38,22 @@ public class NeighbourhoodService {
     }
 
     @Transactional
-    public NeighbourhoodFullDto saveNeighbourhood(NeighbourhoodFullDto neighbourhoodFullDto) {
-        NeighbourhoodModel neighbourhoodModel = new NeighbourhoodModel(neighbourhoodFullDto);
+    public NeighbourhoodFullDto saveNeighbourhood(NeighbourhoodPostDto neighbourhoodPostDto) {
+        NeighbourhoodModel neighbourhoodModel = new NeighbourhoodModel(neighbourhoodPostDto);
         return new NeighbourhoodFullDto(neighbourhoodRepository.save(neighbourhoodModel));
     }
 
     @Transactional
-    public NeighbourhoodFullDto updateNeighbourhood(Long neighbourhoodId, NeighbourhoodFullDto neighbourhoodFullDto) {
-        NeighbourhoodModel existingNeighbourhoodModel = new NeighbourhoodModel(this.findNeighbourhoodById(neighbourhoodId));
-        NeighbourhoodModel updatedNeighbourhoodModel = new NeighbourhoodModel(neighbourhoodFullDto);
+    public NeighbourhoodFullDto updateNeighbourhood(Long neighbourhoodId, NeighbourhoodPostDto neighbourhoodPostDto) throws Exception {
+        if (!neighbourhoodId.equals(neighbourhoodPostDto.getId())) {
+            throw new Exception();
+        }
 
-        BeanUtils.copyProperties(existingNeighbourhoodModel, updatedNeighbourhoodModel);
-        return new NeighbourhoodFullDto(neighbourhoodRepository.save(updatedNeighbourhoodModel));
+        NeighbourhoodModel existingNeighbourhoodModel = new NeighbourhoodModel(this.findNeighbourhoodById(neighbourhoodId));
+        NeighbourhoodModel updatedNeighbourhoodModel = new NeighbourhoodModel(neighbourhoodPostDto);
+
+        BeanUtils.copyProperties(updatedNeighbourhoodModel, existingNeighbourhoodModel, "createdAt, updatedAt");
+        return new NeighbourhoodFullDto(neighbourhoodRepository.save(existingNeighbourhoodModel));
     }
 
     @Transactional

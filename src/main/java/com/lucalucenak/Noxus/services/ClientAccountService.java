@@ -68,7 +68,6 @@ public class ClientAccountService {
 
         // Updating ClientAccount
         ClientAccountModel updatedClientAccountModel = new ClientAccountModel(clientAccountPostDto);
-        updatedClientAccountModel.setId(existentClientAccountModel.getId());
         StatusModel statusModel = new StatusModel(statusService.findStatusById(clientAccountPostDto.getStatusId()));
         updatedClientAccountModel.setStatus(statusModel);
         updatedClientAccountModel.setPlacedOrdersQuantity(existentClientAccountModel.getPlacedOrdersQuantity());

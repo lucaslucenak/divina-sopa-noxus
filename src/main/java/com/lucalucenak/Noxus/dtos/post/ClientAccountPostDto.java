@@ -11,6 +11,9 @@ import org.springframework.beans.BeanUtils;
 public class ClientAccountPostDto {
 
     @NotNull(message = "Field firstName shouldn't be null")
+    Long id;
+
+    @NotNull(message = "Field firstName shouldn't be null")
     @NotEmpty(message = "Field firstName shouldn't be empty")
     @NotBlank(message = "Field firstName shouldn't be blank")
     private String firstName;
@@ -38,16 +41,21 @@ public class ClientAccountPostDto {
     public ClientAccountPostDto() {
     }
 
-    public ClientAccountPostDto(ClientAccountModel clientAccountModel) {
-        BeanUtils.copyProperties(clientAccountModel, this);
-    }
-
-    public ClientAccountPostDto(String firstName, String lastName, String cpf, String email, Long statusId) {
+    public ClientAccountPostDto(Long id, String firstName, String lastName, String cpf, String email, Long statusId) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.cpf = cpf;
         this.email = email;
         this.statusId = statusId;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getFirstName() {

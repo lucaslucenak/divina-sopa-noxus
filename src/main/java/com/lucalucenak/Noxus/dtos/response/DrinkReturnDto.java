@@ -32,10 +32,6 @@ public class DrinkReturnDto {
     public DrinkReturnDto() {
     }
 
-    public DrinkReturnDto(DrinkModel drinkModel) {
-        BeanUtils.copyProperties(drinkModel, this);
-    }
-
     public DrinkReturnDto(DrinkFullDto drinkFullDto) {
         BeanUtils.copyProperties(drinkFullDto, this);
     }

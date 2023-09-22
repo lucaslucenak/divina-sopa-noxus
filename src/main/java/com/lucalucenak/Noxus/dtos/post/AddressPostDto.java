@@ -10,6 +10,9 @@ import org.springframework.beans.BeanUtils;
 public class AddressPostDto {
 
     @NotNull(message = "Field streetName shouldn't be null")
+    Long id;
+
+    @NotNull(message = "Field streetName shouldn't be null")
     @NotEmpty(message = "Field streetName shouldn't be empty")
     @NotBlank(message = "Field streetName shouldn't be blank")
     private String streetName;
@@ -45,11 +48,8 @@ public class AddressPostDto {
     public AddressPostDto() {
     }
 
-    public AddressPostDto(AddressModel addressModel) {
-        BeanUtils.copyProperties(addressModel, this);
-    }
-
-    public AddressPostDto(String streetName, String houseNumber, String city, String cep, String complement, String referencePoint, Long neighbourhoodId, Long clientAccountId) {
+    public AddressPostDto(Long id, String streetName, String houseNumber, String city, String cep, String complement, String referencePoint, Long neighbourhoodId, Long clientAccountId) {
+        this.id = id;
         this.streetName = streetName;
         this.houseNumber = houseNumber;
         this.city = city;
@@ -58,6 +58,14 @@ public class AddressPostDto {
         this.referencePoint = referencePoint;
         this.neighbourhoodId = neighbourhoodId;
         this.clientAccountId = clientAccountId;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getStreetName() {

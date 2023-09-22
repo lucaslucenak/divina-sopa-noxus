@@ -47,7 +47,6 @@ public class DrinkService {
     public DrinkFullDto updateDrink(Long drinkId, DrinkPostDto drinkPostDto) {
         DrinkModel existingDrinkModel = new DrinkModel(this.findDrinkById(drinkId));
         DrinkModel updatedDrinkModel = new DrinkModel(drinkPostDto);
-        updatedDrinkModel.setId(existingDrinkModel.getId());
 
         BeanUtils.copyProperties(updatedDrinkModel, existingDrinkModel, "createdAt, updatedAt");
         return new DrinkFullDto(drinkRepository.save(existingDrinkModel));
