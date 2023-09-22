@@ -20,10 +20,6 @@ public class SizeReturnDto {
     public SizeReturnDto() {
     }
 
-    public SizeReturnDto(SizeModel sizeModel) {
-        BeanUtils.copyProperties(sizeModel, this);
-    }
-
     public SizeReturnDto(SizeFullDto sizeFullDto) {
         BeanUtils.copyProperties(sizeFullDto, this);
     }
