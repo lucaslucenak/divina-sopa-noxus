@@ -43,7 +43,7 @@ public class NeighbourhoodController {
     }
 
     @PutMapping(value = "/{neighbourhoodId}")
-    public ResponseEntity<NeighbourhoodReturnDto> updateNeighbourhood(@PathVariable Long neighbourhoodId, @RequestBody NeighbourhoodPostDto neighbourhoodPostDto) throws Exception {
+    public ResponseEntity<NeighbourhoodReturnDto> updateNeighbourhood(@PathVariable Long neighbourhoodId, @RequestBody NeighbourhoodPostDto neighbourhoodPostDto) {
         return ResponseEntity.ok().body(new NeighbourhoodReturnDto(neighbourhoodService.updateNeighbourhood(neighbourhoodId, neighbourhoodPostDto)));
     }
 

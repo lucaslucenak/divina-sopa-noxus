@@ -2,6 +2,7 @@ package com.lucalucenak.Noxus.services;
 
 import com.lucalucenak.Noxus.dtos.NeighbourhoodFullDto;
 import com.lucalucenak.Noxus.dtos.post.NeighbourhoodPostDto;
+import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.NeighbourhoodModel;
 import com.lucalucenak.Noxus.repositories.NeighbourhoodRepository;
@@ -44,10 +45,10 @@ public class NeighbourhoodService {
     }
 
     @Transactional
-    public NeighbourhoodFullDto updateNeighbourhood(Long neighbourhoodId, NeighbourhoodPostDto neighbourhoodPostDto) throws Exception {
+    public NeighbourhoodFullDto updateNeighbourhood(Long neighbourhoodId, NeighbourhoodPostDto neighbourhoodPostDto) {
 
         if (!neighbourhoodId.equals(neighbourhoodPostDto.getId())) {
-            throw new Exception(); // Not equals ids, show both
+            throw new IncompatibleIdsException("Path param Id and body Id must be equals. Path Param Id: " + neighbourhoodId + ", Body Id: " + neighbourhoodPostDto.getId());
         }
 
         NeighbourhoodModel existingNeighbourhoodModel = new NeighbourhoodModel(this.findNeighbourhoodById(neighbourhoodId));
