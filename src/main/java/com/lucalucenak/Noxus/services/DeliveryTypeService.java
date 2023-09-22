@@ -1,6 +1,7 @@
 package com.lucalucenak.Noxus.services;
 
 import com.lucalucenak.Noxus.dtos.DeliveryTypeFullDto;
+import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.DeliveryTypeModel;
 import com.lucalucenak.Noxus.repositories.DeliveryTypeRepository;
@@ -44,6 +45,10 @@ public class DeliveryTypeService {
 
     @Transactional
     public DeliveryTypeFullDto updateDeliveryType(Long deliveryTypeId, DeliveryTypeFullDto deliveryTypeFullDto) {
+        if (!deliveryTypeId.equals(deliveryTypeFullDto.getId())) {
+            throw new IncompatibleIdsException("Path param Id and body Id must be equals. Path Param Id: " + deliveryTypeId + ", Body Id: " + deliveryTypeFullDto.getId());
+        }
+
         DeliveryTypeModel existingDeliveryTypeModel = new DeliveryTypeModel(this.findDeliveryTypeById(deliveryTypeId));
         DeliveryTypeModel updatedDeliveryTypeModel = new DeliveryTypeModel(deliveryTypeFullDto);
 

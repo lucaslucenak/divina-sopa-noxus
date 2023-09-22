@@ -4,6 +4,7 @@ import com.lucalucenak.Noxus.dtos.*;
 import com.lucalucenak.Noxus.dtos.post.OrderPostDto;
 import com.lucalucenak.Noxus.dtos.response.OrderReturnDto;
 import com.lucalucenak.Noxus.enums.DeliveryTypeEnum;
+import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.*;
 import com.lucalucenak.Noxus.models.pks.OrderDrinkPk;
@@ -180,6 +181,10 @@ public class OrderService {
 
     @Transactional
     public OrderReturnDto updateOrder(Long orderId, OrderPostDto orderPostDto) {
+        if (!orderId.equals(orderPostDto.getId())) {
+            throw new IncompatibleIdsException("Path param Id and body Id must be equals. Path Param Id: " + orderId + ", Body Id: " + orderPostDto.getId());
+        }
+
         OrderModel existentOrderModel = new OrderModel(this.findOrderById(orderId));
         OrderModel updatedOrderModel = new OrderModel(orderPostDto);
         Double orderPrice = 0.0;

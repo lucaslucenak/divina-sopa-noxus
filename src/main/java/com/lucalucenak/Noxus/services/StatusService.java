@@ -1,6 +1,7 @@
 package com.lucalucenak.Noxus.services;
 
 import com.lucalucenak.Noxus.dtos.StatusFullDto;
+import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.StatusModel;
 import com.lucalucenak.Noxus.repositories.StatusRepository;
@@ -55,6 +56,10 @@ public class StatusService {
 
     @Transactional
     public StatusFullDto updateStatus(Long statusId, StatusFullDto statusFullDto) {
+        if (!statusId.equals(statusFullDto.getId())) {
+            throw new IncompatibleIdsException("Path param Id and body Id must be equals. Path Param Id: " + statusId + ", Body Id: " + statusFullDto.getId());
+        }
+
         StatusModel existingStatusModel = new StatusModel(this.findStatusById(statusId));
         StatusModel updatedStatusModel = new StatusModel(statusFullDto);
 

@@ -4,6 +4,7 @@ import com.lucalucenak.Noxus.dtos.AddressFullDto;
 import com.lucalucenak.Noxus.dtos.post.AddressPostDto;
 import com.lucalucenak.Noxus.dtos.response.AddressReturnDto;
 import com.lucalucenak.Noxus.dtos.response.OrderReturnDto;
+import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.AddressModel;
 import com.lucalucenak.Noxus.models.ClientAccountModel;
@@ -48,13 +49,6 @@ public class AddressService {
     @Transactional(readOnly = true)
     public Page<AddressFullDto> findAllAddressesPaginated(Pageable pageable) {
         Page<AddressModel> pagedAddresses = addressRepository.findAll(pageable);
-
-//        List<AddressReturnDto> addressReturnDtos = new ArrayList<>();
-//        for (AddressModel i : pagedAddresses) {
-//            addressReturnDtos.add(new AddressReturnDto(i));
-//        }
-//
-//        Page<AddressReturnDto> addressReturnDtoPage = new PageImpl<>(addressReturnDtos, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()), addressReturnDtos.size());
         return pagedAddresses.map(AddressFullDto::new);
     }
 
@@ -75,6 +69,11 @@ public class AddressService {
 
     @Transactional
     public AddressReturnDto updateAddress(Long addressId, AddressPostDto addressPostDto) {
+
+        if (!addressId.equals(addressPostDto.getId())) {
+            throw new IncompatibleIdsException("Path param Id and body Id must be equals. Path Param Id: " + addressId + ", Body Id: " + addressPostDto.getId());
+        }
+
         AddressModel existentAddressModel = new AddressModel(this.findAddressById(addressId));
 
         // Updating Address

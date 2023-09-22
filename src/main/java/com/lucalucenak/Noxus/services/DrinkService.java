@@ -3,6 +3,7 @@ package com.lucalucenak.Noxus.services;
 import com.lucalucenak.Noxus.dtos.DrinkFullDto;
 import com.lucalucenak.Noxus.dtos.post.DrinkPostDto;
 import com.lucalucenak.Noxus.dtos.response.DrinkReturnDto;
+import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.DrinkModel;
 import com.lucalucenak.Noxus.repositories.DrinkRepository;
@@ -45,6 +46,10 @@ public class DrinkService {
     }
 
     public DrinkFullDto updateDrink(Long drinkId, DrinkPostDto drinkPostDto) {
+        if (!drinkId.equals(drinkPostDto.getId())) {
+            throw new IncompatibleIdsException("Path param Id and body Id must be equals. Path Param Id: " + drinkId + ", Body Id: " + drinkPostDto.getId());
+        }
+
         DrinkModel existingDrinkModel = new DrinkModel(this.findDrinkById(drinkId));
         DrinkModel updatedDrinkModel = new DrinkModel(drinkPostDto);
 

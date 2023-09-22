@@ -46,7 +46,6 @@ public class NeighbourhoodService {
 
     @Transactional
     public NeighbourhoodFullDto updateNeighbourhood(Long neighbourhoodId, NeighbourhoodPostDto neighbourhoodPostDto) {
-
         if (!neighbourhoodId.equals(neighbourhoodPostDto.getId())) {
             throw new IncompatibleIdsException("Path param Id and body Id must be equals. Path Param Id: " + neighbourhoodId + ", Body Id: " + neighbourhoodPostDto.getId());
         }
