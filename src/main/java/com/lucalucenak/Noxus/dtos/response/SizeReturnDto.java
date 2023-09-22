@@ -1,44 +1,36 @@
-package com.lucalucenak.Noxus.dtos;
+package com.lucalucenak.Noxus.dtos.response;
 
+import com.lucalucenak.Noxus.dtos.SizeFullDto;
+import com.lucalucenak.Noxus.models.OrderModel;
 import com.lucalucenak.Noxus.models.SizeModel;
-import com.lucalucenak.Noxus.models.SoupModel;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
-public class SizeFullDto {
+public class SizeReturnDto {
 
     private Long id;
 
-    @NotNull(message = "Field size shouldn't be null")
-    @NotEmpty(message = "Field size shouldn't be empty")
-    @NotBlank(message = "Field size shouldn't be blank")
     private String size;
 
-    @NotNull(message = "Field soups shouldn't be null")
-    private List<SoupModel> soups;
-
-    @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
 
-    @NotNull(message = "Field updatedAt shouldn't be null")
     private LocalDateTime updatedAt;
 
-    public SizeFullDto() {
+    public SizeReturnDto() {
     }
 
-    public SizeFullDto(SizeModel sizeModel) {
+    public SizeReturnDto(SizeModel sizeModel) {
         BeanUtils.copyProperties(sizeModel, this);
     }
 
-    public SizeFullDto(Long id, String size, List<SoupModel> soups, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public SizeReturnDto(SizeFullDto sizeFullDto) {
+        BeanUtils.copyProperties(sizeFullDto, this);
+    }
+
+    public SizeReturnDto(Long id, String size, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.size = size;
-        this.soups = soups;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -57,14 +49,6 @@ public class SizeFullDto {
 
     public void setSize(String size) {
         this.size = size;
-    }
-
-    public List<SoupModel> getSoups() {
-        return soups;
-    }
-
-    public void setSoups(List<SoupModel> soups) {
-        this.soups = soups;
     }
 
     public LocalDateTime getCreatedAt() {

@@ -1,33 +1,24 @@
 package com.lucalucenak.Noxus.dtos.post;
 
-import jakarta.validation.constraints.NotNull;
-
 import java.time.LocalDateTime;
 import java.util.Map;
 
 public class OrderPostDto {
 
-    @NotNull(message = "Field streetName shouldn't be null")
-    Long id;
+    private Long id;
 
     private String observation;
 
-    @NotNull(message = "Field streetName shouldn't be null")
     private LocalDateTime dispatchTime;
 
-    @NotNull(message = "Field streetName shouldn't be null")
     private LocalDateTime arrivalForecast;
 
-    @NotNull(message = "Field streetName shouldn't be null")
     private Long addressId;
 
-    @NotNull(message = "Field streetName shouldn't be null")
     private Long clientAccountId;
 
-    @NotNull(message = "Field streetName shouldn't be null")
     private Long paymentMethodId;
 
-    @NotNull(message = "Field streetName shouldn't be null")
     private Long deliveryTypeId;
 
     private Map<Long, Integer> soupsIds; // ID | Quantity

@@ -2,10 +2,14 @@ package com.lucalucenak.Noxus.services;
 
 import com.lucalucenak.Noxus.dtos.AddressFullDto;
 import com.lucalucenak.Noxus.dtos.SizeFullDto;
+import com.lucalucenak.Noxus.dtos.SizeFullDto;
+import com.lucalucenak.Noxus.dtos.post.SizePostDto;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.AddressModel;
 import com.lucalucenak.Noxus.models.SizeModel;
+import com.lucalucenak.Noxus.models.SizeModel;
 import com.lucalucenak.Noxus.repositories.SizeRepository;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,5 +39,30 @@ public class SizeService {
     public Page<SizeFullDto> findAllSizesPaginated(Pageable pageable) {
         Page<SizeModel> pagedSizes = sizeRepository.findAll(pageable);
         return pagedSizes.map(SizeFullDto::new);
+    }
+
+    @Transactional
+    public SizeFullDto saveSize(SizePostDto sizePostDto) {
+        SizeModel sizeModel = new SizeModel(sizePostDto);
+        return new SizeFullDto(sizeRepository.save(sizeModel));
+    }
+
+    @Transactional
+    public SizeFullDto updateSize(Long sizeId, SizePostDto sizePostDto) {
+
+        SizeModel existingSizeModel = new SizeModel(this.findSizeById(sizeId));
+        SizeModel updatedSizeModel = new SizeModel(sizePostDto);
+
+        BeanUtils.copyProperties(updatedSizeModel, existingSizeModel, "createdAt, updatedAt");
+        return new SizeFullDto(sizeRepository.save(existingSizeModel));
+    }
+
+    @Transactional
+    public void deleteSizeById(Long sizeId) {
+        if (sizeRepository.existsById(sizeId)) {
+            sizeRepository.deleteById(sizeId);
+        } else {
+            throw new ResourceNotFoundException("Resource: Size. Not found with id: " + sizeId);
+        }
     }
 }

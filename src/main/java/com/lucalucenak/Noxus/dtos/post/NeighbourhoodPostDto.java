@@ -1,20 +1,11 @@
 package com.lucalucenak.Noxus.dtos.post;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-
 public class NeighbourhoodPostDto {
 
-    @NotNull(message = "Field neighbourhood shouldn't be null")
-    Long id;
+    private Long id;
 
-    @NotNull(message = "Field neighbourhood shouldn't be null")
-    @NotEmpty(message = "Field neighbourhood shouldn't be empty")
-    @NotBlank(message = "Field neighbourhood shouldn't be blank")
     private String neighbourhood;
 
-    @NotNull(message = "Field deliveryTax shouldn't be null")
     private Double deliveryTax;
 
     public NeighbourhoodPostDto() {

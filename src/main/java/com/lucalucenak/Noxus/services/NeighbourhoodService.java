@@ -45,8 +45,9 @@ public class NeighbourhoodService {
 
     @Transactional
     public NeighbourhoodFullDto updateNeighbourhood(Long neighbourhoodId, NeighbourhoodPostDto neighbourhoodPostDto) throws Exception {
+
         if (!neighbourhoodId.equals(neighbourhoodPostDto.getId())) {
-            throw new Exception();
+            throw new Exception(); // Not equals ids, show both
         }
 
         NeighbourhoodModel existingNeighbourhoodModel = new NeighbourhoodModel(this.findNeighbourhoodById(neighbourhoodId));
