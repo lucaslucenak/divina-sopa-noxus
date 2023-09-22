@@ -3,6 +3,7 @@ package com.lucalucenak.Noxus.controllers;
 import com.lucalucenak.Noxus.dtos.post.OrderPostDto;
 import com.lucalucenak.Noxus.dtos.response.OrderReturnDto;
 import com.lucalucenak.Noxus.services.OrderService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -28,12 +29,12 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderReturnDto> saveOrder(@RequestBody OrderPostDto orderPostDto) {
+    public ResponseEntity<OrderReturnDto> saveOrder(@RequestBody @Valid OrderPostDto orderPostDto) {
         return ResponseEntity.ok().body(orderService.saveOrder(orderPostDto));
     }
 
     @PutMapping(value = "/{orderId}")
-    public ResponseEntity<OrderReturnDto> updateOrder(@PathVariable Long orderId, @RequestBody OrderPostDto orderPostDto) {
+    public ResponseEntity<OrderReturnDto> updateOrder(@PathVariable Long orderId, @RequestBody @Valid OrderPostDto orderPostDto) {
         return ResponseEntity.ok().body(orderService.updateOrder(orderId, orderPostDto));
     }
 

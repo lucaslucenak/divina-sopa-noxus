@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lucalucenak.Noxus.dtos.NeighbourhoodFullDto;
 import com.lucalucenak.Noxus.dtos.post.NeighbourhoodPostDto;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -32,6 +33,7 @@ public class NeighbourhoodModel {
 
     @Column(nullable = false)
     @NotNull(message = "Field deliveryTax shouldn't be null")
+    @DecimalMin(value = "0.0", inclusive = true)
     private Double deliveryTax;
 
     @JsonIgnore

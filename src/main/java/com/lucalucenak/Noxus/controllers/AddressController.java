@@ -46,7 +46,7 @@ public class AddressController {
     }
 
     @PutMapping(value = "/{addressId}")
-    public ResponseEntity<AddressReturnDto> updateAddress(@PathVariable Long addressId, @RequestBody AddressPostDto addressPostDto) {
+    public ResponseEntity<AddressReturnDto> updateAddress(@PathVariable Long addressId, @RequestBody @Valid AddressPostDto addressPostDto) {
         return ResponseEntity.ok().body(addressService.updateAddress(addressId, addressPostDto));
     }
 

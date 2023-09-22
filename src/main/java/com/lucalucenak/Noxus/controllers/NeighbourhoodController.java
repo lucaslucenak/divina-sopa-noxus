@@ -4,6 +4,7 @@ import com.lucalucenak.Noxus.dtos.NeighbourhoodFullDto;
 import com.lucalucenak.Noxus.dtos.post.NeighbourhoodPostDto;
 import com.lucalucenak.Noxus.dtos.response.NeighbourhoodReturnDto;
 import com.lucalucenak.Noxus.services.NeighbourhoodService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -38,12 +39,12 @@ public class NeighbourhoodController {
     }
 
     @PostMapping
-    public ResponseEntity<NeighbourhoodReturnDto> saveNeighbourhood(@RequestBody NeighbourhoodPostDto neighbourhoodPostDto) {
+    public ResponseEntity<NeighbourhoodReturnDto> saveNeighbourhood(@RequestBody @Valid NeighbourhoodPostDto neighbourhoodPostDto) {
         return ResponseEntity.ok().body(new NeighbourhoodReturnDto(neighbourhoodService.saveNeighbourhood(neighbourhoodPostDto)));
     }
 
     @PutMapping(value = "/{neighbourhoodId}")
-    public ResponseEntity<NeighbourhoodReturnDto> updateNeighbourhood(@PathVariable Long neighbourhoodId, @RequestBody NeighbourhoodPostDto neighbourhoodPostDto) {
+    public ResponseEntity<NeighbourhoodReturnDto> updateNeighbourhood(@PathVariable Long neighbourhoodId, @RequestBody @Valid NeighbourhoodPostDto neighbourhoodPostDto) {
         return ResponseEntity.ok().body(new NeighbourhoodReturnDto(neighbourhoodService.updateNeighbourhood(neighbourhoodId, neighbourhoodPostDto)));
     }
 
