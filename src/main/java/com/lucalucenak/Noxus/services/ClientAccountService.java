@@ -32,27 +32,21 @@ public class ClientAccountService {
     private StatusService statusService;
 
     @Transactional(readOnly = true)
-    public ClientAccountReturnDto findClientAccountById(Long clientAccountId) {
+    public ClientAccountFullDto findClientAccountById(Long clientAccountId) {
         Optional<ClientAccountModel> clientAccountOptional = clientAccountRepository.findById(clientAccountId);
 
         if (clientAccountOptional.isPresent()) {
-            return new ClientAccountReturnDto(clientAccountOptional.get());
+            return new ClientAccountFullDto(clientAccountOptional.get());
         } else {
             throw new ResourceNotFoundException("Resource: Client. Not found with id: " + clientAccountId);
         }
     }
 
     @Transactional(readOnly = true)
-    public Page<ClientAccountReturnDto> findAllClientAccountsPaginated(Pageable pageable) {
+    public Page<ClientAccountFullDto> findAllClientAccountsPaginated(Pageable pageable) {
         Page<ClientAccountModel> pagedClientAccounts = clientAccountRepository.findAll(pageable);
 
-        List<ClientAccountReturnDto> clientAccountReturnDtos = new ArrayList<>();
-        for (ClientAccountModel i : pagedClientAccounts) {
-            clientAccountReturnDtos.add(new ClientAccountReturnDto(i));
-        }
-
-        Page<ClientAccountReturnDto> clientAccountReturnDtoPage = new PageImpl<>(clientAccountReturnDtos, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()), clientAccountReturnDtos.size());
-        return clientAccountReturnDtoPage;
+        return pagedClientAccounts.map(ClientAccountFullDto::new);
     }
 
     @Transactional
@@ -74,10 +68,12 @@ public class ClientAccountService {
 
         // Updating ClientAccount
         ClientAccountModel updatedClientAccountModel = new ClientAccountModel(clientAccountPostDto);
+        updatedClientAccountModel.setId(existentClientAccountModel.getId());
         StatusModel statusModel = new StatusModel(statusService.findStatusById(clientAccountPostDto.getStatusId()));
         updatedClientAccountModel.setStatus(statusModel);
         updatedClientAccountModel.setPlacedOrdersQuantity(existentClientAccountModel.getPlacedOrdersQuantity());
-        BeanUtils.copyProperties(updatedClientAccountModel, existentClientAccountModel, "id, createdAt, updatedAt");
+
+        BeanUtils.copyProperties(updatedClientAccountModel, existentClientAccountModel, "updatedAt, createdAt");
 
         clientAccountRepository.save(existentClientAccountModel);
 

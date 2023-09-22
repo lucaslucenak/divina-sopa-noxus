@@ -1,5 +1,6 @@
 package com.lucalucenak.Noxus.dtos.response;
 
+import com.lucalucenak.Noxus.dtos.ClientAccountFullDto;
 import com.lucalucenak.Noxus.models.AddressModel;
 import com.lucalucenak.Noxus.models.ClientAccountModel;
 import com.lucalucenak.Noxus.models.OrderModel;
@@ -56,6 +57,10 @@ public class ClientAccountReturnDto {
 
     public ClientAccountReturnDto(ClientAccountModel clientAccountModel) {
         BeanUtils.copyProperties(clientAccountModel, this);
+    }
+
+    public ClientAccountReturnDto(ClientAccountFullDto clientAccountFullDto) {
+        BeanUtils.copyProperties(clientAccountFullDto, this);
     }
 
     public ClientAccountReturnDto(Long id, String firstName, String lastName, String cpf, String email, Integer placedOrdersQuantity, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {

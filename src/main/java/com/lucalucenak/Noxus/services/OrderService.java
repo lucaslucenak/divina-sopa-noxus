@@ -182,6 +182,7 @@ public class OrderService {
     public OrderReturnDto updateOrder(Long orderId, OrderPostDto orderPostDto) {
         OrderModel existentOrderModel = new OrderModel(this.findOrderById(orderId));
         OrderModel updatedOrderModel = new OrderModel(orderPostDto);
+        updatedOrderModel.setId(existentOrderModel.getId());
         Double orderPrice = 0.0;
 
         AddressModel addressModel = new AddressModel(addressService.findAddressById(orderPostDto.getAddressId()));
@@ -217,7 +218,7 @@ public class OrderService {
         updatedOrderModel.setOrderPrice(orderPrice);
 
         //Saving Order
-        BeanUtils.copyProperties(updatedOrderModel, existentOrderModel, "id, createdAt, updatedAt");
+        BeanUtils.copyProperties(updatedOrderModel, existentOrderModel, "createdAt, updatedAt");
         orderRepository.save(existentOrderModel);
 
         // Saving Order Soup

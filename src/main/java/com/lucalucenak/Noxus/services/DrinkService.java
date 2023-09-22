@@ -1,6 +1,8 @@
 package com.lucalucenak.Noxus.services;
 
 import com.lucalucenak.Noxus.dtos.DrinkFullDto;
+import com.lucalucenak.Noxus.dtos.post.DrinkPostDto;
+import com.lucalucenak.Noxus.dtos.response.DrinkReturnDto;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.DrinkModel;
 import com.lucalucenak.Noxus.repositories.DrinkRepository;
@@ -37,17 +39,18 @@ public class DrinkService {
     }
 
     @Transactional
-    public DrinkFullDto saveDrink(DrinkFullDto drinkFullDto) {
-        DrinkModel drinkModel = new DrinkModel(drinkFullDto);
+    public DrinkFullDto saveDrink(DrinkPostDto drinkPostDto) {
+        DrinkModel drinkModel = new DrinkModel(drinkPostDto);
         return new DrinkFullDto(drinkRepository.save(drinkModel));
     }
 
-    public DrinkFullDto updateDrink(Long drinkId, DrinkFullDto drinkFullDto) {
+    public DrinkFullDto updateDrink(Long drinkId, DrinkPostDto drinkPostDto) {
         DrinkModel existingDrinkModel = new DrinkModel(this.findDrinkById(drinkId));
-        DrinkModel updatedDrinkModel = new DrinkModel(drinkFullDto);
+        DrinkModel updatedDrinkModel = new DrinkModel(drinkPostDto);
+        updatedDrinkModel.setId(existingDrinkModel.getId());
 
-        BeanUtils.copyProperties(existingDrinkModel, updatedDrinkModel);
-        return new DrinkFullDto(drinkRepository.save(updatedDrinkModel));
+        BeanUtils.copyProperties(updatedDrinkModel, existingDrinkModel, "createdAt, updatedAt");
+        return new DrinkFullDto(drinkRepository.save(existingDrinkModel));
     }
 
     @Transactional

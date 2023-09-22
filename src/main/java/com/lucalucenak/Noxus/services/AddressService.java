@@ -35,27 +35,27 @@ public class AddressService {
     private NeighbourhoodService neighbourhoodService;
 
     @Transactional(readOnly = true)
-    public AddressReturnDto findAddressById(Long addressId) {
+    public AddressFullDto findAddressById(Long addressId) {
         Optional<AddressModel> addressOptional = addressRepository.findById(addressId);
 
         if (addressOptional.isPresent()) {
-            return new AddressReturnDto(addressOptional.get());
+            return new AddressFullDto(addressOptional.get());
         } else {
             throw new ResourceNotFoundException("Resource: Address. Not found with id: " + addressId);
         }
     }
 
     @Transactional(readOnly = true)
-    public Page<AddressReturnDto> findAllAddressesPaginated(Pageable pageable) {
+    public Page<AddressFullDto> findAllAddressesPaginated(Pageable pageable) {
         Page<AddressModel> pagedAddresses = addressRepository.findAll(pageable);
 
-        List<AddressReturnDto> addressReturnDtos = new ArrayList<>();
-        for (AddressModel i : pagedAddresses) {
-            addressReturnDtos.add(new AddressReturnDto(i));
-        }
-
-        Page<AddressReturnDto> addressReturnDtoPage = new PageImpl<>(addressReturnDtos, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()), addressReturnDtos.size());
-        return addressReturnDtoPage;
+//        List<AddressReturnDto> addressReturnDtos = new ArrayList<>();
+//        for (AddressModel i : pagedAddresses) {
+//            addressReturnDtos.add(new AddressReturnDto(i));
+//        }
+//
+//        Page<AddressReturnDto> addressReturnDtoPage = new PageImpl<>(addressReturnDtos, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()), addressReturnDtos.size());
+        return pagedAddresses.map(AddressFullDto::new);
     }
 
     @Transactional
@@ -79,11 +79,12 @@ public class AddressService {
 
         // Updating Address
         AddressModel updatedAddressModel = new AddressModel(addressPostDto);
+        updatedAddressModel.setId(existentAddressModel.getId());
         ClientAccountModel clientAccountModel = new ClientAccountModel(clientAccountService.findClientAccountById(addressPostDto.getClientAccountId()));
         updatedAddressModel.setClientAccount(clientAccountModel);
         NeighbourhoodModel neighbourhoodModel = new NeighbourhoodModel(neighbourhoodService.findNeighbourhoodById(addressPostDto.getNeighbourhoodId()));
         updatedAddressModel.setNeighbourhood(neighbourhoodModel);
-        BeanUtils.copyProperties(updatedAddressModel, existentAddressModel, "id, createdAt, updatedAt");
+        BeanUtils.copyProperties(updatedAddressModel, existentAddressModel, "createdAt, updatedAt");
 
         addressRepository.save(existentAddressModel);
 

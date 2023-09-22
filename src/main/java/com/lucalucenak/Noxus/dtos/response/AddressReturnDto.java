@@ -1,5 +1,6 @@
 package com.lucalucenak.Noxus.dtos.response;
 
+import com.lucalucenak.Noxus.dtos.AddressFullDto;
 import com.lucalucenak.Noxus.models.AddressModel;
 import com.lucalucenak.Noxus.models.ClientAccountModel;
 import com.lucalucenak.Noxus.models.NeighbourhoodModel;
@@ -58,6 +59,10 @@ public class AddressReturnDto {
 
     public AddressReturnDto(AddressModel addressModel) {
         BeanUtils.copyProperties(addressModel, this);
+    }
+
+    public AddressReturnDto(AddressFullDto addressFullDto) {
+        BeanUtils.copyProperties(addressFullDto, this);
     }
 
     public AddressReturnDto(Long id, String streetName, String houseNumber, String city, String cep, String complement, String referencePoint, NeighbourhoodModel neighbourhood, ClientAccountModel clientAccount, LocalDateTime createdAt, LocalDateTime updatedAt) {

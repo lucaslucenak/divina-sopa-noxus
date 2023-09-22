@@ -1,6 +1,7 @@
 package com.lucalucenak.Noxus.models;
 
 import com.lucalucenak.Noxus.dtos.DrinkFullDto;
+import com.lucalucenak.Noxus.dtos.post.DrinkPostDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -43,6 +44,10 @@ public class DrinkModel {
 
     public DrinkModel(DrinkFullDto drinkFullDto) {
         BeanUtils.copyProperties(drinkFullDto, this);
+    }
+
+    public DrinkModel(DrinkPostDto drinkPostDto) {
+        BeanUtils.copyProperties(drinkPostDto, this);
     }
 
     public DrinkModel(Long id, String name, Double price, LocalDateTime createdAt, LocalDateTime updatedAt) {
