@@ -1,30 +1,24 @@
 package com.lucalucenak.Noxus.dtos.post;
 
-import jakarta.validation.constraints.NotNull;
-
 import java.time.LocalDateTime;
 import java.util.Map;
 
 public class OrderPostDto {
 
+    private Long id;
+
     private String observation;
 
-    @NotNull(message = "Field streetName shouldn't be null")
     private LocalDateTime dispatchTime;
 
-    @NotNull(message = "Field streetName shouldn't be null")
     private LocalDateTime arrivalForecast;
 
-    @NotNull(message = "Field streetName shouldn't be null")
     private Long addressId;
 
-    @NotNull(message = "Field streetName shouldn't be null")
     private Long clientAccountId;
 
-    @NotNull(message = "Field streetName shouldn't be null")
     private Long paymentMethodId;
 
-    @NotNull(message = "Field streetName shouldn't be null")
     private Long deliveryTypeId;
 
     private Map<Long, Integer> soupsIds; // ID | Quantity
@@ -34,7 +28,8 @@ public class OrderPostDto {
     public OrderPostDto() {
     }
 
-    public OrderPostDto(String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, Long addressId, Long clientAccountId, Long paymentMethodId, Long deliveryTypeId, Map<Long, Integer> soupsIds, Map<Long, Integer> drinksIds) {
+    public OrderPostDto(Long id, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, Long addressId, Long clientAccountId, Long paymentMethodId, Long deliveryTypeId, Map<Long, Integer> soupsIds, Map<Long, Integer> drinksIds) {
+        this.id = id;
         this.observation = observation;
         this.dispatchTime = dispatchTime;
         this.arrivalForecast = arrivalForecast;
@@ -44,6 +39,14 @@ public class OrderPostDto {
         this.deliveryTypeId = deliveryTypeId;
         this.soupsIds = soupsIds;
         this.drinksIds = drinksIds;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getObservation() {

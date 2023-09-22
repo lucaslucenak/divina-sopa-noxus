@@ -7,21 +7,27 @@ import jakarta.validation.constraints.NotNull;
 
 public class DrinkPostDto {
 
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    private Long id;
+
     private String name;
 
-    @NotNull(message = "Field streetName shouldn't be null")
-    @DecimalMin(value = "0.0", inclusive = true)
     private Double price;
 
     public DrinkPostDto() {
     }
 
-    public DrinkPostDto(String name, Double price) {
+    public DrinkPostDto(Long id, String name, Double price) {
+        this.id = id;
         this.name = name;
         this.price = price;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

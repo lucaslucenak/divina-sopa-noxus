@@ -1,63 +1,46 @@
 package com.lucalucenak.Noxus.dtos.post;
 
-import com.lucalucenak.Noxus.models.AddressModel;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import org.springframework.beans.BeanUtils;
-
-
 public class AddressPostDto {
 
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
+    private Long id;
+
     private String streetName;
 
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
-    private String streetNumber;
+    private String houseNumber;
 
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
     private String city;
 
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
     private String cep;
 
     private String complement;
 
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
     private String referencePoint;
 
-    @NotNull(message = "Field neighbourhood shouldn't be null")
     private Long neighbourhoodId;
 
-    @NotNull(message = "Field clientAccount shouldn't be null")
     private Long clientAccountId;
 
     public AddressPostDto() {
     }
 
-    public AddressPostDto(AddressModel addressModel) {
-        BeanUtils.copyProperties(addressModel, this);
-    }
-
-    public AddressPostDto(String streetName, String streetNumber, String city, String cep, String complement, String referencePoint, Long neighbourhoodId, Long clientAccountId) {
+    public AddressPostDto(Long id, String streetName, String houseNumber, String city, String cep, String complement, String referencePoint, Long neighbourhoodId, Long clientAccountId) {
+        this.id = id;
         this.streetName = streetName;
-        this.streetNumber = streetNumber;
+        this.houseNumber = houseNumber;
         this.city = city;
         this.cep = cep;
         this.complement = complement;
         this.referencePoint = referencePoint;
         this.neighbourhoodId = neighbourhoodId;
         this.clientAccountId = clientAccountId;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getStreetName() {
@@ -68,12 +51,12 @@ public class AddressPostDto {
         this.streetName = streetName;
     }
 
-    public String getStreetNumber() {
-        return streetNumber;
+    public String getHouseNumber() {
+        return houseNumber;
     }
 
-    public void setStreetNumber(String streetNumber) {
-        this.streetNumber = streetNumber;
+    public void setHouseNumber(String streetNumber) {
+        this.houseNumber = streetNumber;
     }
 
     public String getCity() {

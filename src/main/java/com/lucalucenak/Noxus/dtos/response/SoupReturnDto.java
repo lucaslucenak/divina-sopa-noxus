@@ -1,8 +1,9 @@
-package com.lucalucenak.Noxus.dtos;
+package com.lucalucenak.Noxus.dtos.response;
 
-import com.lucalucenak.Noxus.dtos.response.DrinkReturnDto;
-import com.lucalucenak.Noxus.models.DrinkModel;
-import jakarta.persistence.Column;
+import com.lucalucenak.Noxus.dtos.SizeFullDto;
+import com.lucalucenak.Noxus.dtos.SoupFullDto;
+import com.lucalucenak.Noxus.models.SizeModel;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -13,40 +14,32 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
-public class DrinkFullDto {
+public class SoupReturnDto {
 
     private Long id;
 
-    @NotNull(message = "Field name shouldn't be null")
-    @NotEmpty(message = "Field name shouldn't be empty")
-    @NotBlank(message = "Field name shouldn't be blank")
     private String name;
 
-    @NotNull(message = "Field price shouldn't be null")
-    @DecimalMin(value = "0.0", inclusive = true)
     private Double price;
 
-    @NotNull(message = "Field createdAt shouldn't be null")
+    private SizeModel size;
+
     private LocalDateTime createdAt;
 
-    @NotNull(message = "Field updatedAt shouldn't be null")
     private LocalDateTime updatedAt;
 
-    public DrinkFullDto() {
+    public SoupReturnDto() {
     }
 
-    public DrinkFullDto(DrinkModel drinkModel) {
-        BeanUtils.copyProperties(drinkModel, this);
+    public SoupReturnDto(SoupFullDto soupFullDto) {
+        BeanUtils.copyProperties(soupFullDto, this);
     }
 
-    public DrinkFullDto(DrinkReturnDto drinkReturnDto) {
-        BeanUtils.copyProperties(drinkReturnDto, this);
-    }
-
-    public DrinkFullDto(Long id, String name, Double price, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public SoupReturnDto(Long id, String name, Double price, SizeModel size, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.price = price;
+        this.size = size;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -73,6 +66,14 @@ public class DrinkFullDto {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public SizeModel getSize() {
+        return size;
+    }
+
+    public void setSize(SizeModel size) {
+        this.size = size;
     }
 
     public LocalDateTime getCreatedAt() {

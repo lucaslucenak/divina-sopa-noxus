@@ -12,10 +12,13 @@ import com.lucalucenak.Noxus.repositories.OrderRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -43,21 +46,65 @@ public class OrderService {
     private StatusService statusService;
 
     @Transactional
-    public OrderFullDto findOrderById(Long orderId) {
+    public OrderReturnDto findOrderById(Long orderId) {
         Optional<OrderModel> orderOptional = orderRepository.findById(orderId);
 
         if (orderOptional.isPresent()) {
-            return new OrderFullDto(orderOptional.get());
+            OrderReturnDto orderReturnDto = new OrderReturnDto(orderOptional.get());
+
+            Map<SoupFullDto, Integer> soups = new HashMap<>();
+            for (OrderSoupFullDto i : orderSoupService.findOrderSoupsByOrderId(orderId)) {
+                SoupFullDto soupFullDto = soupService.findSoupById(i.getId().getSoup().getId());
+                Integer quantity = i.getQuantity();
+                soups.put(soupFullDto, quantity);
+            }
+            orderReturnDto.setSoups(soups);
+
+            Map<DrinkFullDto, Integer> drinks = new HashMap<>();
+            for (OrderDrinkFullDto i : orderDrinkService.findOrderDrinksByOrderId(orderId)) {
+                DrinkFullDto drinkFullDto = drinkService.findDrinkById(i.getId().getDrink().getId());
+                Integer quantity = i.getQuantity();
+                drinks.put(drinkFullDto, quantity);
+            }
+            orderReturnDto.setDrinks(drinks);
+
+            return orderReturnDto;
         } else {
             throw new ResourceNotFoundException("Resource: Order. Not found with id: " + orderId);
         }
     }
 
     @Transactional
-    public Page<OrderFullDto> findAllOrdersPaginated(Pageable pageable) {
+    public Page<OrderReturnDto> findAllOrdersPaginated(Pageable pageable) {
         Page<OrderModel> pagedOrders = orderRepository.findAll(pageable);
-        return pagedOrders.map(OrderFullDto::new);
+
+        List<OrderReturnDto> orderReturnDtos = new ArrayList<>();
+        for (OrderModel i : pagedOrders) {
+            OrderReturnDto orderReturnDto = new OrderReturnDto(i);
+
+            Map<SoupFullDto, Integer> soups = new HashMap<>();
+            for (OrderSoupFullDto j : orderSoupService.findOrderSoupsByOrderId(i.getId())) {
+                SoupFullDto soupFullDto = soupService.findSoupById(j.getId().getSoup().getId());
+                Integer quantity = j.getQuantity();
+                soups.put(soupFullDto, quantity);
+            }
+            orderReturnDto.setSoups(soups);
+
+            Map<DrinkFullDto, Integer> drinks = new HashMap<>();
+            for (OrderDrinkFullDto j : orderDrinkService.findOrderDrinksByOrderId(i.getId())) {
+                DrinkFullDto drinkFullDto = drinkService.findDrinkById(j.getId().getDrink().getId());
+                Integer quantity = j.getQuantity();
+                drinks.put(drinkFullDto, quantity);
+            }
+            orderReturnDto.setDrinks(drinks);
+
+            orderReturnDtos.add(orderReturnDto);
+        }
+
+        Page<OrderReturnDto> orderReturnDtoPage = new PageImpl<>(orderReturnDtos, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()), orderReturnDtos.size());
+        return orderReturnDtoPage;
     }
+
 
     @Transactional
     public OrderReturnDto saveOrder(OrderPostDto orderPostDto) {
@@ -97,6 +144,7 @@ public class OrderService {
 
         //Saving Order
         orderRepository.save(orderModel);
+        clientAccountService.increasePlacedOrdersQuantityByClientAccountId(clientAccountModel.getId());
 
         // Saving Order Soup
         Map<SoupFullDto, Integer> soups = new HashMap<>();
@@ -169,7 +217,7 @@ public class OrderService {
         updatedOrderModel.setOrderPrice(orderPrice);
 
         //Saving Order
-        BeanUtils.copyProperties(updatedOrderModel, existentOrderModel, "id");
+        BeanUtils.copyProperties(updatedOrderModel, existentOrderModel, "createdAt, updatedAt");
         orderRepository.save(existentOrderModel);
 
         // Saving Order Soup
@@ -204,5 +252,25 @@ public class OrderService {
         orderReturnDto.setDrinks(drinks);
 
         return orderReturnDto;
+    }
+
+    public void deleteOrderById(Long orderId) {
+        if (orderRepository.existsById(orderId)) {
+            orderRepository.deleteById(orderId);
+            orderSoupService.deleteOrderSoupByOrderId(orderId);
+            orderDrinkService.deleteOrderDrinkByOrderId(orderId);
+        } else {
+            throw new ResourceNotFoundException("Resource: Order. Not found with id: " + orderId);
+        }
+    }
+
+    public OrderReturnDto finishOrder(Long orderId) {
+        OrderModel orderModel = new OrderModel(this.findOrderById(orderId));
+        orderModel.setStatus(new StatusModel(statusService.findStatusByStatus("FINISHED")));
+        orderRepository.save(orderModel);
+
+        clientAccountService.increasePlacedOrdersQuantityByClientAccountId(orderModel.getClientAccount().getId());
+
+        return new OrderReturnDto(orderModel);
     }
 }

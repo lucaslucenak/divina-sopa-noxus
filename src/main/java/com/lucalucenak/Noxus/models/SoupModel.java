@@ -2,6 +2,7 @@ package com.lucalucenak.Noxus.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lucalucenak.Noxus.dtos.SoupFullDto;
+import com.lucalucenak.Noxus.dtos.post.SoupPostDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -49,6 +50,10 @@ public class SoupModel {
 
     public SoupModel(SoupFullDto soupFullDto) {
         BeanUtils.copyProperties(soupFullDto, this);
+    }
+
+    public SoupModel(SoupPostDto soupPostDto) {
+        BeanUtils.copyProperties(soupPostDto, this);
     }
 
     public SoupModel(Long id, String name, Double price, SizeModel size, LocalDateTime createdAt, LocalDateTime updatedAt) {

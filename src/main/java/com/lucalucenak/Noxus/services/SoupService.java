@@ -1,7 +1,9 @@
 package com.lucalucenak.Noxus.services;
 
 import com.lucalucenak.Noxus.dtos.SoupFullDto;
+import com.lucalucenak.Noxus.dtos.post.SoupPostDto;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
+import com.lucalucenak.Noxus.models.SizeModel;
 import com.lucalucenak.Noxus.models.SoupModel;
 import com.lucalucenak.Noxus.repositories.SoupRepository;
 import org.springframework.beans.BeanUtils;
@@ -15,8 +17,11 @@ import java.util.Optional;
 
 @Service
 public class SoupService {
+
     @Autowired
     private SoupRepository soupRepository;
+    @Autowired
+    private SizeService sizeService;
 
     @Transactional
     public SoupFullDto findSoupById(Long soupId) {
@@ -36,17 +41,24 @@ public class SoupService {
     }
 
     @Transactional
-    public SoupFullDto saveSoup(SoupFullDto soupFullDto) {
-        SoupModel soupModel = new SoupModel(soupFullDto);
+    public SoupFullDto saveSoup(SoupPostDto soupPostDto) {
+        SoupModel soupModel = new SoupModel(soupPostDto);
+        SizeModel sizeModel = new SizeModel(sizeService.findSizeById(soupPostDto.getSizeId()));
+        soupModel.setSize(sizeModel);
+
         return new SoupFullDto(soupRepository.save(soupModel));
     }
 
-    public SoupFullDto updateSoup(Long soupId, SoupFullDto soupFullDto) {
+    @Transactional
+    public SoupFullDto updateSoup(Long soupId, SoupPostDto soupPostDto) {
         SoupModel existingSoupModel = new SoupModel(this.findSoupById(soupId));
-        SoupModel updatedSoupModel = new SoupModel(soupFullDto);
+        SoupModel updatedSoupModel = new SoupModel(soupPostDto);
 
-        BeanUtils.copyProperties(existingSoupModel, updatedSoupModel);
-        return new SoupFullDto(soupRepository.save(updatedSoupModel));
+        SizeModel sizeModel = new SizeModel(sizeService.findSizeById(soupPostDto.getSizeId()));
+        updatedSoupModel.setSize(sizeModel);
+
+        BeanUtils.copyProperties(updatedSoupModel, existingSoupModel, "createdAt, updatedAt");
+        return new SoupFullDto(soupRepository.save(existingSoupModel));
     }
 
     @Transactional

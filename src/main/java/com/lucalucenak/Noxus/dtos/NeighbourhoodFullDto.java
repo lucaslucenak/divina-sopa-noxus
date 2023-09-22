@@ -20,8 +20,6 @@ public class NeighbourhoodFullDto {
     private String neighbourhood;
 
     @NotNull(message = "Field deliveryTax shouldn't be null")
-    @NotEmpty(message = "Field deliveryTax shouldn't be empty")
-    @NotBlank(message = "Field deliveryTax shouldn't be blank")
     private Double deliveryTax;
 
     @NotNull(message = "Field addresses shouldn't be null")

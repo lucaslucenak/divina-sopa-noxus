@@ -1,19 +1,16 @@
-package com.lucalucenak.Noxus.dtos;
+package com.lucalucenak.Noxus.dtos.response;
 
-import com.lucalucenak.Noxus.dtos.response.DrinkReturnDto;
+import com.lucalucenak.Noxus.dtos.DrinkFullDto;
 import com.lucalucenak.Noxus.models.DrinkModel;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
-public class DrinkFullDto {
+public class DrinkReturnDto {
 
     private Long id;
 
@@ -32,18 +29,14 @@ public class DrinkFullDto {
     @NotNull(message = "Field updatedAt shouldn't be null")
     private LocalDateTime updatedAt;
 
-    public DrinkFullDto() {
+    public DrinkReturnDto() {
     }
 
-    public DrinkFullDto(DrinkModel drinkModel) {
-        BeanUtils.copyProperties(drinkModel, this);
+    public DrinkReturnDto(DrinkFullDto drinkFullDto) {
+        BeanUtils.copyProperties(drinkFullDto, this);
     }
 
-    public DrinkFullDto(DrinkReturnDto drinkReturnDto) {
-        BeanUtils.copyProperties(drinkReturnDto, this);
-    }
-
-    public DrinkFullDto(Long id, String name, Double price, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public DrinkReturnDto(Long id, String name, Double price, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.price = price;

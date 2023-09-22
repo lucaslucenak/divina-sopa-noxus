@@ -2,6 +2,7 @@ package com.lucalucenak.Noxus.models;
 
 import com.lucalucenak.Noxus.dtos.OrderFullDto;
 import com.lucalucenak.Noxus.dtos.post.OrderPostDto;
+import com.lucalucenak.Noxus.dtos.response.OrderReturnDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -71,6 +72,10 @@ public class OrderModel {
 
     public OrderModel(OrderPostDto orderPostDto) {
         BeanUtils.copyProperties(orderPostDto, this);
+    }
+
+    public OrderModel(OrderReturnDto orderReturnDto) {
+        BeanUtils.copyProperties(orderReturnDto, this);
     }
 
     public OrderModel(Long id, Double orderPrice, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, StatusModel status, AddressModel address, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, DeliveryTypeModel deliveryType, LocalDateTime createdAt, LocalDateTime updatedAt) {
