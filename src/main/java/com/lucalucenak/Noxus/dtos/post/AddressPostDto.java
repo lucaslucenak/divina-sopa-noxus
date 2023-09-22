@@ -1,23 +1,44 @@
 package com.lucalucenak.Noxus.dtos.post;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
 public class AddressPostDto {
 
     private Long id;
 
+    @NotNull(message = "Field streetName shouldn't be null")
+    @NotEmpty(message = "Field streetName shouldn't be empty")
+    @NotBlank(message = "Field streetName shouldn't be blank")
     private String streetName;
 
+    @NotNull(message = "Field houseNumber shouldn't be null")
+    @NotEmpty(message = "Field houseNumber shouldn't be empty")
+    @NotBlank(message = "Field houseNumber shouldn't be blank")
     private String houseNumber;
 
+    @NotNull(message = "Field city shouldn't be null")
+    @NotEmpty(message = "Field city shouldn't be empty")
+    @NotBlank(message = "Field city shouldn't be blank")
     private String city;
 
+    @NotNull(message = "Field cep shouldn't be null")
+    @NotEmpty(message = "Field cep shouldn't be empty")
+    @NotBlank(message = "Field cep shouldn't be blank")
     private String cep;
 
     private String complement;
 
+    @NotNull(message = "Field referencePoint shouldn't be null")
+    @NotEmpty(message = "Field referencePoint shouldn't be empty")
+    @NotBlank(message = "Field referencePoint shouldn't be blank")
     private String referencePoint;
 
+    @NotNull(message = "Field neighbourhoodId shouldn't be null")
     private Long neighbourhoodId;
 
+    @NotNull(message = "Field clientAccountId shouldn't be null")
     private Long clientAccountId;
 
     public AddressPostDto() {
