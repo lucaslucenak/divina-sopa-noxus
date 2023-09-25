@@ -2,7 +2,7 @@ version: "3.8"
 services:
   database:
     image: postgres:alpine
-    container_name: dev-postgres
+    container_name: dev-postgres-noxus
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=123456
