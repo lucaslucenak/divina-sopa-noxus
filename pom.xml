@@ -80,6 +80,7 @@
                 </configuration>
             </plugin>
         </plugins>
+		<finalName>noxus-docker</finalName>
 	</build>
 
 </project>
