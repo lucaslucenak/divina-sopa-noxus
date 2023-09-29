@@ -39,9 +39,11 @@ Follow the setup instructions below to get started with our project:
 
 3. Run the Docker container to host the PostgreSQL database locally.
 
-4. Run `docker build -t noxus-docker.jar .` to create the application image.
+4. Run `package -f pom.xml` to create the .jar file. 
 
-5. Run `docker-compose up` to up the container. 
+5. Run `docker build -t noxus-docker.jar .` to create the application image.
+
+6. Run `docker-compose up` to up the container. 
 
 We hope you have a delightful experience exploring and using our Divina Sopa project. If you have any questions or need assistance, please don't hesitate to reach out.
 
