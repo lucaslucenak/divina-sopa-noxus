@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -18,6 +19,7 @@ import java.util.List;
 @Entity
 @Table(name = "payment_method")
 @EntityListeners(AuditingEntityListener.class)
+@Builder
 public class PaymentMethodModel {
 
     @Id
@@ -27,8 +29,6 @@ public class PaymentMethodModel {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     @NotNull(message = "Field paymentMethod shouldn't be null")
-    @NotEmpty(message = "Field paymentMethod shouldn't be empty")
-    @NotBlank(message = "Field paymentMethod shouldn't be blank")
     private PaymentMethodEnum paymentMethod;
 
     @JsonIgnore

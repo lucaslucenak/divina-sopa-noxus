@@ -5,10 +5,12 @@ import com.lucalucenak.Noxus.models.SoupModel;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import lombok.Builder;
 
 import java.io.Serializable;
 
 @Embeddable
+@Builder
 public class OrderSoupPk implements Serializable {
 
     @ManyToOne
