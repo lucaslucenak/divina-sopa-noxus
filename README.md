@@ -39,7 +39,7 @@ Follow the setup instructions below to get started with our project:
 
 3. Run the Docker container to host the PostgreSQL database locally.
 
-4. Run `package -f pom.xml` to create the .jar file. 
+4. Run `mvn package -f pom.xml` to create the .jar file. 
 
 5. Run `docker build -t noxus-docker.jar .` to create the application image.
 
