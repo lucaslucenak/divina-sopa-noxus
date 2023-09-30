@@ -3,7 +3,7 @@ package com.lucalucenak.Noxus.repositories;
 import com.lucalucenak.Noxus.enums.DeliveryTypeEnum;
 import com.lucalucenak.Noxus.enums.PaymentMethodEnum;
 import com.lucalucenak.Noxus.models.*;
-import com.lucalucenak.Noxus.models.pks.OrderSoupPk;
+import com.lucalucenak.Noxus.models.pks.OrderDrinkPk;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,26 +11,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
 @DataJpaTest
 @SpringJUnitConfig
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
-public class OrderSoupTest {
+public class OrderDrinkRepositoryTest {
 
     @Autowired
-    private OrderSoupRepository orderSoupRepository;
+    private OrderDrinkRepository orderDrinkRepository;
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
-    private SoupRepository soupRepository;
+    private DrinkRepository drinkRepository;
     @Autowired
     private SizeRepository sizeRepository;
     @Autowired
@@ -53,10 +50,10 @@ public class OrderSoupTest {
     NeighbourhoodModel neighbourhoodModel;
     ClientAccountModel clientAccountModel;
     AddressModel addressModel;
-    SoupModel soupModel;
+    DrinkModel drinkModel;
     OrderModel orderModel;
-    OrderSoupPk orderSoupPk;
-    OrderSoupModel orderSoupModel;
+    OrderDrinkPk orderDrinkPk;
+    OrderDrinkModel orderDrinkModel;
 
     @BeforeEach
     public void setUp() {
@@ -91,15 +88,14 @@ public class OrderSoupTest {
                 .build();
         addressRepository.save(addressModel);
 
-        soupModel = SoupModel.builder()
+        drinkModel = DrinkModel.builder()
                 .name("CALDO DE KENGA")
                 .price(18.50)
-                .size(sizeModel)
                 .build();
-        soupRepository.save(soupModel);
+        drinkRepository.save(drinkModel);
 
         orderModel = OrderModel.builder()
-                .orderPrice(soupModel.getPrice())
+                .orderPrice(drinkModel.getPrice())
                 .observation("OBSERVATION_TEST")
                 .dispatchTime(LocalDateTime.now().plusHours(2))
                 .arrivalForecast(LocalDateTime.now())
@@ -111,52 +107,52 @@ public class OrderSoupTest {
                 .build();
         orderRepository.save(orderModel);
 
-        orderSoupPk = OrderSoupPk.builder()
+        orderDrinkPk = OrderDrinkPk.builder()
                 .order(orderModel)
-                .soup(soupModel)
+                .drink(drinkModel)
                 .build();
 
-        orderSoupModel = OrderSoupModel.builder()
-                .id(orderSoupPk)
+        orderDrinkModel = OrderDrinkModel.builder()
+                .id(orderDrinkPk)
                 .quantity(10)
                 .build();
-        orderSoupRepository.save(orderSoupModel);
+        orderDrinkRepository.save(orderDrinkModel);
     }
 
     @Test
-    public void OrderSoupRepository_DeleteByIdOrderId_ReturnNothing() {
+    public void OrderDrinkRepository_DeleteByIdOrderId_ReturnNothing() {
         // Arrange at setUp
 
         // Act
-        Assertions.assertTrue(orderSoupRepository.existsById(orderSoupPk));
-        orderSoupRepository.deleteByIdOrderId(orderModel.getId());
+        Assertions.assertTrue(orderDrinkRepository.existsById(orderDrinkPk));
+        orderDrinkRepository.deleteByIdOrderId(orderModel.getId());
 
         // Assert
-        Assertions.assertFalse(orderSoupRepository.existsById(orderSoupPk));
+        Assertions.assertFalse(orderDrinkRepository.existsById(orderDrinkPk));
     }
 
     @Test
-    public void OrderSoupRepository_ExistsByIdOrderId_ReturnTrue() {
+    public void OrderDrinkRepository_ExistsByIdOrderId_ReturnTrue() {
         // Assert
-        Assertions.assertTrue(orderSoupRepository.existsByIdOrderId(orderModel.getId()));
+        Assertions.assertTrue(orderDrinkRepository.existsByIdOrderId(orderModel.getId()));
     }
 
     @Test
-    public void OrderSoupRepository_ExistsByIdOrderId_ReturnFalse() {
+    public void OrderDrinkRepository_ExistsByIdOrderId_ReturnFalse() {
         // Assert
-        orderSoupRepository.delete(orderSoupModel);
-        Assertions.assertFalse(orderSoupRepository.existsByIdOrderId(orderModel.getId()));
+        orderDrinkRepository.delete(orderDrinkModel);
+        Assertions.assertFalse(orderDrinkRepository.existsByIdOrderId(orderModel.getId()));
     }
 
     @Test
-    public void OrderSoupRepository_FindByIdOrderId_ReturnListOfOrderSoup() {
+    public void OrderDrinkRepository_FindByIdOrderId_ReturnListOfOrderSoup() {
         // Arrange
 
         // Act
-        List<Optional<OrderSoupModel>> orderSoupModelsOptional = orderSoupRepository.findByIdOrderId(orderModel.getId());
+        List<Optional<OrderDrinkModel>> orderDrinksOptional = orderDrinkRepository.findByIdOrderId(orderModel.getId());
 
         // Assert
-        for (Optional<OrderSoupModel> i : orderSoupModelsOptional) {
+        for (Optional<OrderDrinkModel> i : orderDrinksOptional) {
             Assertions.assertTrue(i.isPresent());
             Assertions.assertEquals(orderModel, i.get().getId().getOrder());
         }
