@@ -5,15 +5,23 @@ import com.lucalucenak.Noxus.enums.PaymentMethodEnum;
 import com.lucalucenak.Noxus.models.*;
 import com.lucalucenak.Noxus.models.pks.OrderSoupPk;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 
 @DataJpaTest
+@SpringJUnitConfig
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 public class OrderSoupTest {
 
@@ -38,28 +46,31 @@ public class OrderSoupTest {
     @Autowired
     private AddressRepository addressRepository;
 
-    @Test
-    public void OrderSoupRepository_DeleteByIdOrderId_ReturnNothing() {
-        // Arrange
-        SizeModel sizeModel = SizeModel.builder().size("1000ML").build();
+    SizeModel sizeModel;
+    StatusModel statusModel;
+    PaymentMethodModel paymentMethodModel;
+    DeliveryTypeModel deliveryTypeModel;
+    NeighbourhoodModel neighbourhoodModel;
+    ClientAccountModel clientAccountModel;
+    AddressModel addressModel;
+    SoupModel soupModel;
+    OrderModel orderModel;
+    OrderSoupPk orderSoupPk;
+    OrderSoupModel orderSoupModel;
+
+    @BeforeEach
+    public void setUp() {
+        sizeModel = SizeModel.builder().size("1000ML").build();
         sizeRepository.save(sizeModel);
-
-        SoupModel soupModel = SoupModel.builder()
-                .name("CALDO DE KENGA")
-                .price(18.50)
-                .size(sizeModel)
-                .build();
-        soupRepository.save(soupModel);
-
-        StatusModel statusModel = StatusModel.builder().status("ACTIVE").build();
+        statusModel = StatusModel.builder().status("ACTIVE").build();
         statusRepository.save(statusModel);
-        PaymentMethodModel paymentMethodModel = PaymentMethodModel.builder().paymentMethod(PaymentMethodEnum.PIX).build();
+        paymentMethodModel = PaymentMethodModel.builder().paymentMethod(PaymentMethodEnum.PIX).build();
         paymentMethodRepository.save(paymentMethodModel);
-        DeliveryTypeModel deliveryTypeModel = DeliveryTypeModel.builder().deliveryType(DeliveryTypeEnum.DELIVERY).build();
+        deliveryTypeModel = DeliveryTypeModel.builder().deliveryType(DeliveryTypeEnum.DELIVERY).build();
         deliveryTypeRepository.save(deliveryTypeModel);
-        NeighbourhoodModel neighbourhoodModel = NeighbourhoodModel.builder().neighbourhood("TEST").deliveryTax(10.0).build();
+        neighbourhoodModel = NeighbourhoodModel.builder().neighbourhood("TEST").deliveryTax(10.0).build();
         neighbourhoodRepository.save(neighbourhoodModel);
-        ClientAccountModel clientAccountModel = ClientAccountModel.builder()
+        clientAccountModel = ClientAccountModel.builder()
                 .firstName("Test first name")
                 .lastName("test last name")
                 .cpf("731.003.230-68")
@@ -68,7 +79,7 @@ public class OrderSoupTest {
                 .status(statusModel)
                 .build();
         clientAccountRepository.save(clientAccountModel);
-        AddressModel addressModel = AddressModel.builder()
+        addressModel = AddressModel.builder()
                 .streetName("Rua Test")
                 .houseNumber("83")
                 .city("Campina Grande")
@@ -80,7 +91,14 @@ public class OrderSoupTest {
                 .build();
         addressRepository.save(addressModel);
 
-        OrderModel orderModel = OrderModel.builder()
+        soupModel = SoupModel.builder()
+                .name("CALDO DE KENGA")
+                .price(18.50)
+                .size(sizeModel)
+                .build();
+        soupRepository.save(soupModel);
+
+        orderModel = OrderModel.builder()
                 .orderPrice(soupModel.getPrice())
                 .observation("OBSERVATION_TEST")
                 .dispatchTime(LocalDateTime.now().plusHours(2))
@@ -93,16 +111,21 @@ public class OrderSoupTest {
                 .build();
         orderRepository.save(orderModel);
 
-        OrderSoupPk orderSoupPk = OrderSoupPk.builder()
+        orderSoupPk = OrderSoupPk.builder()
                 .order(orderModel)
                 .soup(soupModel)
                 .build();
 
-        OrderSoupModel orderSoupModel = OrderSoupModel.builder()
+        orderSoupModel = OrderSoupModel.builder()
                 .id(orderSoupPk)
                 .quantity(10)
                 .build();
         orderSoupRepository.save(orderSoupModel);
+    }
+
+    @Test
+    public void OrderSoupRepository_DeleteByIdOrderId_ReturnNothing() {
+        // Arrange at setUp
 
         // Act
         Assertions.assertTrue(orderSoupRepository.existsById(orderSoupPk));
@@ -110,6 +133,32 @@ public class OrderSoupTest {
 
         // Assert
         Assertions.assertFalse(orderSoupRepository.existsById(orderSoupPk));
+    }
 
+    @Test
+    public void OrderSoupRepository_ExistsByIdOrderId_ReturnTrue() {
+        // Assert
+        Assertions.assertTrue(orderSoupRepository.existsByIdOrderId(orderModel.getId()));
+    }
+
+    @Test
+    public void OrderSoupRepository_ExistsByIdOrderId_ReturnFalse() {
+        // Assert
+        orderSoupRepository.delete(orderSoupModel);
+        Assertions.assertFalse(orderSoupRepository.existsByIdOrderId(orderModel.getId()));
+    }
+
+    @Test
+    public void OrderSoupRepository_FindByIdOrderId_ReturnListOfOrderSoup() {
+        // Arrange
+
+        // Act
+        List<Optional<OrderSoupModel>> orderSoupModelsOptional = orderSoupRepository.findByIdOrderId(orderModel.getId());
+
+        // Assert
+        for (Optional<OrderSoupModel> i : orderSoupModelsOptional) {
+            Assertions.assertTrue(i.isPresent());
+            Assertions.assertEquals(orderModel, i.get().getId().getOrder());
+        }
     }
 }

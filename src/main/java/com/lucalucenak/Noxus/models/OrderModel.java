@@ -190,4 +190,22 @@ public class OrderModel {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    @Override
+    public String toString() {
+        return "OrderModel{" +
+                "id=" + id +
+                ", orderPrice=" + orderPrice +
+                ", observation='" + observation + '\'' +
+                ", dispatchTime=" + dispatchTime +
+                ", arrivalForecast=" + arrivalForecast +
+                ", status=" + status +
+                ", address=" + address +
+                ", clientAccount=" + clientAccount +
+                ", paymentMethod=" + paymentMethod +
+                ", deliveryType=" + deliveryType +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
 }
