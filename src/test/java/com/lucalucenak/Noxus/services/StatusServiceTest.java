@@ -151,32 +151,38 @@ public class StatusServiceTest {
     public void StatusService_UpdateStatus_ReturnUpdatedStatusFullDto() {
         // Arrange
         Long statusId = 1L;
-        StatusModel existentStatus = StatusModel.builder()
+
+        StatusModel initialStatusModel = StatusModel.builder()
                 .id(statusId)
                 .status("ACTIVE")
                 .build();
 
-        StatusModel updatedStatus = StatusModel.builder()
+        // Got from POST
+        StatusFullDto updatedStatusFullDto = StatusFullDto.builder()
+                .id(statusId)
+                .status("ACTIVE_UPDATED")
+                .build();
+
+        // After Update
+        StatusModel expectedStatusModel = StatusModel.builder()
                 .id(statusId)
                 .status("ACTIVE_UPDATED")
                 .build();
 
         Mockito.when(statusRepository.findById(statusId))
-                .thenReturn(Optional.of(existentStatus));
+                .thenReturn(Optional.of(initialStatusModel));
 
         Mockito.when(statusRepository.save(Mockito.any(StatusModel.class)))
-                .thenReturn(updatedStatus);
+                .thenReturn(expectedStatusModel);
 
-        existentStatus = statusRepository.findById(statusId).get();
-        BeanUtils.copyProperties(existentStatus, updatedStatus);
 
         // Act
-        StatusFullDto returnedUpdatedStatus = statusService.updateStatus(updatedStatus.getId(), new StatusFullDto(updatedStatus));
+        StatusFullDto returnedUpdatedStatus = statusService.updateStatus(statusId, updatedStatusFullDto);
 
         // Assert
         Assertions.assertNotNull(returnedUpdatedStatus);
-        Assertions.assertEquals(updatedStatus.getId(), returnedUpdatedStatus.getId());
-        Assertions.assertEquals(updatedStatus.getStatus(), returnedUpdatedStatus.getStatus());
+        Assertions.assertEquals(expectedStatusModel.getId(), returnedUpdatedStatus.getId());
+        Assertions.assertEquals(expectedStatusModel.getStatus(), returnedUpdatedStatus.getStatus());
         Mockito.verify(statusRepository, Mockito.times(1)).save(Mockito.any(StatusModel.class));
     }
 
