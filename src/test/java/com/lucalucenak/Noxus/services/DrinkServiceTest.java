@@ -2,6 +2,7 @@ package com.lucalucenak.Noxus.services;
 
 import com.lucalucenak.Noxus.dtos.DrinkFullDto;
 import com.lucalucenak.Noxus.dtos.post.DrinkPostDto;
+import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.DrinkModel;
 import com.lucalucenak.Noxus.repositories.DrinkRepository;
@@ -14,7 +15,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -64,8 +64,6 @@ public class DrinkServiceTest {
 
         Mockito.when(drinkRepository.findById(drinkId))
                 .thenReturn(Optional.empty());
-        Mockito.when(drinkRepository.findById(drinkId))
-                .thenThrow(ResourceNotFoundException.class);
 
         // Assert
         // Act
@@ -160,5 +158,76 @@ public class DrinkServiceTest {
         Assertions.assertEquals(expectedDrinkModel.getName(), returnedUpdatedDrink.getName());
         Assertions.assertEquals(expectedDrinkModel.getPrice(), returnedUpdatedDrink.getPrice());
         Mockito.verify(drinkRepository, Mockito.times(1)).save(Mockito.any(DrinkModel.class));
+    }
+
+    @Test
+    public void DrinkService_UpdateDrink_ThrowsIncompatibleIdsException() {
+        Long drinkId = 1L;
+
+        DrinkPostDto updatedDrinkPostDto = DrinkPostDto.builder()
+                .id(2L)
+                .name("COCA_COLA_UPDATED")
+                .price(100.0)
+                .build();
+
+        Assertions.assertThrows(IncompatibleIdsException.class, () -> {
+            drinkService.updateDrink(drinkId, updatedDrinkPostDto);
+        });
+        Mockito.verify(drinkRepository, Mockito.never()).save(Mockito.any(DrinkModel.class));
+    }
+
+    @Test
+    public void DrinkService_DeleteDrinkById_ReturnsSavedDrinkFullDto() {
+        // Arrange
+        Long drinkId = 1L;
+
+        DrinkModel initialDrinkModel = DrinkModel.builder()
+                .id(drinkId)
+                .name("COCA_COLA")
+                .price(10.0)
+                .build();
+
+        // Got from POST
+        DrinkPostDto updatedDrinkPostDto = DrinkPostDto.builder()
+                .id(drinkId)
+                .name("COCA_COLA_UPDATED")
+                .price(100.0)
+                .build();
+
+        // After Update
+        DrinkModel expectedDrinkModel = DrinkModel.builder()
+                .id(drinkId)
+                .name("COCA_COLA_UPDATED")
+                .price(100.0)
+                .build();
+
+        Mockito.when(drinkRepository.findById(drinkId))
+                .thenReturn(Optional.of(initialDrinkModel));
+
+        Mockito.when(drinkRepository.save(Mockito.any(DrinkModel.class)))
+                .thenReturn(expectedDrinkModel);
+
+        // Act
+        DrinkFullDto returnedUpdatedDrink = drinkService.updateDrink(drinkId, updatedDrinkPostDto);
+
+        // Assert
+        Assertions.assertEquals(expectedDrinkModel.getName(), returnedUpdatedDrink.getName());
+        Assertions.assertEquals(expectedDrinkModel.getPrice(), returnedUpdatedDrink.getPrice());
+        Mockito.verify(drinkRepository, Mockito.times(1)).save(Mockito.any(DrinkModel.class));
+    }
+
+    @Test
+    public void DrinkService_DeleteDrinkById_ReturnsVoid() {
+        // Arrange
+        Long drinkId = 1L;
+
+        Mockito.when(drinkRepository.existsById(drinkId)).thenReturn(true);
+
+        // Act
+        drinkService.deleteDrinkById(drinkId);
+
+        // Assert
+        Mockito.verify(drinkRepository, Mockito.times(1)).deleteById(drinkId);
+
     }
 }
