@@ -5,11 +5,13 @@ import com.lucalucenak.Noxus.models.SoupModel;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Builder
 public class SizeFullDto {
 
     private Long id;
