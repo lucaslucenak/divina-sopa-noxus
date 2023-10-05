@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 public class OrderReturnDto {
@@ -22,7 +23,8 @@ public class OrderReturnDto {
 
     private String observation;
 
-    private Map<SoupFullDto, Integer> soups;
+    private List<OrderReturnSoupFieldDto> soups;
+//    private Map<SoupFullDto, Integer> soups;
 
     private Map<DrinkFullDto, Integer> drinks;
 
@@ -64,7 +66,7 @@ public class OrderReturnDto {
         BeanUtils.copyProperties(orderModel, this);
     }
 
-    public OrderReturnDto(Long id, Double orderPrice, String observation, Map<SoupFullDto, Integer> soups, Map<DrinkFullDto, Integer> drinks, StatusModel status, AddressModel address, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, DeliveryTypeModel deliveryType, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime dispatchTime, LocalDateTime arrivalForecast) {
+    public OrderReturnDto(Long id, Double orderPrice, String observation, List<OrderReturnSoupFieldDto> soups, Map<DrinkFullDto, Integer> drinks, StatusModel status, AddressModel address, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, DeliveryTypeModel deliveryType, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime dispatchTime, LocalDateTime arrivalForecast) {
         this.id = id;
         this.orderPrice = orderPrice;
         this.observation = observation;
@@ -105,11 +107,11 @@ public class OrderReturnDto {
         this.observation = observation;
     }
 
-    public Map<SoupFullDto, Integer> getSoups() {
+    public List<OrderReturnSoupFieldDto> getSoups() {
         return soups;
     }
 
-    public void setSoups(Map<SoupFullDto, Integer> soups) {
+    public void setSoups(List<OrderReturnSoupFieldDto> soups) {
         this.soups = soups;
     }
 

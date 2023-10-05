@@ -3,6 +3,7 @@ package com.lucalucenak.Noxus.services;
 import com.lucalucenak.Noxus.dtos.*;
 import com.lucalucenak.Noxus.dtos.post.OrderPostDto;
 import com.lucalucenak.Noxus.dtos.response.OrderReturnDto;
+import com.lucalucenak.Noxus.dtos.response.OrderReturnSoupFieldDto;
 import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.*;
@@ -51,11 +52,18 @@ public class OrderService {
         if (orderOptional.isPresent()) {
             OrderReturnDto orderReturnDto = new OrderReturnDto(orderOptional.get());
 
-            Map<SoupFullDto, Integer> soups = new HashMap<>();
+//            Map<SoupFullDto, Integer> soups = new HashMap<>();
+            List<OrderReturnSoupFieldDto> soups = new ArrayList<>();
             for (OrderSoupFullDto i : orderSoupService.findOrderSoupsByOrderId(orderId)) {
                 SoupFullDto soupFullDto = soupService.findSoupById(i.getId().getSoup().getId());
                 Integer quantity = i.getQuantity();
-                soups.put(soupFullDto, quantity);
+
+                OrderReturnSoupFieldDto soup = new OrderReturnSoupFieldDto(
+                        new SoupModel(soupFullDto),
+                        quantity,
+                        soupFullDto.getPrice() * quantity
+                );
+                soups.add(soup);
             }
             orderReturnDto.setSoups(soups);
 
@@ -81,11 +89,17 @@ public class OrderService {
         for (OrderModel i : pagedOrders) {
             OrderReturnDto orderReturnDto = new OrderReturnDto(i);
 
-            Map<SoupFullDto, Integer> soups = new HashMap<>();
+            List<OrderReturnSoupFieldDto> soups = new ArrayList<>();
+//            Map<SoupFullDto, Integer> soups = new HashMap<>();
             for (OrderSoupFullDto j : orderSoupService.findOrderSoupsByOrderId(i.getId())) {
                 SoupFullDto soupFullDto = soupService.findSoupById(j.getId().getSoup().getId());
                 Integer quantity = j.getQuantity();
-                soups.put(soupFullDto, quantity);
+                OrderReturnSoupFieldDto soup = new OrderReturnSoupFieldDto(
+                        new SoupModel(soupFullDto),
+                        quantity,
+                        soupFullDto.getPrice() * quantity
+                );
+                soups.add(soup);
             }
             orderReturnDto.setSoups(soups);
 
@@ -146,7 +160,8 @@ public class OrderService {
         clientAccountService.increasePlacedOrdersQuantityByClientAccountId(clientAccountModel.getId());
 
         // Saving Order Soup
-        Map<SoupFullDto, Integer> soups = new HashMap<>();
+        List<OrderReturnSoupFieldDto> soups = new ArrayList<>();
+//        Map<SoupFullDto, Integer> soups = new HashMap<>();
         for (Map.Entry<Long, Integer> i : orderPostDto.getSoupsIds().entrySet()) {
             SoupModel soupModel = new SoupModel(soupService.findSoupById(i.getKey()));
             Integer soupQuantity = i.getValue();
@@ -154,7 +169,14 @@ public class OrderService {
             OrderSoupPk orderSoupPk = new OrderSoupPk(orderModel, soupModel);
 
             OrderSoupFullDto orderSoupFullDto = orderSoupService.saveOrderSoup(new OrderSoupFullDto(orderSoupPk, soupQuantity));
-            soups.put(new SoupFullDto(soupModel), soupQuantity);
+
+            OrderReturnSoupFieldDto soup = new OrderReturnSoupFieldDto(
+                    soupModel,
+                    soupQuantity,
+                    soupModel.getPrice() * soupQuantity
+            );
+            soups.add(soup);
+//            soups.put(new SoupFullDto(soupModel), soupQuantity);
         }
 
         // Saving Order Drink
@@ -225,7 +247,8 @@ public class OrderService {
 
         // Saving Order Soup
         orderSoupService.deleteOrderSoupByOrderId(orderId); // Delete existent relationships and recreate
-        Map<SoupFullDto, Integer> soups = new HashMap<>();
+        List<OrderReturnSoupFieldDto> soups = new ArrayList<>();
+//        Map<SoupFullDto, Integer> soups = new HashMap<>();
         for (Map.Entry<Long, Integer> i : orderPostDto.getSoupsIds().entrySet()) {
             SoupModel soupModel = new SoupModel(soupService.findSoupById(i.getKey()));
             Integer soupQuantity = i.getValue();
@@ -233,7 +256,12 @@ public class OrderService {
             OrderSoupPk orderSoupPk = new OrderSoupPk(existentOrderModel, soupModel);
 
             OrderSoupFullDto orderSoupFullDto = orderSoupService.saveOrderSoup(new OrderSoupFullDto(orderSoupPk, soupQuantity));
-            soups.put(new SoupFullDto(soupModel), soupQuantity);
+            OrderReturnSoupFieldDto soup = new OrderReturnSoupFieldDto(
+                    soupModel,
+                    soupQuantity,
+                    soupModel.getPrice() * soupQuantity
+            );
+            soups.add(soup);
         }
 
         // Saving Order Drink
