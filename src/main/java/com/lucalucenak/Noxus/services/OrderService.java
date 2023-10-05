@@ -3,7 +3,6 @@ package com.lucalucenak.Noxus.services;
 import com.lucalucenak.Noxus.dtos.*;
 import com.lucalucenak.Noxus.dtos.post.OrderPostDto;
 import com.lucalucenak.Noxus.dtos.response.OrderReturnDto;
-import com.lucalucenak.Noxus.enums.DeliveryTypeEnum;
 import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.*;
@@ -19,7 +18,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -124,7 +122,7 @@ public class OrderService {
         orderModel.setStatus(statusModel);
 
         // Setting Order Price
-        if (deliveryTypeModel.getDeliveryType().equals(DeliveryTypeEnum.DELIVERY)) {
+        if (deliveryTypeModel.getDeliveryType().equals("DELIVERY")) {
             orderPrice += addressModel.getNeighbourhood().getDeliveryTax();
         }
 
@@ -202,7 +200,7 @@ public class OrderService {
 
 
         // Setting Order Price
-        if (deliveryTypeModel.getDeliveryType().equals(DeliveryTypeEnum.DELIVERY)) {
+        if (deliveryTypeModel.getDeliveryType().equals("DELIVERY")) {
             orderPrice += addressModel.getNeighbourhood().getDeliveryTax();
         }
 

@@ -1,6 +1,6 @@
-package com.lucalucenak.Noxus.enums;
-
-public enum DeliveryTypeEnum {
-    DELIVERY,
-    WITHDRAWAL
-}
+//package com.lucalucenak.Noxus.enums;
+//
+//public enum DeliveryTypeEnum {
+//    DELIVERY,
+//    WITHDRAWAL
+//}

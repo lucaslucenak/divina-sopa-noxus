@@ -1,6 +1,5 @@
 package com.lucalucenak.Noxus.repositories;
 
-import com.lucalucenak.Noxus.enums.DeliveryTypeEnum;
 import com.lucalucenak.Noxus.enums.PaymentMethodEnum;
 import com.lucalucenak.Noxus.models.*;
 import com.lucalucenak.Noxus.models.pks.OrderSoupPk;
@@ -63,7 +62,7 @@ public class OrderSoupRepositoryTest {
         statusRepository.save(statusModel);
         paymentMethodModel = PaymentMethodModel.builder().paymentMethod(PaymentMethodEnum.PIX).build();
         paymentMethodRepository.save(paymentMethodModel);
-        deliveryTypeModel = DeliveryTypeModel.builder().deliveryType(DeliveryTypeEnum.DELIVERY).build();
+        deliveryTypeModel = DeliveryTypeModel.builder().deliveryType("DELIVERY").build();
         deliveryTypeRepository.save(deliveryTypeModel);
         neighbourhoodModel = NeighbourhoodModel.builder().neighbourhood("TEST").deliveryTax(10.0).build();
         neighbourhoodRepository.save(neighbourhoodModel);

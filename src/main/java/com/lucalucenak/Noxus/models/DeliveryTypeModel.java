@@ -2,10 +2,7 @@ package com.lucalucenak.Noxus.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lucalucenak.Noxus.dtos.DeliveryTypeFullDto;
-import com.lucalucenak.Noxus.enums.DeliveryTypeEnum;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import org.springframework.beans.BeanUtils;
@@ -27,9 +24,8 @@ public class DeliveryTypeModel {
     private Long id;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
     @NotNull(message = "Field deliveryType shouldn't be null")
-    private DeliveryTypeEnum deliveryType;
+    private String deliveryType;
 
     @JsonIgnore
     @OneToMany(mappedBy = "deliveryType", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -48,7 +44,7 @@ public class DeliveryTypeModel {
         BeanUtils.copyProperties(deliveryTypeFullDto, this);
     }
 
-    public DeliveryTypeModel(Long id, DeliveryTypeEnum deliveryType, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public DeliveryTypeModel(Long id, String deliveryType, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.deliveryType = deliveryType;
         this.orders = orders;
@@ -64,11 +60,11 @@ public class DeliveryTypeModel {
         this.id = id;
     }
 
-    public DeliveryTypeEnum getDeliveryType() {
+    public String getDeliveryType() {
         return deliveryType;
     }
 
-    public void setDeliveryType(DeliveryTypeEnum deliveryType) {
+    public void setDeliveryType(String deliveryType) {
         this.deliveryType = deliveryType;
     }
 
