@@ -3,7 +3,9 @@ package com.lucalucenak.Noxus.dtos.post;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 
+@Builder
 public class SizePostDto {
 
     private Long id;

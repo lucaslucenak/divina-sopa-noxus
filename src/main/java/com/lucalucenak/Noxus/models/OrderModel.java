@@ -6,6 +6,7 @@ import com.lucalucenak.Noxus.dtos.response.OrderReturnDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "orderr")
 @EntityListeners(AuditingEntityListener.class)
+@Builder
 public class OrderModel {
 
     @Id
@@ -187,5 +189,23 @@ public class OrderModel {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderModel{" +
+                "id=" + id +
+                ", orderPrice=" + orderPrice +
+                ", observation='" + observation + '\'' +
+                ", dispatchTime=" + dispatchTime +
+                ", arrivalForecast=" + arrivalForecast +
+                ", status=" + status +
+                ", address=" + address +
+                ", clientAccount=" + clientAccount +
+                ", paymentMethod=" + paymentMethod +
+                ", deliveryType=" + deliveryType +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }

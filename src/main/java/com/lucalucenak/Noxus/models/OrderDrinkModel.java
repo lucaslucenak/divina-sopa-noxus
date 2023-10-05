@@ -4,6 +4,7 @@ import com.lucalucenak.Noxus.dtos.OrderDrinkFullDto;
 import com.lucalucenak.Noxus.models.pks.OrderDrinkPk;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "order_drink")
 @EntityListeners(AuditingEntityListener.class)
+@Builder
 public class OrderDrinkModel {
 
     @EmbeddedId
