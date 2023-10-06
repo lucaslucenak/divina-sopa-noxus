@@ -12,6 +12,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "orderr")
@@ -57,6 +59,12 @@ public class OrderModel {
     @ManyToOne
     @JoinColumn(name = "delivery_type_id", nullable = false)
     private DeliveryTypeModel deliveryType;
+
+//    @OneToMany(mappedBy = "id.order", cascade ={CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+//    private Set<OrderDrinkModel> drinks = new HashSet<>();
+//
+//    @OneToMany(mappedBy = "id.order", cascade ={CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+//    private Set<OrderSoupModel> soups = new HashSet<>();
 
     @CreatedDate
     private LocalDateTime createdAt;
