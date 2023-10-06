@@ -14,6 +14,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "drink")
@@ -35,6 +36,9 @@ public class DrinkModel {
     @DecimalMin(value = "0.0", inclusive = true)
     private Double price;
 
+    @OneToMany(mappedBy = "id.drink", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderDrinkModel> orderDrinks;
+
     @CreatedDate
     private LocalDateTime createdAt;
 
@@ -52,10 +56,11 @@ public class DrinkModel {
         BeanUtils.copyProperties(drinkPostDto, this);
     }
 
-    public DrinkModel(Long id, String name, Double price, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public DrinkModel(Long id, String name, Double price, List<OrderDrinkModel> orderDrinks, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.price = price;
+        this.orderDrinks = orderDrinks;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }

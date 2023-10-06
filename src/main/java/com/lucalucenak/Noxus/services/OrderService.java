@@ -2,7 +2,9 @@ package com.lucalucenak.Noxus.services;
 
 import com.lucalucenak.Noxus.dtos.*;
 import com.lucalucenak.Noxus.dtos.post.OrderPostDto;
+import com.lucalucenak.Noxus.dtos.response.OrderReturnDrinkFieldDto;
 import com.lucalucenak.Noxus.dtos.response.OrderReturnDto;
+import com.lucalucenak.Noxus.dtos.response.OrderReturnSoupFieldDto;
 import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.*;
@@ -51,19 +53,31 @@ public class OrderService {
         if (orderOptional.isPresent()) {
             OrderReturnDto orderReturnDto = new OrderReturnDto(orderOptional.get());
 
-            Map<SoupFullDto, Integer> soups = new HashMap<>();
+            List<OrderReturnSoupFieldDto> soups = new ArrayList<>();
             for (OrderSoupFullDto i : orderSoupService.findOrderSoupsByOrderId(orderId)) {
                 SoupFullDto soupFullDto = soupService.findSoupById(i.getId().getSoup().getId());
                 Integer quantity = i.getQuantity();
-                soups.put(soupFullDto, quantity);
+
+                OrderReturnSoupFieldDto soup = new OrderReturnSoupFieldDto(
+                        new SoupModel(soupFullDto),
+                        quantity,
+                        soupFullDto.getPrice() * quantity
+                );
+                soups.add(soup);
             }
             orderReturnDto.setSoups(soups);
 
-            Map<DrinkFullDto, Integer> drinks = new HashMap<>();
+            List<OrderReturnDrinkFieldDto> drinks = new ArrayList<>();
             for (OrderDrinkFullDto i : orderDrinkService.findOrderDrinksByOrderId(orderId)) {
                 DrinkFullDto drinkFullDto = drinkService.findDrinkById(i.getId().getDrink().getId());
                 Integer quantity = i.getQuantity();
-                drinks.put(drinkFullDto, quantity);
+
+                OrderReturnDrinkFieldDto drink = new OrderReturnDrinkFieldDto(
+                        new DrinkModel(drinkFullDto),
+                        quantity,
+                        drinkFullDto.getPrice() * quantity
+                );
+                drinks.add(drink);
             }
             orderReturnDto.setDrinks(drinks);
 
@@ -81,19 +95,30 @@ public class OrderService {
         for (OrderModel i : pagedOrders) {
             OrderReturnDto orderReturnDto = new OrderReturnDto(i);
 
-            Map<SoupFullDto, Integer> soups = new HashMap<>();
+            List<OrderReturnSoupFieldDto> soups = new ArrayList<>();
             for (OrderSoupFullDto j : orderSoupService.findOrderSoupsByOrderId(i.getId())) {
                 SoupFullDto soupFullDto = soupService.findSoupById(j.getId().getSoup().getId());
                 Integer quantity = j.getQuantity();
-                soups.put(soupFullDto, quantity);
+                OrderReturnSoupFieldDto soup = new OrderReturnSoupFieldDto(
+                        new SoupModel(soupFullDto),
+                        quantity,
+                        soupFullDto.getPrice() * quantity
+                );
+                soups.add(soup);
             }
             orderReturnDto.setSoups(soups);
 
-            Map<DrinkFullDto, Integer> drinks = new HashMap<>();
+            List<OrderReturnDrinkFieldDto> drinks = new ArrayList<>();
             for (OrderDrinkFullDto j : orderDrinkService.findOrderDrinksByOrderId(i.getId())) {
                 DrinkFullDto drinkFullDto = drinkService.findDrinkById(j.getId().getDrink().getId());
                 Integer quantity = j.getQuantity();
-                drinks.put(drinkFullDto, quantity);
+
+                OrderReturnDrinkFieldDto drink = new OrderReturnDrinkFieldDto(
+                        new DrinkModel(drinkFullDto),
+                        quantity,
+                        drinkFullDto.getPrice() * quantity
+                );
+                drinks.add(drink);
             }
             orderReturnDto.setDrinks(drinks);
 
@@ -146,7 +171,7 @@ public class OrderService {
         clientAccountService.increasePlacedOrdersQuantityByClientAccountId(clientAccountModel.getId());
 
         // Saving Order Soup
-        Map<SoupFullDto, Integer> soups = new HashMap<>();
+        List<OrderReturnSoupFieldDto> soups = new ArrayList<>();
         for (Map.Entry<Long, Integer> i : orderPostDto.getSoupsIds().entrySet()) {
             SoupModel soupModel = new SoupModel(soupService.findSoupById(i.getKey()));
             Integer soupQuantity = i.getValue();
@@ -154,11 +179,17 @@ public class OrderService {
             OrderSoupPk orderSoupPk = new OrderSoupPk(orderModel, soupModel);
 
             OrderSoupFullDto orderSoupFullDto = orderSoupService.saveOrderSoup(new OrderSoupFullDto(orderSoupPk, soupQuantity));
-            soups.put(new SoupFullDto(soupModel), soupQuantity);
+
+            OrderReturnSoupFieldDto soup = new OrderReturnSoupFieldDto(
+                    soupModel,
+                    soupQuantity,
+                    soupModel.getPrice() * soupQuantity
+            );
+            soups.add(soup);
         }
 
         // Saving Order Drink
-        Map<DrinkFullDto, Integer> drinks = new HashMap<>();
+        List<OrderReturnDrinkFieldDto> drinks = new ArrayList<>();
         for (Map.Entry<Long, Integer> i : orderPostDto.getDrinksIds().entrySet()) {
             DrinkModel drinkModel = new DrinkModel(drinkService.findDrinkById(i.getKey()));
             Integer drinkQuantity = i.getValue();
@@ -166,7 +197,13 @@ public class OrderService {
             OrderDrinkPk orderDrinkPk = new OrderDrinkPk(orderModel, drinkModel);
 
             OrderDrinkFullDto orderDrinkFullDto = orderDrinkService.saveOrderDrink(new OrderDrinkFullDto(orderDrinkPk, drinkQuantity));
-            drinks.put(new DrinkFullDto(drinkModel), drinkQuantity);
+
+            OrderReturnDrinkFieldDto drink = new OrderReturnDrinkFieldDto(
+                    drinkModel,
+                    drinkQuantity,
+                    drinkModel.getPrice() * drinkQuantity
+            );
+            drinks.add(drink);
         }
 
         // Setting Return
@@ -225,7 +262,7 @@ public class OrderService {
 
         // Saving Order Soup
         orderSoupService.deleteOrderSoupByOrderId(orderId); // Delete existent relationships and recreate
-        Map<SoupFullDto, Integer> soups = new HashMap<>();
+        List<OrderReturnSoupFieldDto> soups = new ArrayList<>();
         for (Map.Entry<Long, Integer> i : orderPostDto.getSoupsIds().entrySet()) {
             SoupModel soupModel = new SoupModel(soupService.findSoupById(i.getKey()));
             Integer soupQuantity = i.getValue();
@@ -233,12 +270,17 @@ public class OrderService {
             OrderSoupPk orderSoupPk = new OrderSoupPk(existentOrderModel, soupModel);
 
             OrderSoupFullDto orderSoupFullDto = orderSoupService.saveOrderSoup(new OrderSoupFullDto(orderSoupPk, soupQuantity));
-            soups.put(new SoupFullDto(soupModel), soupQuantity);
+            OrderReturnSoupFieldDto soup = new OrderReturnSoupFieldDto(
+                    soupModel,
+                    soupQuantity,
+                    soupModel.getPrice() * soupQuantity
+            );
+            soups.add(soup);
         }
 
         // Saving Order Drink
         orderDrinkService.deleteOrderDrinkByOrderId(orderId); // Delete existent relationships and recreate
-        Map<DrinkFullDto, Integer> drinks = new HashMap<>();
+        List<OrderReturnDrinkFieldDto> drinks = new ArrayList<>();
         for (Map.Entry<Long, Integer> i : orderPostDto.getDrinksIds().entrySet()) {
             DrinkModel drinkModel = new DrinkModel(drinkService.findDrinkById(i.getKey()));
             Integer drinkQuantity = i.getValue();
@@ -246,7 +288,13 @@ public class OrderService {
             OrderDrinkPk orderDrinkPk = new OrderDrinkPk(existentOrderModel, drinkModel);
 
             OrderDrinkFullDto orderDrinkFullDto = orderDrinkService.saveOrderDrink(new OrderDrinkFullDto(orderDrinkPk, drinkQuantity));
-            drinks.put(new DrinkFullDto(drinkModel), drinkQuantity);
+
+            OrderReturnDrinkFieldDto drink = new OrderReturnDrinkFieldDto(
+                    drinkModel,
+                    drinkQuantity,
+                    drinkModel.getPrice() * drinkQuantity
+            );
+            drinks.add(drink);
         }
 
         // Setting Return
@@ -257,11 +305,12 @@ public class OrderService {
         return orderReturnDto;
     }
 
+    @Transactional
     public void deleteOrderById(Long orderId) {
         if (orderRepository.existsById(orderId)) {
-            orderRepository.deleteById(orderId);
             orderSoupService.deleteOrderSoupByOrderId(orderId);
             orderDrinkService.deleteOrderDrinkByOrderId(orderId);
+            orderRepository.deleteById(orderId);
         } else {
             throw new ResourceNotFoundException("Resource: Order. Not found with id: " + orderId);
         }
