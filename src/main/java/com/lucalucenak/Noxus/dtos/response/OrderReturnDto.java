@@ -26,7 +26,8 @@ public class OrderReturnDto {
     private List<OrderReturnSoupFieldDto> soups;
 //    private Map<SoupFullDto, Integer> soups;
 
-    private Map<DrinkFullDto, Integer> drinks;
+    List<OrderReturnDrinkFieldDto> drinks;
+//    private Map<DrinkFullDto, Integer> drinks;
 
     @NotNull(message = "Field status shouldn't be null")
     private StatusModel status;
@@ -66,7 +67,7 @@ public class OrderReturnDto {
         BeanUtils.copyProperties(orderModel, this);
     }
 
-    public OrderReturnDto(Long id, Double orderPrice, String observation, List<OrderReturnSoupFieldDto> soups, Map<DrinkFullDto, Integer> drinks, StatusModel status, AddressModel address, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, DeliveryTypeModel deliveryType, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime dispatchTime, LocalDateTime arrivalForecast) {
+    public OrderReturnDto(Long id, Double orderPrice, String observation, List<OrderReturnSoupFieldDto> soups, List<OrderReturnDrinkFieldDto> drinks, StatusModel status, AddressModel address, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, DeliveryTypeModel deliveryType, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime dispatchTime, LocalDateTime arrivalForecast) {
         this.id = id;
         this.orderPrice = orderPrice;
         this.observation = observation;
@@ -115,11 +116,11 @@ public class OrderReturnDto {
         this.soups = soups;
     }
 
-    public Map<DrinkFullDto, Integer> getDrinks() {
+    public List<OrderReturnDrinkFieldDto> getDrinks() {
         return drinks;
     }
 
-    public void setDrinks(Map<DrinkFullDto, Integer> drinks) {
+    public void setDrinks(List<OrderReturnDrinkFieldDto> drinks) {
         this.drinks = drinks;
     }
 
