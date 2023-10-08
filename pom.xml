@@ -64,6 +64,14 @@
 		</dependency>
 
 	</dependencies>
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<spring.profiles.active>dev</spring.profiles.active>
+			</properties>
+		</profile>
+	</profiles>
 
 	<build>
 		<plugins>
@@ -87,8 +95,17 @@
                     <target>16</target>
                 </configuration>
             </plugin>
+			<!-- Configuração do Surefire Plugin para testes unitários -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<argLine>-Dspring.profiles.active=test</argLine>
+				</configuration>
+			</plugin>
+
         </plugins>
-		<finalName>noxus-docker</finalName>
+		<finalName>noxus-image</finalName>
 	</build>
 
 </project>
