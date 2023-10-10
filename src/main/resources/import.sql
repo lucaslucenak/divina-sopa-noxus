@@ -7,7 +7,7 @@ insert into payment_method(payment_method, created_at, updated_at) values ('CASH
 
 insert into neighbourhood(neighbourhood, delivery_tax, created_at, updated_at) values ('SAO_JOSE', 7.0, NOW(), NOW());
 insert into client_account(first_name, last_name, cpf, email, placed_orders_quantity, status_id, created_at, updated_at) values ('Lucas', 'de Lucena Siqueira', '123.123.123-12', 'lucas.lucenak@gmail.com', 10, 1, NOW(), NOW());
-insert into address(street_name, house_number, city, cep, complement, reference_point, neighbourhood_id, client_account_id, created_at, updated_at) values ('Rua dos bobos', '0', 'Campina Grande', 'CEP', 'não tem nada', 'unica rua do bairro', 1, 1, NOW(), NOW());
+insert into address(street_name, house_number, city, cep, complement, reference_point, neighbourhood_id, client_account_id, status_id, created_at, updated_at) values ('Rua dos bobos', '0', 'Campina Grande', 'CEP', 'não tem nada', 'unica rua do bairro', 1, 1, 1, NOW(), NOW());
 
 insert into soup (name, price, size_id, created_at, updated_at) values ('FEIJÃO', 10.00, 1, NOW(), NOW());
 insert into drink (name, price, created_at, updated_at) values ('COCA COLA 500ML', 8.0, NOW(), NOW());
