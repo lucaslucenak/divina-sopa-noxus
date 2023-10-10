@@ -1,6 +1,7 @@
 insert into status(status, created_at, updated_at) values ('ACTIVE', NOW(), NOW());
 insert into status(status, created_at, updated_at) values ('ORDERED', NOW(), NOW());
 insert into status(status, created_at, updated_at) values ('FINISHED', NOW(), NOW());
+insert into status(status, created_at, updated_at) values ('INACTIVE', NOW(), NOW());
 insert into delivery_type(delivery_type, created_at, updated_at) values ('DELIVERY', NOW(), NOW());
 insert into size(size, created_at, updated_at) values ('ML_300', NOW(), NOW());
 insert into payment_method(payment_method, created_at, updated_at) values ('CASH', NOW(), NOW());
@@ -10,7 +11,7 @@ insert into client_account(first_name, last_name, cpf, email, placed_orders_quan
 insert into address(street_name, house_number, city, cep, complement, reference_point, neighbourhood_id, client_account_id, status_id, created_at, updated_at) values ('Rua dos bobos', '0', 'Campina Grande', 'CEP', 'não tem nada', 'unica rua do bairro', 1, 1, 1, NOW(), NOW());
 
 insert into soup (name, price, size_id, created_at, updated_at) values ('FEIJÃO', 10.00, 1, NOW(), NOW());
-insert into drink (name, price, created_at, updated_at) values ('COCA COLA 500ML', 8.0, NOW(), NOW());
+insert into drink (name, price, status_id, created_at, updated_at) values ('COCA COLA 500ML', 8.0, 1, NOW(), NOW());
 
 insert into orderr(order_price, observation, dispatch_time, arrival_forecast, status_id, address_id, client_account_id, payment_method_id, delivery_type_id, created_at, updated_at) values (25.0, 'sem torrada', '2023-07-27T15:30:00', '2023-07-27T16:15:00', 1, 1, 1, 1, 1, NOW(), NOW());
 

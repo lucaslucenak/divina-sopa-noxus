@@ -35,9 +35,10 @@ public class DrinkModel {
     @NotNull(message = "Field price shouldn't be null")
     @DecimalMin(value = "0.0", inclusive = true)
     private Double price;
-
-    @OneToMany(mappedBy = "id.drink", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<OrderDrinkModel> orderDrinks;
+    @NotNull(message = "Field price shouldn't be null")
+    @ManyToOne
+    @JoinColumn(name = "status_id", nullable = false)
+    private StatusModel status;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -56,11 +57,11 @@ public class DrinkModel {
         BeanUtils.copyProperties(drinkPostDto, this);
     }
 
-    public DrinkModel(Long id, String name, Double price, List<OrderDrinkModel> orderDrinks, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public DrinkModel(Long id, String name, Double price, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.price = price;
-        this.orderDrinks = orderDrinks;
+        this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -87,6 +88,14 @@ public class DrinkModel {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public StatusModel getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusModel status) {
+        this.status = status;
     }
 
     public LocalDateTime getCreatedAt() {

@@ -6,6 +6,7 @@ import com.lucalucenak.Noxus.dtos.response.DrinkReturnDto;
 import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.DrinkModel;
+import com.lucalucenak.Noxus.models.StatusModel;
 import com.lucalucenak.Noxus.repositories.DrinkRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ public class DrinkService {
 
     @Autowired
     private DrinkRepository drinkRepository;
+    @Autowired
+    private StatusService statusService;
 
     @Transactional(readOnly = true)
     public DrinkFullDto findDrinkById(Long drinkId) {
@@ -42,6 +45,9 @@ public class DrinkService {
     @Transactional
     public DrinkFullDto saveDrink(DrinkPostDto drinkPostDto) {
         DrinkModel drinkModel = new DrinkModel(drinkPostDto);
+        StatusModel statusModel = new StatusModel(statusService.findStatusById(drinkPostDto.getStatusId()));
+        drinkModel.setStatus(statusModel);
+
         return new DrinkFullDto(drinkRepository.save(drinkModel));
     }
 
@@ -52,6 +58,8 @@ public class DrinkService {
 
         DrinkModel existingDrinkModel = new DrinkModel(this.findDrinkById(drinkId));
         DrinkModel updatedDrinkModel = new DrinkModel(drinkPostDto);
+        StatusModel statusModel = new StatusModel(statusService.findStatusById(drinkPostDto.getStatusId()));
+        updatedDrinkModel.setStatus(statusModel);
 
         BeanUtils.copyProperties(updatedDrinkModel, existingDrinkModel, "createdAt, updatedAt");
         return new DrinkFullDto(drinkRepository.save(existingDrinkModel));
