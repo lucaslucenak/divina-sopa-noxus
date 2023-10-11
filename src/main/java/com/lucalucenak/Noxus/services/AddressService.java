@@ -135,7 +135,7 @@ public class AddressService {
     }
 
     @Transactional
-    public List<AddressFullDto> inactivateAddressesByNeighbourhood(Long neighbourhoodId) {
+    public List<AddressFullDto> inactivateAddressesByNeighbourhoodId(Long neighbourhoodId) {
         if (neighbourhoodService.existsById(neighbourhoodId)) {
             List<Optional<AddressModel>> foundAddresses = addressRepository.findByNeighbourhoodId(neighbourhoodId);
             StatusModel inactiveStatusModel = new StatusModel(statusService.findStatusByStatus("INACTIVE"));

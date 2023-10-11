@@ -62,6 +62,10 @@ public class NeighbourhoodService {
         StatusModel statusModel = new StatusModel(statusService.findStatusById(neighbourhoodPostDto.getStatusId()));
         updatedNeighbourhoodModel.setStatus(statusModel);
 
+        if (statusModel.getStatus().equals("INACTIVE")) {
+            addressService.inactivateAddressesByNeighbourhoodId(neighbourhoodId);
+        }
+
         BeanUtils.copyProperties(updatedNeighbourhoodModel, existingNeighbourhoodModel, "createdAt, updatedAt");
         return new NeighbourhoodFullDto(neighbourhoodRepository.save(existingNeighbourhoodModel));
     }
@@ -85,7 +89,7 @@ public class NeighbourhoodService {
         StatusModel inactiveStatusModel = new StatusModel(statusService.findStatusByStatus("INACTIVE"));
 
         neighbourhoodModel.setStatus(inactiveStatusModel);
-        addressService.inactivateAddressesByNeighbourhood(neighbourhoodId);
+        addressService.inactivateAddressesByNeighbourhoodId(neighbourhoodId);
 
         return new NeighbourhoodFullDto(neighbourhoodRepository.save(neighbourhoodModel));
     }
