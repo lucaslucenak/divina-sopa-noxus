@@ -31,6 +31,8 @@ public class ClientAccountService {
     private ClientAccountRepository clientAccountRepository;
     @Autowired
     private StatusService statusService;
+    @Autowired
+    private AddressService addressService;
 
     @Transactional(readOnly = true)
     public ClientAccountFullDto findClientAccountById(Long clientAccountId) {
@@ -81,13 +83,17 @@ public class ClientAccountService {
 
         clientAccountRepository.save(existentClientAccountModel);
 
+        // Inactivate All Referent Addresses
+        if (existentClientAccountModel.getStatus().getStatus().equals("INACTIVE")) {
+            addressService.inactivateAddressesByClientAccountId(clientAccountId);
+        }
+
         ClientAccountReturnDto clientAccountReturnDto = new ClientAccountReturnDto(existentClientAccountModel);
         return clientAccountReturnDto;
     }
 
     @Transactional
     public void deleteClientAccountById(Long clientAccountId) {
-        System.out.println(clientAccountId);
         if (clientAccountRepository.existsById(clientAccountId)) {
             clientAccountRepository.deleteById(clientAccountId);
         } else {
@@ -95,11 +101,25 @@ public class ClientAccountService {
         }
     }
 
+    public boolean existsById(Long clientAccountId) {
+            return clientAccountRepository.existsById(clientAccountId);
+    }
+
+    @Transactional
     public ClientAccountReturnDto increasePlacedOrdersQuantityByClientAccountId(Long clientAccountId) {
         ClientAccountModel clientAccountModel = new ClientAccountModel(this.findClientAccountById(clientAccountId));
         clientAccountModel.setPlacedOrdersQuantity(clientAccountModel.getPlacedOrdersQuantity() + 1);
         clientAccountRepository.save(clientAccountModel);
 
         return new ClientAccountReturnDto(clientAccountModel);
+    }
+
+    @Transactional
+    public ClientAccountFullDto inactivateClientAccountById(Long clientAccountId) {
+        ClientAccountModel clientAccountModel = new ClientAccountModel(this.findClientAccountById(clientAccountId));
+        StatusModel inactiveStatusModel = new StatusModel(statusService.findStatusByStatus("INACTIVE"));
+        clientAccountModel.setStatus(inactiveStatusModel);
+
+        return new ClientAccountFullDto(clientAccountRepository.save(clientAccountModel));
     }
 }

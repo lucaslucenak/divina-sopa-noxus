@@ -104,4 +104,26 @@ public class AddressService {
             throw new ResourceNotFoundException("Resource: Address. Not found with id: " + addressId);
         }
     }
+
+    public List<AddressFullDto> inactivateAddressesByClientAccountId(Long clientAccountId) {
+        if (clientAccountService.existsById(clientAccountId)) {
+            List<Optional<AddressModel>> foundAddresses = addressRepository.findByClientAccountId(clientAccountId);
+            StatusModel inactiveStatusModel = new StatusModel(statusService.findStatusByStatus("INACTIVE"));
+
+            List<AddressFullDto> updatedAddressesFulDto = new ArrayList<>();
+            for (Optional<AddressModel> i : foundAddresses) {
+                AddressModel addressModel = i.get();
+
+                addressModel.setStatus(inactiveStatusModel);
+                addressRepository.save(addressModel);
+
+                updatedAddressesFulDto.add(new AddressFullDto(addressModel));
+            }
+            return updatedAddressesFulDto;
+        }
+        else {
+            throw new ResourceNotFoundException("Resource: ClientAccount. Not found with id: " + clientAccountId);
+        }
+
+    }
 }
