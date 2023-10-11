@@ -48,6 +48,11 @@ public class SizeController {
         return ResponseEntity.ok().body(new SizeReturnDto(sizeService.updateSize(sizeId, sizePostDto)));
     }
 
+    @PostMapping(value = "/inactivate/{sizeId}")
+    public ResponseEntity<SizeReturnDto> inactivateSizeById(@PathVariable Long sizeId) {
+        return ResponseEntity.ok().body(new SizeReturnDto(sizeService.inactivateSizeById(sizeId)));
+    }
+
     @DeleteMapping(value = "/{sizeId}")
     public ResponseEntity<SizeReturnDto> deleteSizeById(@PathVariable Long sizeId) {
         sizeService.deleteSizeById(sizeId);
