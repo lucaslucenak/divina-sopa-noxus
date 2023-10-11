@@ -48,6 +48,11 @@ public class DrinkController {
         return ResponseEntity.ok().body(new DrinkReturnDto(drinkService.updateDrink(drinkId, drinkPostDto)));
     }
 
+    @PostMapping(value = "/inactivate/{drinkId}")
+    public ResponseEntity<DrinkReturnDto> inactivateDrinkById(@PathVariable Long drinkId) {
+        return ResponseEntity.ok().body(new DrinkReturnDto(drinkService.inactivateDrinkById(drinkId)));
+    }
+
     @DeleteMapping(value = "/{drinkId}")
     public ResponseEntity<DrinkReturnDto> deleteDrinkById(@PathVariable Long drinkId) {
         drinkService.deleteDrinkById(drinkId);

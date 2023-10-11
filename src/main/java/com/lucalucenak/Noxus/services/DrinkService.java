@@ -73,4 +73,13 @@ public class DrinkService {
             throw new ResourceNotFoundException("Resource: Drink. Not found with id: " + drinkId);
         }
     }
+
+    @Transactional
+    public DrinkFullDto inactivateDrinkById(Long drinkId) {
+        DrinkModel drinkModel = new DrinkModel(this.findDrinkById(drinkId));
+        StatusModel inactiveStatsModel = new StatusModel(statusService.findStatusByStatus("INACTIVE"));
+        drinkModel.setStatus(inactiveStatsModel);
+
+        return new DrinkFullDto(drinkRepository.save(drinkModel));
+    }
 }
