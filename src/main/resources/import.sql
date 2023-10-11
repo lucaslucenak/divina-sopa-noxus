@@ -6,7 +6,7 @@ insert into delivery_type(delivery_type, created_at, updated_at) values ('DELIVE
 insert into size(size, created_at, updated_at) values ('ML_300', NOW(), NOW());
 insert into payment_method(payment_method, created_at, updated_at) values ('CASH', NOW(), NOW());
 
-insert into neighbourhood(neighbourhood, delivery_tax, created_at, updated_at) values ('SAO_JOSE', 7.0, NOW(), NOW());
+insert into neighbourhood(neighbourhood, delivery_tax, status_id, created_at, updated_at) values ('SAO_JOSE', 7.0, 1, NOW(), NOW());
 insert into client_account(first_name, last_name, cpf, email, placed_orders_quantity, status_id, created_at, updated_at) values ('Lucas', 'de Lucena Siqueira', '123.123.123-12', 'lucas.lucenak@gmail.com', 10, 1, NOW(), NOW());
 insert into address(street_name, house_number, city, cep, complement, reference_point, neighbourhood_id, client_account_id, status_id, created_at, updated_at) values ('Rua dos bobos', '0', 'Campina Grande', 'CEP', 'não tem nada', 'unica rua do bairro', 1, 1, 1, NOW(), NOW());
 
