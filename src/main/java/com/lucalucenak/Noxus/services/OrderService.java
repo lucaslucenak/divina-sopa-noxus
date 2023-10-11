@@ -5,6 +5,7 @@ import com.lucalucenak.Noxus.dtos.post.OrderPostDto;
 import com.lucalucenak.Noxus.dtos.response.OrderReturnDrinkFieldDto;
 import com.lucalucenak.Noxus.dtos.response.OrderReturnDto;
 import com.lucalucenak.Noxus.dtos.response.OrderReturnSoupFieldDto;
+import com.lucalucenak.Noxus.exceptions.AddressNotBelongingToClientAccountException;
 import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.*;
@@ -145,6 +146,10 @@ public class OrderService {
         orderModel.setDeliveryType(deliveryTypeModel);
         StatusModel statusModel = new StatusModel(statusService.findStatusByStatus("ORDERED"));
         orderModel.setStatus(statusModel);
+
+        if (!addressService.belongsToClientAccount(clientAccountModel.getId())) {
+            throw new AddressNotBelongingToClientAccountException("The given address doesn't belongs to the given client account. Client Account id: " + clientAccountModel.getId() + " | Address id: " + addressModel.getId());
+        }
 
         // Setting Order Price
         if (deliveryTypeModel.getDeliveryType().equals("DELIVERY")) {
