@@ -53,7 +53,7 @@ public class ClientAccountService {
     }
 
     @Transactional
-    public ClientAccountReturnDto saveClientAccount(ClientAccountPostDto clientAccountPostDto) {
+    public ClientAccountFullDto saveClientAccount(ClientAccountPostDto clientAccountPostDto) {
         ClientAccountModel clientAccountModel = new ClientAccountModel(clientAccountPostDto);
         StatusModel statusModel = new StatusModel(statusService.findStatusById(clientAccountPostDto.getStatusId()));
         clientAccountModel.setStatus(statusModel);
@@ -61,12 +61,11 @@ public class ClientAccountService {
 
         clientAccountRepository.save(clientAccountModel);
 
-        ClientAccountReturnDto clientAccountReturnDto = new ClientAccountReturnDto(clientAccountModel);
-        return clientAccountReturnDto;
+        return new ClientAccountFullDto(clientAccountModel);
     }
 
     @Transactional
-    public ClientAccountReturnDto updateClientAccount(Long clientAccountId, ClientAccountPostDto clientAccountPostDto) {
+    public ClientAccountFullDto updateClientAccount(Long clientAccountId, ClientAccountPostDto clientAccountPostDto) {
         if (!clientAccountId.equals(clientAccountPostDto.getId())) {
             throw new IncompatibleIdsException("Path param Id and body Id must be equals. Path Param Id: " + clientAccountId + ", Body Id: " + clientAccountPostDto.getId());
         }
@@ -88,8 +87,7 @@ public class ClientAccountService {
             addressService.inactivateAddressesByClientAccountId(clientAccountId);
         }
 
-        ClientAccountReturnDto clientAccountReturnDto = new ClientAccountReturnDto(existentClientAccountModel);
-        return clientAccountReturnDto;
+        return new ClientAccountFullDto(existentClientAccountModel);
     }
 
     @Transactional
@@ -106,12 +104,12 @@ public class ClientAccountService {
     }
 
     @Transactional
-    public ClientAccountReturnDto increasePlacedOrdersQuantityByClientAccountId(Long clientAccountId) {
+    public ClientAccountFullDto increasePlacedOrdersQuantityByClientAccountId(Long clientAccountId) {
         ClientAccountModel clientAccountModel = new ClientAccountModel(this.findClientAccountById(clientAccountId));
         clientAccountModel.setPlacedOrdersQuantity(clientAccountModel.getPlacedOrdersQuantity() + 1);
         clientAccountRepository.save(clientAccountModel);
 
-        return new ClientAccountReturnDto(clientAccountModel);
+        return new ClientAccountFullDto(clientAccountModel);
     }
 
     @Transactional
@@ -119,6 +117,8 @@ public class ClientAccountService {
         ClientAccountModel clientAccountModel = new ClientAccountModel(this.findClientAccountById(clientAccountId));
         StatusModel inactiveStatusModel = new StatusModel(statusService.findStatusByStatus("INACTIVE"));
         clientAccountModel.setStatus(inactiveStatusModel);
+
+        addressService.inactivateAddressesByClientAccountId(clientAccountId);
 
         return new ClientAccountFullDto(clientAccountRepository.save(clientAccountModel));
     }
