@@ -93,6 +93,21 @@ public class SoupService {
     }
 
     @Transactional
+    public SoupFullDto inactivateSoupById(Long soupId) {
+        if (soupRepository.existsById(soupId)) {
+            SoupModel soupModel = new SoupModel(this.findSoupById(soupId));
+            StatusModel inactiveStatusModel = new StatusModel(statusService.findStatusByStatus("INACTIVE"));
+
+            soupModel.setStatus(inactiveStatusModel);
+
+            return new SoupFullDto(soupRepository.save(soupModel));
+        }
+        else {
+            throw new ResourceNotFoundException("Resource: Soup. Not found with id: " + soupId);
+        }
+    }
+
+    @Transactional
     public List<SoupFullDto> inactivateSoupsBySizeId(Long sizeId) {
         if (sizeService.existsById(sizeId)) {
             List<SoupFullDto> foundSoups = this.findSoupsBySizeId(sizeId);
