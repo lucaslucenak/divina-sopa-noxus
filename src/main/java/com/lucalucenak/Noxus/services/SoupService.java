@@ -6,6 +6,7 @@ import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.SizeModel;
 import com.lucalucenak.Noxus.models.SoupModel;
+import com.lucalucenak.Noxus.models.StatusModel;
 import com.lucalucenak.Noxus.repositories.SoupRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ public class SoupService {
     private SoupRepository soupRepository;
     @Autowired
     private SizeService sizeService;
+    @Autowired
+    private StatusService statusService;
 
     @Transactional
     public SoupFullDto findSoupById(Long soupId) {
@@ -46,6 +49,8 @@ public class SoupService {
         SoupModel soupModel = new SoupModel(soupPostDto);
         SizeModel sizeModel = new SizeModel(sizeService.findSizeById(soupPostDto.getSizeId()));
         soupModel.setSize(sizeModel);
+        StatusModel statusModel = new StatusModel(statusService.findStatusById(soupPostDto.getStatusId()));
+        soupModel.setStatus(statusModel);
 
         return new SoupFullDto(soupRepository.save(soupModel));
     }
@@ -61,6 +66,9 @@ public class SoupService {
 
         SizeModel sizeModel = new SizeModel(sizeService.findSizeById(soupPostDto.getSizeId()));
         updatedSoupModel.setSize(sizeModel);
+
+        StatusModel statusModel = new StatusModel(statusService.findStatusById(soupPostDto.getStatusId()));
+        updatedSoupModel.setStatus(statusModel);
 
         BeanUtils.copyProperties(updatedSoupModel, existingSoupModel, "createdAt, updatedAt");
         return new SoupFullDto(soupRepository.save(existingSoupModel));

@@ -42,6 +42,10 @@ public class SoupModel {
     @JoinColumn(name = "size_id", nullable = false)
     private SizeModel size;
 
+    @ManyToOne
+    @JoinColumn(name = "status_id", nullable = false)
+    private StatusModel status;
+
     @CreatedDate
     private LocalDateTime createdAt;
 
@@ -59,11 +63,12 @@ public class SoupModel {
         BeanUtils.copyProperties(soupPostDto, this);
     }
 
-    public SoupModel(Long id, String name, Double price, SizeModel size, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public SoupModel(Long id, String name, Double price, SizeModel size, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.size = size;
+        this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -98,6 +103,14 @@ public class SoupModel {
 
     public void setSize(SizeModel size) {
         this.size = size;
+    }
+
+    public StatusModel getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusModel status) {
+        this.status = status;
     }
 
     public LocalDateTime getCreatedAt() {

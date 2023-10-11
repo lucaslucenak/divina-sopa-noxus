@@ -10,7 +10,7 @@ insert into neighbourhood(neighbourhood, delivery_tax, status_id, created_at, up
 insert into client_account(first_name, last_name, cpf, email, placed_orders_quantity, status_id, created_at, updated_at) values ('Lucas', 'de Lucena Siqueira', '123.123.123-12', 'lucas.lucenak@gmail.com', 10, 1, NOW(), NOW());
 insert into address(street_name, house_number, city, cep, complement, reference_point, neighbourhood_id, client_account_id, status_id, created_at, updated_at) values ('Rua dos bobos', '0', 'Campina Grande', 'CEP', 'não tem nada', 'unica rua do bairro', 1, 1, 1, NOW(), NOW());
 
-insert into soup (name, price, size_id, created_at, updated_at) values ('FEIJÃO', 10.00, 1, NOW(), NOW());
+insert into soup (name, price, size_id, status_id, created_at, updated_at) values ('FEIJÃO', 10.00, 1, 1, NOW(), NOW());
 insert into drink (name, price, status_id, created_at, updated_at) values ('COCA COLA 500ML', 8.0, 1, NOW(), NOW());
 
 insert into orderr(order_price, observation, dispatch_time, arrival_forecast, status_id, address_id, client_account_id, payment_method_id, delivery_type_id, created_at, updated_at) values (25.0, 'sem torrada', '2023-07-27T15:30:00', '2023-07-27T16:15:00', 1, 1, 1, 1, 1, NOW(), NOW());

@@ -21,14 +21,18 @@ public class SoupPostDto {
     @NotNull(message = "Field size shouldn't be null")
     private Long sizeId;
 
+    @NotNull(message = "Field statusId shouldn't be null")
+    private Long statusId;
+
     public SoupPostDto() {
     }
 
-    public SoupPostDto(Long id, String name, Double price, Long sizeId) {
+    public SoupPostDto(Long id, String name, Double price, Long sizeId, Long statusId) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.sizeId = sizeId;
+        this.statusId = statusId;
     }
 
     public Long getId() {
@@ -61,5 +65,13 @@ public class SoupPostDto {
 
     public void setSizeId(Long sizeId) {
         this.sizeId = sizeId;
+    }
+
+    public Long getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(Long statusId) {
+        this.statusId = statusId;
     }
 }
