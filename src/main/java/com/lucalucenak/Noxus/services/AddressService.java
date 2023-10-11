@@ -124,6 +124,13 @@ public class AddressService {
         else {
             throw new ResourceNotFoundException("Resource: ClientAccount. Not found with id: " + clientAccountId);
         }
+    }
 
+    public AddressFullDto inactivateAddressById(Long addressId) {
+        AddressModel addressModel = new AddressModel(this.findAddressById(addressId));
+        StatusModel inactiveStatusModel = new StatusModel(statusService.findStatusByStatus("INACTIVE"));
+
+        addressModel.setStatus(inactiveStatusModel);
+        return new AddressFullDto(addressRepository.save(addressModel));
     }
 }
