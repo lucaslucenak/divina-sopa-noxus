@@ -3,7 +3,7 @@ insert into status(status, created_at, updated_at) values ('ORDERED', NOW(), NOW
 insert into status(status, created_at, updated_at) values ('FINISHED', NOW(), NOW());
 insert into status(status, created_at, updated_at) values ('INACTIVE', NOW(), NOW());
 insert into delivery_type(delivery_type, created_at, updated_at) values ('DELIVERY', NOW(), NOW());
-insert into size(size, created_at, updated_at) values ('ML_300', NOW(), NOW());
+insert into size(size, status_id, created_at, updated_at) values ('ML_300', 1, NOW(), NOW());
 insert into payment_method(payment_method, created_at, updated_at) values ('CASH', NOW(), NOW());
 
 insert into neighbourhood(neighbourhood, delivery_tax, status_id, created_at, updated_at) values ('SAO_JOSE', 7.0, 1, NOW(), NOW());
