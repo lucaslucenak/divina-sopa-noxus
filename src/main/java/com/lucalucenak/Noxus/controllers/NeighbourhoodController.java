@@ -48,6 +48,11 @@ public class NeighbourhoodController {
         return ResponseEntity.ok().body(new NeighbourhoodReturnDto(neighbourhoodService.updateNeighbourhood(neighbourhoodId, neighbourhoodPostDto)));
     }
 
+    @PostMapping(value = "/inactivate/{neighbourhoodId}")
+    public ResponseEntity<NeighbourhoodReturnDto> inactivateNeighbourhoodById(@PathVariable Long neighbourhoodId) {
+        return ResponseEntity.ok().body(new NeighbourhoodReturnDto(neighbourhoodService.inactivateNeighbourhoodById(neighbourhoodId)));
+    }
+
     @DeleteMapping(value = "/{neighbourhoodId}")
     public ResponseEntity<NeighbourhoodReturnDto> deleteNeighbourhoodById(@PathVariable Long neighbourhoodId) {
         neighbourhoodService.deleteNeighbourhoodById(neighbourhoodId);

@@ -23,6 +23,8 @@ public class NeighbourhoodService {
     private NeighbourhoodRepository neighbourhoodRepository;
     @Autowired
     private StatusService statusService;
+    @Autowired
+    private AddressService addressService;
 
     @Transactional
     public NeighbourhoodFullDto findNeighbourhoodById(Long neighbourhoodId) {
@@ -64,6 +66,10 @@ public class NeighbourhoodService {
         return new NeighbourhoodFullDto(neighbourhoodRepository.save(existingNeighbourhoodModel));
     }
 
+    public boolean existsById(Long neighbourhoodId) {
+        return neighbourhoodRepository.existsById(neighbourhoodId);
+    }
+
     @Transactional
     public void deleteNeighbourhoodById(Long neighbourhoodId) {
         if (neighbourhoodRepository.existsById(neighbourhoodId)) {
@@ -71,5 +77,16 @@ public class NeighbourhoodService {
         } else {
             throw new ResourceNotFoundException("Resource: Neighbourhood. Not found with id: " + neighbourhoodId);
         }
+    }
+
+    @Transactional
+    public NeighbourhoodFullDto inactivateNeighbourhoodById(Long neighbourhoodId) {
+        NeighbourhoodModel neighbourhoodModel = new NeighbourhoodModel(this.findNeighbourhoodById(neighbourhoodId));
+        StatusModel inactiveStatusModel = new StatusModel(statusService.findStatusByStatus("INACTIVE"));
+
+        neighbourhoodModel.setStatus(inactiveStatusModel);
+        addressService.inactivateAddressesByNeighbourhood(neighbourhoodId);
+
+        return new NeighbourhoodFullDto(neighbourhoodRepository.save(neighbourhoodModel));
     }
 }

@@ -10,4 +10,5 @@ import java.util.Optional;
 @Repository
 public interface AddressRepository extends JpaRepository<AddressModel, Long> {
     List<Optional<AddressModel>> findByClientAccountId(Long clientAccountId);
+    List<Optional<AddressModel>> findByNeighbourhoodId(Long neighbourhoodId);
 }

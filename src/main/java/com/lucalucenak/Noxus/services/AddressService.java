@@ -133,4 +133,24 @@ public class AddressService {
         addressModel.setStatus(inactiveStatusModel);
         return new AddressFullDto(addressRepository.save(addressModel));
     }
+
+    @Transactional
+    public List<AddressFullDto> inactivateAddressesByNeighbourhood(Long neighbourhoodId) {
+        if (neighbourhoodService.existsById(neighbourhoodId)) {
+            List<Optional<AddressModel>> foundAddresses = addressRepository.findByNeighbourhoodId(neighbourhoodId);
+            StatusModel inactiveStatusModel = new StatusModel(statusService.findStatusByStatus("INACTIVE"));
+
+            List<AddressFullDto> updatedAddressesFullDto = new ArrayList<>();
+            for (Optional<AddressModel> i : foundAddresses) {
+                AddressModel addressModel = i.get();
+                addressModel.setStatus(inactiveStatusModel);
+                updatedAddressesFullDto.add(new AddressFullDto(addressRepository.save(addressModel)));
+            }
+            return updatedAddressesFullDto;
+        }
+        else {
+            throw new ResourceNotFoundException("Resource: Neighbourhood. Not found with id: " + neighbourhoodId);
+        }
+
+    }
 }
