@@ -15,6 +15,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -72,6 +74,59 @@ public class SoupService {
 
         BeanUtils.copyProperties(updatedSoupModel, existingSoupModel, "createdAt, updatedAt");
         return new SoupFullDto(soupRepository.save(existingSoupModel));
+    }
+
+    @Transactional
+    public List<SoupFullDto> findSoupsBySizeId(Long sizeId) {
+        if (sizeService.existsById(sizeId)) {
+            List<Optional<SoupModel>> foundSoups = soupRepository.findBySizeId(sizeId);
+
+            List<SoupFullDto> soupFullDtos = new ArrayList<>();
+            for (Optional<SoupModel> i : foundSoups) {
+                soupFullDtos.add(new SoupFullDto(i.get()));
+            }
+            return soupFullDtos;
+        }
+        else {
+            throw new ResourceNotFoundException("Resource: Size. Not found with id: " + sizeId);
+        }
+    }
+
+    @Transactional
+    public SoupFullDto inactivateSoupById(Long soupId) {
+        if (soupRepository.existsById(soupId)) {
+            SoupModel soupModel = new SoupModel(this.findSoupById(soupId));
+            StatusModel inactiveStatusModel = new StatusModel(statusService.findStatusByStatus("INACTIVE"));
+
+            soupModel.setStatus(inactiveStatusModel);
+
+            return new SoupFullDto(soupRepository.save(soupModel));
+        }
+        else {
+            throw new ResourceNotFoundException("Resource: Soup. Not found with id: " + soupId);
+        }
+    }
+
+    @Transactional
+    public List<SoupFullDto> inactivateSoupsBySizeId(Long sizeId) {
+        if (sizeService.existsById(sizeId)) {
+            List<SoupFullDto> foundSoups = this.findSoupsBySizeId(sizeId);
+            StatusModel inactiveStatusModel = new StatusModel(statusService.findStatusByStatus("INACTIVE"));
+
+            List<SoupFullDto> updatedSoups = new ArrayList<>();
+            for (SoupFullDto i : foundSoups) {
+                SoupModel soupModel = new SoupModel(i);
+                soupModel.setStatus(inactiveStatusModel);
+
+                soupRepository.save(soupModel);
+
+                updatedSoups.add(new SoupFullDto(soupModel));
+            }
+            return updatedSoups;
+        }
+        else {
+            throw new ResourceNotFoundException("Resource: Size. Not found with id: " + sizeId);
+        }
     }
 
     @Transactional

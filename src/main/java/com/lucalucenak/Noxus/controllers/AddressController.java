@@ -50,6 +50,11 @@ public class AddressController {
         return ResponseEntity.ok().body(addressService.updateAddress(addressId, addressPostDto));
     }
 
+    @PostMapping(value = "/inactivate/{addressId}")
+    public ResponseEntity<AddressReturnDto> inactivateAddressById(@PathVariable Long addressId) {
+        return ResponseEntity.ok().body(new AddressReturnDto(addressService.inactivateAddressById(addressId)));
+    }
+
     @DeleteMapping(value = "/{addressId}")
     public ResponseEntity<AddressReturnDto> deleteAddressById(@PathVariable Long addressId) {
         addressService.deleteAddressById(addressId);

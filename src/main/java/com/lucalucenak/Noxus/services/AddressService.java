@@ -104,4 +104,53 @@ public class AddressService {
             throw new ResourceNotFoundException("Resource: Address. Not found with id: " + addressId);
         }
     }
+
+    public List<AddressFullDto> inactivateAddressesByClientAccountId(Long clientAccountId) {
+        if (clientAccountService.existsById(clientAccountId)) {
+            List<Optional<AddressModel>> foundAddresses = addressRepository.findByClientAccountId(clientAccountId);
+            StatusModel inactiveStatusModel = new StatusModel(statusService.findStatusByStatus("INACTIVE"));
+
+            List<AddressFullDto> updatedAddressesFulDto = new ArrayList<>();
+            for (Optional<AddressModel> i : foundAddresses) {
+                AddressModel addressModel = i.get();
+
+                addressModel.setStatus(inactiveStatusModel);
+                addressRepository.save(addressModel);
+
+                updatedAddressesFulDto.add(new AddressFullDto(addressModel));
+            }
+            return updatedAddressesFulDto;
+        }
+        else {
+            throw new ResourceNotFoundException("Resource: ClientAccount. Not found with id: " + clientAccountId);
+        }
+    }
+
+    public AddressFullDto inactivateAddressById(Long addressId) {
+        AddressModel addressModel = new AddressModel(this.findAddressById(addressId));
+        StatusModel inactiveStatusModel = new StatusModel(statusService.findStatusByStatus("INACTIVE"));
+
+        addressModel.setStatus(inactiveStatusModel);
+        return new AddressFullDto(addressRepository.save(addressModel));
+    }
+
+    @Transactional
+    public List<AddressFullDto> inactivateAddressesByNeighbourhoodId(Long neighbourhoodId) {
+        if (neighbourhoodService.existsById(neighbourhoodId)) {
+            List<Optional<AddressModel>> foundAddresses = addressRepository.findByNeighbourhoodId(neighbourhoodId);
+            StatusModel inactiveStatusModel = new StatusModel(statusService.findStatusByStatus("INACTIVE"));
+
+            List<AddressFullDto> updatedAddressesFullDto = new ArrayList<>();
+            for (Optional<AddressModel> i : foundAddresses) {
+                AddressModel addressModel = i.get();
+                addressModel.setStatus(inactiveStatusModel);
+                updatedAddressesFullDto.add(new AddressFullDto(addressRepository.save(addressModel)));
+            }
+            return updatedAddressesFullDto;
+        }
+        else {
+            throw new ResourceNotFoundException("Resource: Neighbourhood. Not found with id: " + neighbourhoodId);
+        }
+
+    }
 }

@@ -48,6 +48,11 @@ public class SoupController {
         return ResponseEntity.ok().body(new SoupReturnDto(soupService.updateSoup(soupId, soupPostDto)));
     }
 
+    @PostMapping(value = "/inactivate/{soupId}")
+    public ResponseEntity<SoupReturnDto> inactivateSoupByID(@PathVariable Long soupId) {
+        return ResponseEntity.ok().body(new SoupReturnDto(soupService.inactivateSoupById(soupId)));
+    }
+
     @DeleteMapping(value = "/{soupId}")
     public ResponseEntity<SoupReturnDto> deleteSoupById(@PathVariable Long soupId) {
         soupService.deleteSoupById(soupId);

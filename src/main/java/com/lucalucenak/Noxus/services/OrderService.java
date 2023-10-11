@@ -168,7 +168,6 @@ public class OrderService {
 
         //Saving Order
         orderRepository.save(orderModel);
-        clientAccountService.increasePlacedOrdersQuantityByClientAccountId(clientAccountModel.getId());
 
         // Saving Order Soup
         List<OrderReturnSoupFieldDto> soups = new ArrayList<>();
@@ -316,13 +315,41 @@ public class OrderService {
         }
     }
 
-    public OrderReturnDto finishOrder(Long orderId) {
+    @Transactional
+    public OrderReturnDto finishOrderById(Long orderId) {
         OrderModel orderModel = new OrderModel(this.findOrderById(orderId));
         orderModel.setStatus(new StatusModel(statusService.findStatusByStatus("FINISHED")));
         orderRepository.save(orderModel);
-
         clientAccountService.increasePlacedOrdersQuantityByClientAccountId(orderModel.getClientAccount().getId());
 
-        return new OrderReturnDto(orderModel);
+        List<OrderDrinkFullDto> orderDrinks = orderDrinkService.findOrderDrinksByOrderId(orderId);
+        List<OrderReturnDrinkFieldDto> drinks = new ArrayList<>();
+        for (OrderDrinkFullDto i : orderDrinks) {
+            DrinkModel drinkModel = i.getId().getDrink();
+            OrderReturnDrinkFieldDto orderReturnDrinkFieldDto = new OrderReturnDrinkFieldDto(
+                    drinkModel,
+                    i.getQuantity(),
+                    drinkModel.getPrice() * i.getQuantity()
+            );
+            drinks.add(orderReturnDrinkFieldDto);
+        }
+
+        List<OrderSoupFullDto> orderSoups = orderSoupService.findOrderSoupsByOrderId(orderId);
+        List<OrderReturnSoupFieldDto> soups = new ArrayList<>();
+        for (OrderSoupFullDto i : orderSoups) {
+            SoupModel soupModel = i.getId().getSoup();
+            OrderReturnSoupFieldDto orderReturnSoupFieldDto = new OrderReturnSoupFieldDto(
+                    soupModel,
+                    i.getQuantity(),
+                    soupModel.getPrice() * i.getQuantity()
+            );
+            soups.add(orderReturnSoupFieldDto);
+        }
+
+        OrderReturnDto orderReturnDto = new OrderReturnDto(orderModel);
+        orderReturnDto.setDrinks(drinks);
+        orderReturnDto.setSoups(soups);
+
+        return orderReturnDto;
     }
 }

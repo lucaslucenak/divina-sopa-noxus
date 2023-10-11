@@ -38,6 +38,11 @@ public class OrderController {
         return ResponseEntity.ok().body(orderService.updateOrder(orderId, orderPostDto));
     }
 
+    @PostMapping(value = "/finish/{orderId}")
+    public ResponseEntity<OrderReturnDto> finishOrderById(@PathVariable Long orderId) {
+        return ResponseEntity.ok().body(orderService.finishOrderById(orderId));
+    }
+
     @DeleteMapping(value = "/{orderId}")
     public ResponseEntity<Void> deleteOrderById(@PathVariable Long orderId) {
         orderService.deleteOrderById(orderId);

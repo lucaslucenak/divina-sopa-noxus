@@ -42,12 +42,17 @@ public class ClientAccountController {
 
     @PostMapping
     public ResponseEntity<ClientAccountReturnDto> saveClientAccount(@RequestBody @Valid ClientAccountPostDto clientAccountPostDto) {
-        return ResponseEntity.ok().body(clientAccountService.saveClientAccount(clientAccountPostDto));
+        return ResponseEntity.ok().body(new ClientAccountReturnDto(clientAccountService.saveClientAccount(clientAccountPostDto)));
     }
 
     @PutMapping(value = "/{clientAccountId}")
     public ResponseEntity<ClientAccountReturnDto> updateClientAccount(@PathVariable Long clientAccountId, @RequestBody @Valid ClientAccountPostDto clientAccountPostDto) {
-        return ResponseEntity.ok().body(clientAccountService.updateClientAccount(clientAccountId, clientAccountPostDto));
+        return ResponseEntity.ok().body(new ClientAccountReturnDto(clientAccountService.updateClientAccount(clientAccountId, clientAccountPostDto)));
+    }
+
+    @PostMapping(value = "/inactivate/{clientAccountId}")
+    public ResponseEntity<ClientAccountReturnDto> inactivateClientAccount(@PathVariable Long clientAccountId) {
+        return ResponseEntity.ok().body(new ClientAccountReturnDto(clientAccountService.inactivateClientAccountById(clientAccountId)));
     }
 
     @DeleteMapping(value = "/{clientAccountId}")

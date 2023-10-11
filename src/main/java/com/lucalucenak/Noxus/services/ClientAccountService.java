@@ -31,6 +31,8 @@ public class ClientAccountService {
     private ClientAccountRepository clientAccountRepository;
     @Autowired
     private StatusService statusService;
+    @Autowired
+    private AddressService addressService;
 
     @Transactional(readOnly = true)
     public ClientAccountFullDto findClientAccountById(Long clientAccountId) {
@@ -51,7 +53,7 @@ public class ClientAccountService {
     }
 
     @Transactional
-    public ClientAccountReturnDto saveClientAccount(ClientAccountPostDto clientAccountPostDto) {
+    public ClientAccountFullDto saveClientAccount(ClientAccountPostDto clientAccountPostDto) {
         ClientAccountModel clientAccountModel = new ClientAccountModel(clientAccountPostDto);
         StatusModel statusModel = new StatusModel(statusService.findStatusById(clientAccountPostDto.getStatusId()));
         clientAccountModel.setStatus(statusModel);
@@ -59,12 +61,11 @@ public class ClientAccountService {
 
         clientAccountRepository.save(clientAccountModel);
 
-        ClientAccountReturnDto clientAccountReturnDto = new ClientAccountReturnDto(clientAccountModel);
-        return clientAccountReturnDto;
+        return new ClientAccountFullDto(clientAccountModel);
     }
 
     @Transactional
-    public ClientAccountReturnDto updateClientAccount(Long clientAccountId, ClientAccountPostDto clientAccountPostDto) {
+    public ClientAccountFullDto updateClientAccount(Long clientAccountId, ClientAccountPostDto clientAccountPostDto) {
         if (!clientAccountId.equals(clientAccountPostDto.getId())) {
             throw new IncompatibleIdsException("Path param Id and body Id must be equals. Path Param Id: " + clientAccountId + ", Body Id: " + clientAccountPostDto.getId());
         }
@@ -81,13 +82,16 @@ public class ClientAccountService {
 
         clientAccountRepository.save(existentClientAccountModel);
 
-        ClientAccountReturnDto clientAccountReturnDto = new ClientAccountReturnDto(existentClientAccountModel);
-        return clientAccountReturnDto;
+        // Inactivate All Referent Addresses
+        if (existentClientAccountModel.getStatus().getStatus().equals("INACTIVE")) {
+            addressService.inactivateAddressesByClientAccountId(clientAccountId);
+        }
+
+        return new ClientAccountFullDto(existentClientAccountModel);
     }
 
     @Transactional
     public void deleteClientAccountById(Long clientAccountId) {
-        System.out.println(clientAccountId);
         if (clientAccountRepository.existsById(clientAccountId)) {
             clientAccountRepository.deleteById(clientAccountId);
         } else {
@@ -95,11 +99,27 @@ public class ClientAccountService {
         }
     }
 
-    public ClientAccountReturnDto increasePlacedOrdersQuantityByClientAccountId(Long clientAccountId) {
+    public boolean existsById(Long clientAccountId) {
+            return clientAccountRepository.existsById(clientAccountId);
+    }
+
+    @Transactional
+    public ClientAccountFullDto increasePlacedOrdersQuantityByClientAccountId(Long clientAccountId) {
         ClientAccountModel clientAccountModel = new ClientAccountModel(this.findClientAccountById(clientAccountId));
         clientAccountModel.setPlacedOrdersQuantity(clientAccountModel.getPlacedOrdersQuantity() + 1);
         clientAccountRepository.save(clientAccountModel);
 
-        return new ClientAccountReturnDto(clientAccountModel);
+        return new ClientAccountFullDto(clientAccountModel);
+    }
+
+    @Transactional
+    public ClientAccountFullDto inactivateClientAccountById(Long clientAccountId) {
+        ClientAccountModel clientAccountModel = new ClientAccountModel(this.findClientAccountById(clientAccountId));
+        StatusModel inactiveStatusModel = new StatusModel(statusService.findStatusByStatus("INACTIVE"));
+        clientAccountModel.setStatus(inactiveStatusModel);
+
+        addressService.inactivateAddressesByClientAccountId(clientAccountId);
+
+        return new ClientAccountFullDto(clientAccountRepository.save(clientAccountModel));
     }
 }
