@@ -2,6 +2,7 @@ package com.lucalucenak.Noxus.dtos;
 
 import com.lucalucenak.Noxus.models.SizeModel;
 import com.lucalucenak.Noxus.models.SoupModel;
+import com.lucalucenak.Noxus.models.StatusModel;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -24,6 +25,9 @@ public class SizeFullDto {
     @NotNull(message = "Field soups shouldn't be null")
     private List<SoupModel> soups;
 
+    @NotNull(message = "Field status shouldn't be null")
+    private StatusModel status;
+
     @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
 
@@ -37,10 +41,11 @@ public class SizeFullDto {
         BeanUtils.copyProperties(sizeModel, this);
     }
 
-    public SizeFullDto(Long id, String size, List<SoupModel> soups, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public SizeFullDto(Long id, String size, List<SoupModel> soups, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.size = size;
         this.soups = soups;
+        this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -67,6 +72,14 @@ public class SizeFullDto {
 
     public void setSoups(List<SoupModel> soups) {
         this.soups = soups;
+    }
+
+    public StatusModel getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusModel status) {
+        this.status = status;
     }
 
     public LocalDateTime getCreatedAt() {

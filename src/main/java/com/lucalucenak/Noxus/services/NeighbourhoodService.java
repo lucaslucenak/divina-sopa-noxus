@@ -5,6 +5,7 @@ import com.lucalucenak.Noxus.dtos.post.NeighbourhoodPostDto;
 import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.NeighbourhoodModel;
+import com.lucalucenak.Noxus.models.StatusModel;
 import com.lucalucenak.Noxus.repositories.NeighbourhoodRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ public class NeighbourhoodService {
 
     @Autowired
     private NeighbourhoodRepository neighbourhoodRepository;
+    @Autowired
+    private StatusService statusService;
 
     @Transactional
     public NeighbourhoodFullDto findNeighbourhoodById(Long neighbourhoodId) {
@@ -41,6 +44,8 @@ public class NeighbourhoodService {
     @Transactional
     public NeighbourhoodFullDto saveNeighbourhood(NeighbourhoodPostDto neighbourhoodPostDto) {
         NeighbourhoodModel neighbourhoodModel = new NeighbourhoodModel(neighbourhoodPostDto);
+        StatusModel statusModel = new StatusModel(statusService.findStatusById(neighbourhoodPostDto.getStatusId()));
+        neighbourhoodModel.setStatus(statusModel);
         return new NeighbourhoodFullDto(neighbourhoodRepository.save(neighbourhoodModel));
     }
 
@@ -52,6 +57,8 @@ public class NeighbourhoodService {
 
         NeighbourhoodModel existingNeighbourhoodModel = new NeighbourhoodModel(this.findNeighbourhoodById(neighbourhoodId));
         NeighbourhoodModel updatedNeighbourhoodModel = new NeighbourhoodModel(neighbourhoodPostDto);
+        StatusModel statusModel = new StatusModel(statusService.findStatusById(neighbourhoodPostDto.getStatusId()));
+        updatedNeighbourhoodModel.setStatus(statusModel);
 
         BeanUtils.copyProperties(updatedNeighbourhoodModel, existingNeighbourhoodModel, "createdAt, updatedAt");
         return new NeighbourhoodFullDto(neighbourhoodRepository.save(existingNeighbourhoodModel));

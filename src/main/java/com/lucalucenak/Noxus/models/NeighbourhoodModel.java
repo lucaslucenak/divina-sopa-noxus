@@ -42,6 +42,10 @@ public class NeighbourhoodModel {
     @OneToMany(mappedBy = "neighbourhood", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<AddressModel> addresses;
 
+    @ManyToOne
+    @JoinColumn(name = "status_id", nullable = false)
+    private StatusModel status;
+
     @CreatedDate
     private LocalDateTime createdAt;
 
@@ -59,11 +63,12 @@ public class NeighbourhoodModel {
         BeanUtils.copyProperties(neighbourhoodPostDto, this);
     }
 
-    public NeighbourhoodModel(Long id, String neighbourhood, Double deliveryTax, List<AddressModel> addresses, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public NeighbourhoodModel(Long id, String neighbourhood, Double deliveryTax, List<AddressModel> addresses, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.neighbourhood = neighbourhood;
         this.deliveryTax = deliveryTax;
         this.addresses = addresses;
+        this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -106,5 +111,21 @@ public class NeighbourhoodModel {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public List<AddressModel> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<AddressModel> addresses) {
+        this.addresses = addresses;
+    }
+
+    public StatusModel getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusModel status) {
+        this.status = status;
     }
 }

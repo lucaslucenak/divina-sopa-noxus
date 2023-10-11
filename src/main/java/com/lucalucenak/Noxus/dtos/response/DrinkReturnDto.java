@@ -2,6 +2,7 @@ package com.lucalucenak.Noxus.dtos.response;
 
 import com.lucalucenak.Noxus.dtos.DrinkFullDto;
 import com.lucalucenak.Noxus.models.DrinkModel;
+import com.lucalucenak.Noxus.models.StatusModel;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -23,6 +24,9 @@ public class DrinkReturnDto {
     @DecimalMin(value = "0.0", inclusive = true)
     private Double price;
 
+    @NotNull(message = "Field status shouldn't be null")
+    private StatusModel status;
+
     @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
 
@@ -36,10 +40,11 @@ public class DrinkReturnDto {
         BeanUtils.copyProperties(drinkFullDto, this);
     }
 
-    public DrinkReturnDto(Long id, String name, Double price, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public DrinkReturnDto(Long id, String name, Double price, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.price = price;
+        this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -66,6 +71,14 @@ public class DrinkReturnDto {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public StatusModel getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusModel status) {
+        this.status = status;
     }
 
     public LocalDateTime getCreatedAt() {

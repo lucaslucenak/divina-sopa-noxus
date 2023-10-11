@@ -2,6 +2,7 @@ package com.lucalucenak.Noxus.dtos;
 
 import com.lucalucenak.Noxus.models.AddressModel;
 import com.lucalucenak.Noxus.models.NeighbourhoodModel;
+import com.lucalucenak.Noxus.models.StatusModel;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -27,6 +28,9 @@ public class NeighbourhoodFullDto {
     @NotNull(message = "Field addresses shouldn't be null")
     private List<AddressModel> addresses;
 
+    @NotNull(message = "Field status shouldn't be null")
+    private StatusModel status;
+
     @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
 
@@ -41,11 +45,12 @@ public class NeighbourhoodFullDto {
         BeanUtils.copyProperties(neighbourhoodModel, this);
     }
 
-    public NeighbourhoodFullDto(Long id, String neighbourhood, Double deliveryTax, List<AddressModel> addresses, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public NeighbourhoodFullDto(Long id, String neighbourhood, Double deliveryTax, List<AddressModel> addresses, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.neighbourhood = neighbourhood;
         this.deliveryTax = deliveryTax;
         this.addresses = addresses;
+        this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -80,6 +85,14 @@ public class NeighbourhoodFullDto {
 
     public void setAddresses(List<AddressModel> addresses) {
         this.addresses = addresses;
+    }
+
+    public StatusModel getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusModel status) {
+        this.status = status;
     }
 
     public LocalDateTime getCreatedAt() {

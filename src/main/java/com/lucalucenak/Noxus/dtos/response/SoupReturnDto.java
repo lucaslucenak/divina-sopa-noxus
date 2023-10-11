@@ -3,6 +3,7 @@ package com.lucalucenak.Noxus.dtos.response;
 import com.lucalucenak.Noxus.dtos.SizeFullDto;
 import com.lucalucenak.Noxus.dtos.SoupFullDto;
 import com.lucalucenak.Noxus.models.SizeModel;
+import com.lucalucenak.Noxus.models.StatusModel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -24,6 +25,8 @@ public class SoupReturnDto {
 
     private SizeModel size;
 
+    private StatusModel status;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
@@ -35,11 +38,12 @@ public class SoupReturnDto {
         BeanUtils.copyProperties(soupFullDto, this);
     }
 
-    public SoupReturnDto(Long id, String name, Double price, SizeModel size, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public SoupReturnDto(Long id, String name, Double price, SizeModel size, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.size = size;
+        this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -74,6 +78,14 @@ public class SoupReturnDto {
 
     public void setSize(SizeModel size) {
         this.size = size;
+    }
+
+    public StatusModel getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusModel status) {
+        this.status = status;
     }
 
     public LocalDateTime getCreatedAt() {

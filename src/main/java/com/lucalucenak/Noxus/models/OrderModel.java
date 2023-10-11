@@ -60,12 +60,6 @@ public class OrderModel {
     @JoinColumn(name = "delivery_type_id", nullable = false)
     private DeliveryTypeModel deliveryType;
 
-//    @OneToMany(mappedBy = "id.order", cascade ={CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-//    private Set<OrderDrinkModel> drinks = new HashSet<>();
-//
-//    @OneToMany(mappedBy = "id.order", cascade ={CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-//    private Set<OrderSoupModel> soups = new HashSet<>();
-
     @CreatedDate
     private LocalDateTime createdAt;
 

@@ -1,9 +1,6 @@
 package com.lucalucenak.Noxus.dtos;
 
-import com.lucalucenak.Noxus.models.AddressModel;
-import com.lucalucenak.Noxus.models.ClientAccountModel;
-import com.lucalucenak.Noxus.models.NeighbourhoodModel;
-import com.lucalucenak.Noxus.models.OrderModel;
+import com.lucalucenak.Noxus.models.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -49,6 +46,9 @@ public class AddressFullDto {
     @NotNull(message = "Field clientAccount shouldn't be null")
     private ClientAccountModel clientAccount;
 
+    @NotNull(message = "Field status shouldn't be null")
+    private StatusModel status;
+
     @NotNull(message = "Field orders shouldn't be null")
     private List<OrderModel> orders;
 
@@ -65,7 +65,7 @@ public class AddressFullDto {
         BeanUtils.copyProperties(addressModel, this);
     }
 
-    public AddressFullDto(Long id, String streetName, String houseNumber, String city, String cep, String complement, String referencePoint, NeighbourhoodModel neighbourhood, ClientAccountModel clientAccount, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public AddressFullDto(Long id, String streetName, String houseNumber, String city, String cep, String complement, String referencePoint, NeighbourhoodModel neighbourhood, ClientAccountModel clientAccount, StatusModel status, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.streetName = streetName;
         this.houseNumber = houseNumber;
@@ -75,11 +75,11 @@ public class AddressFullDto {
         this.referencePoint = referencePoint;
         this.neighbourhood = neighbourhood;
         this.clientAccount = clientAccount;
+        this.status = status;
         this.orders = orders;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
-
 
     public Long getId() {
         return id;
@@ -175,5 +175,13 @@ public class AddressFullDto {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public StatusModel getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusModel status) {
+        this.status = status;
     }
 }

@@ -63,6 +63,10 @@ public class AddressModel {
     @JoinColumn(name = "client_account_id", nullable = false)
     private ClientAccountModel clientAccount;
 
+    @ManyToOne
+    @JoinColumn(name = "status_id", nullable = false)
+    private StatusModel status;
+
     @JsonIgnore
     @OneToMany(mappedBy = "address", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<OrderModel> orders;
@@ -88,7 +92,7 @@ public class AddressModel {
         BeanUtils.copyProperties(addressPostDto, this);
     }
 
-    public AddressModel(Long id, String streetName, String houseNumber, String city, String cep, String complement, String referencePoint, NeighbourhoodModel neighbourhood, ClientAccountModel clientAccount, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public AddressModel(Long id, String streetName, String houseNumber, String city, String cep, String complement, String referencePoint, NeighbourhoodModel neighbourhood, ClientAccountModel clientAccount, StatusModel status, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.streetName = streetName;
         this.houseNumber = houseNumber;
@@ -98,6 +102,7 @@ public class AddressModel {
         this.referencePoint = referencePoint;
         this.neighbourhood = neighbourhood;
         this.clientAccount = clientAccount;
+        this.status = status;
         this.orders = orders;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -189,6 +194,14 @@ public class AddressModel {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public StatusModel getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusModel status) {
+        this.status = status;
     }
 
     public LocalDateTime getUpdatedAt() {

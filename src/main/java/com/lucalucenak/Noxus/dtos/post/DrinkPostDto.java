@@ -20,13 +20,17 @@ public class DrinkPostDto {
     @DecimalMin(value = "0.0", inclusive = true)
     private Double price;
 
+    @NotNull(message = "Field statusId shouldn't be null")
+    private Long statusId;
+
     public DrinkPostDto() {
     }
 
-    public DrinkPostDto(Long id, String name, Double price) {
+    public DrinkPostDto(Long id, String name, Double price, Long statusId) {
         this.id = id;
         this.name = name;
         this.price = price;
+        this.statusId = statusId;
     }
 
     public Long getId() {
@@ -51,5 +55,13 @@ public class DrinkPostDto {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Long getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(Long statusId) {
+        this.statusId = statusId;
     }
 }

@@ -4,6 +4,7 @@ import com.lucalucenak.Noxus.dtos.AddressFullDto;
 import com.lucalucenak.Noxus.models.AddressModel;
 import com.lucalucenak.Noxus.models.ClientAccountModel;
 import com.lucalucenak.Noxus.models.NeighbourhoodModel;
+import com.lucalucenak.Noxus.models.StatusModel;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -48,6 +49,9 @@ public class AddressReturnDto {
     @NotNull(message = "Field clientAccount shouldn't be null")
     private ClientAccountModel clientAccount;
 
+    @NotNull(message = "Field status shouldn't be null")
+    private StatusModel status;
+
     @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
 
@@ -65,7 +69,7 @@ public class AddressReturnDto {
         BeanUtils.copyProperties(addressFullDto, this);
     }
 
-    public AddressReturnDto(Long id, String streetName, String houseNumber, String city, String cep, String complement, String referencePoint, NeighbourhoodModel neighbourhood, ClientAccountModel clientAccount, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public AddressReturnDto(Long id, String streetName, String houseNumber, String city, String cep, String complement, String referencePoint, NeighbourhoodModel neighbourhood, ClientAccountModel clientAccount, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.streetName = streetName;
         this.houseNumber = houseNumber;
@@ -75,6 +79,7 @@ public class AddressReturnDto {
         this.referencePoint = referencePoint;
         this.neighbourhood = neighbourhood;
         this.clientAccount = clientAccount;
+        this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -165,5 +170,13 @@ public class AddressReturnDto {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public StatusModel getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusModel status) {
+        this.status = status;
     }
 }
