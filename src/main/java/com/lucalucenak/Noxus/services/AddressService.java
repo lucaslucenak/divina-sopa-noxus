@@ -151,6 +151,17 @@ public class AddressService {
         else {
             throw new ResourceNotFoundException("Resource: Neighbourhood. Not found with id: " + neighbourhoodId);
         }
+    }
 
+    public boolean belongsToClientAccount(Long clientAccountId) {
+        ClientAccountModel clientAccountModel = new ClientAccountModel(clientAccountService.findClientAccountById(clientAccountId));
+
+        for (AddressModel i : clientAccountModel.getAddresses()) {
+            if (i.getClientAccount().getId().equals(clientAccountModel.getId())) {
+                System.out.println(i.getId());
+                return true;
+            }
+        }
+        return false;
     }
 }
