@@ -15,12 +15,20 @@ public class DeliveryModel {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "deliveryman_id", nullable = false)
+    @JoinColumn(name = "address_id", nullable = false)
+    private AddressModel address;
+
+    @ManyToOne
+    @JoinColumn(name = "deliveryman_id")
     private DeliverymanModel deliveryman;
 
     @ManyToOne
     @JoinColumn(name = "delivery_type_id", nullable = false)
     private DeliveryTypeModel deliveryType;
+
+    @ManyToOne
+    @JoinColumn(name = "distance_id")
+    private DistanceTaxModel distanceTax;
 
     private Double price;
 
