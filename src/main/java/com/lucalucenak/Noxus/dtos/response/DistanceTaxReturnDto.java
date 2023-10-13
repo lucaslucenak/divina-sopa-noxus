@@ -1,51 +1,35 @@
-package com.lucalucenak.Noxus.models;
+package com.lucalucenak.Noxus.dtos.response;
 
 import com.lucalucenak.Noxus.dtos.DistanceTaxFullDto;
-import com.lucalucenak.Noxus.dtos.post.DistanceTaxPostDto;
-import com.lucalucenak.Noxus.dtos.response.DistanceTaxReturnDto;
-import jakarta.persistence.*;
-import lombok.Builder;
+import com.lucalucenak.Noxus.models.DistanceTaxModel;
+import com.lucalucenak.Noxus.models.StatusModel;
+import jakarta.persistence.Column;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-@Entity
-@Table(name = "distance")
-@EntityListeners(AuditingEntityListener.class)
-@Builder
-public class DistanceTaxModel {
+public class DistanceTaxReturnDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Double price;
 
-    @Column(unique = true)
     private Double initialDistance;
 
-    @Column(unique = true)
     private Double finalDistance;
 
-    @ManyToOne
-    @JoinColumn(name = "status_id", nullable = false)
     private StatusModel status;
 
-    public DistanceTaxModel() {
+    public DistanceTaxReturnDto() {
     }
 
-    public DistanceTaxModel(DistanceTaxFullDto distanceTaxFullDto) {
+    public DistanceTaxReturnDto(DistanceTaxModel distanceTaxModel) {
+        BeanUtils.copyProperties(distanceTaxModel, this);
+    }
+
+    public DistanceTaxReturnDto(DistanceTaxFullDto distanceTaxFullDto) {
         BeanUtils.copyProperties(distanceTaxFullDto, this);
     }
 
-    public DistanceTaxModel(DistanceTaxPostDto distanceTaxPostDto) {
-        BeanUtils.copyProperties(distanceTaxPostDto, this);
-    }
-
-    public DistanceTaxModel(DistanceTaxReturnDto distanceTaxReturnDto) {
-        BeanUtils.copyProperties(distanceTaxReturnDto, this);
-    }
-
-    public DistanceTaxModel(Long id, Double price, Double initialDistance, Double finalDistance, StatusModel status) {
+    public DistanceTaxReturnDto(Long id, Double price, Double initialDistance, Double finalDistance, StatusModel status) {
         this.id = id;
         this.price = price;
         this.initialDistance = initialDistance;

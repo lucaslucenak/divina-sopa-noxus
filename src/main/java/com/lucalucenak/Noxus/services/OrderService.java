@@ -135,15 +135,17 @@ public class OrderService {
     public OrderReturnDto saveOrder(OrderPostDto orderPostDto) {
         OrderModel orderModel = new OrderModel(orderPostDto);
         Double orderPrice = 0.0;
-
-        AddressModel addressModel = new AddressModel(addressService.findAddressById(orderPostDto.getAddressId()));
-        orderModel.setAddress(addressModel);
+        DeliveryModel deliveryModel = orderPostDto.getDelivery();
+        DeliveryTypeModel deliveryTypeModel = deliveryModel
+//
+//        AddressModel addressModel = new AddressModel(addressService.findAddressById(orderPostDto.getAddressId()));
+//        orderModel.setAddress(addressModel);
         ClientAccountModel clientAccountModel = new ClientAccountModel(clientAccountService.findClientAccountById(orderPostDto.getClientAccountId()));
         orderModel.setClientAccount(clientAccountModel);
         PaymentMethodModel paymentMethodModel = new PaymentMethodModel(paymentMethodService.findPaymentMethodById(orderPostDto.getPaymentMethodId()));
         orderModel.setPaymentMethod(paymentMethodModel);
-        DeliveryTypeModel deliveryTypeModel = new DeliveryTypeModel(deliveryTypeService.findDeliveryTypeById(orderPostDto.getDeliveryTypeId()));
-        orderModel.setDeliveryType(deliveryTypeModel);
+//        DeliveryTypeModel deliveryTypeModel = new DeliveryTypeModel(deliveryTypeService.findDeliveryTypeById(orderPostDto.getDeliveryTypeId()));
+//        orderModel.setDeliveryType(deliveryTypeModel);
         StatusModel statusModel = new StatusModel(statusService.findStatusByStatus("ORDERED"));
         orderModel.setStatus(statusModel);
 

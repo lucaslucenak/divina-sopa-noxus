@@ -6,6 +6,9 @@ import jakarta.validation.constraints.NotNull;
 
 public class DeliverymanPostDto {
 
+    @NotNull(message = "Field id shouldn't be null")
+    private Long id;
+
     @NotNull(message = "Field name shouldn't be null")
     @NotEmpty(message = "Field name shouldn't be empty")
     @NotBlank(message = "Field name shouldn't be blank")
@@ -22,10 +25,19 @@ public class DeliverymanPostDto {
     public DeliverymanPostDto() {
     }
 
-    public DeliverymanPostDto(String name, String cellphoneNumber, Long statusId) {
+    public DeliverymanPostDto(Long id, String name, String cellphoneNumber, Long statusId) {
+        this.id = id;
         this.name = name;
         this.cellphoneNumber = cellphoneNumber;
         this.statusId = statusId;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
