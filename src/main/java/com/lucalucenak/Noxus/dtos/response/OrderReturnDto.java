@@ -41,8 +41,8 @@ public class OrderReturnDto {
     @NotNull(message = "Field paymentMethod shouldn't be null")
     private PaymentMethodModel paymentMethod;
 
-    @NotNull(message = "Field deliveryType shouldn't be null")
-    private DeliveryTypeModel deliveryType;
+    @NotNull(message = "Field delivery shouldn't be null")
+    private DeliveryModel delivery;
 
     @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
@@ -67,7 +67,7 @@ public class OrderReturnDto {
         BeanUtils.copyProperties(orderModel, this);
     }
 
-    public OrderReturnDto(Long id, Double orderPrice, String observation, List<OrderReturnSoupFieldDto> soups, List<OrderReturnDrinkFieldDto> drinks, StatusModel status, AddressModel address, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, DeliveryTypeModel deliveryType, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime dispatchTime, LocalDateTime arrivalForecast) {
+    public OrderReturnDto(Long id, Double orderPrice, String observation, List<OrderReturnSoupFieldDto> soups, List<OrderReturnDrinkFieldDto> drinks, StatusModel status, AddressModel address, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, DeliveryModel delivery, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime dispatchTime, LocalDateTime arrivalForecast) {
         this.id = id;
         this.orderPrice = orderPrice;
         this.observation = observation;
@@ -77,7 +77,7 @@ public class OrderReturnDto {
         this.address = address;
         this.clientAccount = clientAccount;
         this.paymentMethod = paymentMethod;
-        this.deliveryType = deliveryType;
+        this.delivery = delivery;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.dispatchTime = dispatchTime;
@@ -156,12 +156,12 @@ public class OrderReturnDto {
         this.paymentMethod = paymentMethod;
     }
 
-    public DeliveryTypeModel getDeliveryType() {
-        return deliveryType;
+    public DeliveryModel getDelivery() {
+        return delivery;
     }
 
-    public void setDeliveryType(DeliveryTypeModel deliveryType) {
-        this.deliveryType = deliveryType;
+    public void setDelivery(DeliveryModel delivery) {
+        this.delivery = delivery;
     }
 
     public LocalDateTime getCreatedAt() {
