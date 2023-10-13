@@ -1,11 +1,15 @@
 package com.lucalucenak.Noxus.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lucalucenak.Noxus.dtos.DeliverymanFullDto;
+import com.lucalucenak.Noxus.dtos.post.DeliverymanPostDto;
+import com.lucalucenak.Noxus.dtos.response.DeliverymanReturnDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.List;
@@ -40,6 +44,21 @@ public class DeliverymanModel {
     @JsonIgnore
     @OneToMany(mappedBy = "deliveryman", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<OrderModel> orders;
+
+    public DeliverymanModel() {
+    }
+
+    public DeliverymanModel(DeliverymanFullDto deliverymanFullDto) {
+        BeanUtils.copyProperties(deliverymanFullDto, this);
+    }
+
+    public DeliverymanModel(DeliverymanPostDto deliverymanPostDto) {
+        BeanUtils.copyProperties(deliverymanPostDto, this);
+    }
+
+    public DeliverymanModel(DeliverymanReturnDto deliverymanReturnDto) {
+        BeanUtils.copyProperties(deliverymanReturnDto, this);
+    }
 
     public DeliverymanModel(Long id, String name, String cellphoneNumber, StatusModel status, List<OrderModel> orders) {
         this.id = id;

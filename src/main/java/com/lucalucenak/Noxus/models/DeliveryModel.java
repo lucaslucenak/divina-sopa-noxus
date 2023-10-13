@@ -30,6 +30,10 @@ public class DeliveryModel {
     @JoinColumn(name = "distance_id")
     private DistanceTaxModel distanceTax;
 
+    @ManyToOne
+    @JoinColumn(name = "status_id")
+    private StatusModel status;
+
     private Double price;
 
     private Double distance;
