@@ -65,4 +65,12 @@ public class DistanceTaxPostDto {
     public void setFinalDistance(Double finalDistance) {
         this.finalDistance = finalDistance;
     }
+
+    public Long getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(Long statusId) {
+        this.statusId = statusId;
+    }
 }

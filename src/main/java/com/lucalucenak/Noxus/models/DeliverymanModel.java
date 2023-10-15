@@ -13,6 +13,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.List;
+import java.util.Locale;
 
 @Entity
 @Table(name = "deliveryman")
@@ -24,13 +25,13 @@ public class DeliverymanModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @NotNull(message = "Field name shouldn't be null")
     @NotEmpty(message = "Field name shouldn't be empty")
     @NotBlank(message = "Field name shouldn't be blank")
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @NotNull(message = "Field cellphoneNumber shouldn't be null")
     @NotEmpty(message = "Field cellphoneNumber shouldn't be empty")
     @NotBlank(message = "Field cellphoneNumber shouldn't be blank")
@@ -66,6 +67,13 @@ public class DeliverymanModel {
         this.cellphoneNumber = cellphoneNumber;
         this.status = status;
         this.orders = orders;
+    }
+
+    @PrePersist
+    public void upperCaseName() {
+        if (name != null) {
+            name = name.toUpperCase(Locale.ROOT);
+        }
     }
 
     public Long getId() {
