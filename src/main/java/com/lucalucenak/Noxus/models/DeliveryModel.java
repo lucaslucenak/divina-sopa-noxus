@@ -31,7 +31,7 @@ public class DeliveryModel {
     private DeliveryTypeModel deliveryType;
 
     @ManyToOne
-    @JoinColumn(name = "distance_id")
+    @JoinColumn(name = "distance_tax_id")
     private DistanceTaxModel distanceTax;
 
     @ManyToOne
@@ -65,6 +65,70 @@ public class DeliveryModel {
         this.distanceTax = distanceTax;
         this.status = status;
         this.price = price;
+        this.distance = distance;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public AddressModel getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressModel address) {
+        this.address = address;
+    }
+
+    public DeliverymanModel getDeliveryman() {
+        return deliveryman;
+    }
+
+    public void setDeliveryman(DeliverymanModel deliveryman) {
+        this.deliveryman = deliveryman;
+    }
+
+    public DeliveryTypeModel getDeliveryType() {
+        return deliveryType;
+    }
+
+    public void setDeliveryType(DeliveryTypeModel deliveryType) {
+        this.deliveryType = deliveryType;
+    }
+
+    public DistanceTaxModel getDistanceTax() {
+        return distanceTax;
+    }
+
+    public void setDistanceTax(DistanceTaxModel distanceTax) {
+        this.distanceTax = distanceTax;
+    }
+
+    public StatusModel getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusModel status) {
+        this.status = status;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
         this.distance = distance;
     }
 }

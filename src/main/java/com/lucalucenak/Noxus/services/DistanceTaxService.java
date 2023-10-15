@@ -36,9 +36,9 @@ public class DistanceTaxService {
     }
 
     @Transactional(readOnly = true)
-    public Page<DistanceTaxFullDto> findAllDistanceTaxsPaginated(Pageable pageable) {
-        Page<DistanceTaxModel> pagedDistanceTaxs = distanceTaxRepository.findAll(pageable);
-        return pagedDistanceTaxs.map(DistanceTaxFullDto::new);
+    public Page<DistanceTaxFullDto> findAllDistanceTaxesPaginated(Pageable pageable) {
+        Page<DistanceTaxModel> pagedDistanceTaxes = distanceTaxRepository.findAll(pageable);
+        return pagedDistanceTaxes.map(DistanceTaxFullDto::new);
     }
 
     @Transactional
