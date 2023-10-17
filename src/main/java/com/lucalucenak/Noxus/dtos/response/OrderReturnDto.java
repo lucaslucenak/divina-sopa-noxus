@@ -44,6 +44,8 @@ public class OrderReturnDto {
     @NotNull(message = "Field delivery shouldn't be null")
     private DeliveryModel delivery;
 
+    private DeliverymanModel deliveryman;
+
     @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
 
@@ -67,7 +69,7 @@ public class OrderReturnDto {
         BeanUtils.copyProperties(orderModel, this);
     }
 
-    public OrderReturnDto(Long id, Double orderPrice, String observation, List<OrderReturnSoupFieldDto> soups, List<OrderReturnDrinkFieldDto> drinks, StatusModel status, AddressModel address, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, DeliveryModel delivery, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime dispatchTime, LocalDateTime arrivalForecast) {
+    public OrderReturnDto(Long id, Double orderPrice, String observation, List<OrderReturnSoupFieldDto> soups, List<OrderReturnDrinkFieldDto> drinks, StatusModel status, AddressModel address, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, DeliveryModel delivery, DeliverymanModel deliveryman, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime dispatchTime, LocalDateTime arrivalForecast) {
         this.id = id;
         this.orderPrice = orderPrice;
         this.observation = observation;
@@ -78,10 +80,19 @@ public class OrderReturnDto {
         this.clientAccount = clientAccount;
         this.paymentMethod = paymentMethod;
         this.delivery = delivery;
+        this.deliveryman = deliveryman;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.dispatchTime = dispatchTime;
         this.arrivalForecast = arrivalForecast;
+    }
+
+    public DeliverymanModel getDeliveryman() {
+        return deliveryman;
+    }
+
+    public void setDeliveryman(DeliverymanModel deliveryman) {
+        this.deliveryman = deliveryman;
     }
 
     public Long getId() {

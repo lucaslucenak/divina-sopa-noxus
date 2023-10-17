@@ -18,16 +18,27 @@ public class DeliveryPostDto {
     @NotNull(message = "Field statusId shouldn't be null")
     private Long statusId;
 
+    private Double distance;
+
     public DeliveryPostDto() {
     }
 
-    public DeliveryPostDto(Long id, Long addressId, Long deliverymanId, Long deliveryTypeId, Long distanceTaxId, Long statusId) {
+    public DeliveryPostDto(Long id, Long addressId, Long deliverymanId, Long deliveryTypeId, Long distanceTaxId, Long statusId, Double distance) {
         this.id = id;
         this.addressId = addressId;
         this.deliverymanId = deliverymanId;
         this.deliveryTypeId = deliveryTypeId;
         this.distanceTaxId = distanceTaxId;
         this.statusId = statusId;
+        this.distance = distance;
+    }
+
+    public Double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(Double distance) {
+        this.distance = distance;
     }
 
     public Long getId() {

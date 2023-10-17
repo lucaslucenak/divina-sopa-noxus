@@ -9,7 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
-@Table(name = "distance")
+@Table(name = "distance_tax")
 @EntityListeners(AuditingEntityListener.class)
 @Builder
 public class DistanceTaxModel {
@@ -18,7 +18,7 @@ public class DistanceTaxModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Double price;
+    private Double tax;
 
     @Column(unique = true)
     private Double initialDistance;
@@ -45,9 +45,9 @@ public class DistanceTaxModel {
         BeanUtils.copyProperties(distanceTaxReturnDto, this);
     }
 
-    public DistanceTaxModel(Long id, Double price, Double initialDistance, Double finalDistance, StatusModel status) {
+    public DistanceTaxModel(Long id, Double tax, Double initialDistance, Double finalDistance, StatusModel status) {
         this.id = id;
-        this.price = price;
+        this.tax = tax;
         this.initialDistance = initialDistance;
         this.finalDistance = finalDistance;
         this.status = status;
@@ -69,12 +69,12 @@ public class DistanceTaxModel {
         this.id = id;
     }
 
-    public Double getPrice() {
-        return price;
+    public Double getTax() {
+        return tax;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setTax(Double tax) {
+        this.tax = tax;
     }
 
     public Double getInitialDistance() {

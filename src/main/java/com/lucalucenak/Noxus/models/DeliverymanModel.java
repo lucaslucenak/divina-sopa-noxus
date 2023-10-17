@@ -44,7 +44,7 @@ public class DeliverymanModel {
 
     @JsonIgnore
     @OneToMany(mappedBy = "deliveryman", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<OrderModel> orders;
+    private List<DeliveryModel> deliveries;
 
     public DeliverymanModel() {
     }
@@ -61,12 +61,12 @@ public class DeliverymanModel {
         BeanUtils.copyProperties(deliverymanReturnDto, this);
     }
 
-    public DeliverymanModel(Long id, String name, String cellphoneNumber, StatusModel status, List<OrderModel> orders) {
+    public DeliverymanModel(Long id, String name, String cellphoneNumber, StatusModel status, List<DeliveryModel> deliveries) {
         this.id = id;
         this.name = name;
         this.cellphoneNumber = cellphoneNumber;
         this.status = status;
-        this.orders = orders;
+        this.deliveries = deliveries;
     }
 
     @PrePersist
@@ -108,11 +108,11 @@ public class DeliverymanModel {
         this.status = status;
     }
 
-    public List<OrderModel> getOrders() {
-        return orders;
+    public List<DeliveryModel> getDeliveries() {
+        return deliveries;
     }
 
-    public void setOrders(List<OrderModel> orders) {
-        this.orders = orders;
+    public void setDeliveries(List<DeliveryModel> deliveries) {
+        this.deliveries = deliveries;
     }
 }

@@ -19,7 +19,7 @@ public class OrderPostDto {
     private LocalDateTime arrivalForecast;
 
     @NotNull(message = "Field delivery shouldn't be null")
-    private DeliveryModel delivery;
+    private DeliveryPostDto delivery;
 
     @NotNull(message = "Field clientAccountId shouldn't be null")
     private Long clientAccountId;
@@ -34,7 +34,7 @@ public class OrderPostDto {
     public OrderPostDto() {
     }
 
-    public OrderPostDto(Long id, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, DeliveryModel delivery, Long clientAccountId, Long paymentMethodId, Map<Long, Integer> soupsIds, Map<Long, Integer> drinksIds) {
+    public OrderPostDto(Long id, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, DeliveryPostDto delivery, Long clientAccountId, Long paymentMethodId, Map<Long, Integer> soupsIds, Map<Long, Integer> drinksIds) {
         this.id = id;
         this.observation = observation;
         this.dispatchTime = dispatchTime;
@@ -78,11 +78,11 @@ public class OrderPostDto {
         this.arrivalForecast = arrivalForecast;
     }
 
-    public DeliveryModel getDelivery() {
+    public DeliveryPostDto getDelivery() {
         return delivery;
     }
 
-    public void setDelivery(DeliveryModel delivery) {
+    public void setDelivery(DeliveryPostDto delivery) {
         this.delivery = delivery;
     }
 

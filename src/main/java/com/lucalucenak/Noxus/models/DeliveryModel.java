@@ -38,7 +38,11 @@ public class DeliveryModel {
     @JoinColumn(name = "status_id")
     private StatusModel status;
 
-    private Double price;
+
+    @OneToOne(mappedBy = "delivery", cascade = CascadeType.ALL)
+    private OrderModel order;
+
+    private Double tax;
 
     private Double distance;
 
@@ -57,15 +61,24 @@ public class DeliveryModel {
         BeanUtils.copyProperties(deliveryReturnDto, this);
     }
 
-    public DeliveryModel(Long id, AddressModel address, DeliverymanModel deliveryman, DeliveryTypeModel deliveryType, DistanceTaxModel distanceTax, StatusModel status, Double price, Double distance) {
+    public DeliveryModel(Long id, AddressModel address, DeliverymanModel deliveryman, DeliveryTypeModel deliveryType, DistanceTaxModel distanceTax, StatusModel status, OrderModel order, Double tax, Double distance) {
         this.id = id;
         this.address = address;
         this.deliveryman = deliveryman;
         this.deliveryType = deliveryType;
         this.distanceTax = distanceTax;
         this.status = status;
-        this.price = price;
+        this.order = order;
+        this.tax = tax;
         this.distance = distance;
+    }
+
+    public OrderModel getOrder() {
+        return order;
+    }
+
+    public void setOrder(OrderModel order) {
+        this.order = order;
     }
 
     public Long getId() {
@@ -116,12 +129,12 @@ public class DeliveryModel {
         this.status = status;
     }
 
-    public Double getPrice() {
-        return price;
+    public Double getTax() {
+        return tax;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setTax(Double tax) {
+        this.tax = tax;
     }
 
     public Double getDistance() {

@@ -52,9 +52,12 @@ public class OrderModel {
     @JoinColumn(name = "payment_method_id", nullable = false)
     private PaymentMethodModel paymentMethod;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "delivery_id", referencedColumnName = "id")
+    @OneToOne()
     private DeliveryModel delivery;
+
+//    @ManyToOne
+//    @JoinColumn(name = "deliveryman_id", nullable = false)
+//    private DeliverymanModel deliveryman;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -90,6 +93,8 @@ public class OrderModel {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
+
+
 
     public Long getId() {
         return id;

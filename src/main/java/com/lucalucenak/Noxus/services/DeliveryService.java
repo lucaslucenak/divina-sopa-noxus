@@ -4,8 +4,7 @@ import com.lucalucenak.Noxus.dtos.DeliveryFullDto;
 import com.lucalucenak.Noxus.dtos.post.DeliveryPostDto;
 import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
-import com.lucalucenak.Noxus.models.DeliveryModel;
-import com.lucalucenak.Noxus.models.StatusModel;
+import com.lucalucenak.Noxus.models.*;
 import com.lucalucenak.Noxus.repositories.DeliveryRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +22,15 @@ public class DeliveryService {
     private DeliveryRepository deliveryRepository;
     @Autowired
     private StatusService statusService;
+    @Autowired
+    private DeliveryTypeService deliveryTypeService;
+    @Autowired
+    private AddressService addressService;
+    @Autowired
+    private DeliverymanService deliverymanService;
+    @Autowired
+    private DistanceTaxService distanceTaxService;
+
 
     @Transactional(readOnly = true)
     public DeliveryFullDto findDeliveryById(Long deliveryId) {
@@ -36,19 +44,49 @@ public class DeliveryService {
     }
 
     @Transactional(readOnly = true)
-    public Page<DeliveryFullDto> findAllDeliverysPaginated(Pageable pageable) {
-        Page<DeliveryModel> pagedDeliverys = deliveryRepository.findAll(pageable);
-        return pagedDeliverys.map(DeliveryFullDto::new);
+    public Page<DeliveryFullDto> findAllDeliveriesPaginated(Pageable pageable) {
+        Page<DeliveryModel> pagedDeliveries = deliveryRepository.findAll(pageable);
+        return pagedDeliveries.map(DeliveryFullDto::new);
     }
 
     @Transactional
-    public DeliveryFullDto saveDelivery(DeliveryPostDto deliveryPostDto) {
-        StatusModel statusModel = new StatusModel(statusService.findStatusById(deliveryPostDto.getStatusId()));
-
+    public DeliveryFullDto saveDelivery(DeliveryPostDto deliveryPostDto) throws Exception {
         DeliveryModel deliveryModel = new DeliveryModel(deliveryPostDto);
+
+        DeliveryTypeModel deliveryTypeModel = new DeliveryTypeModel(deliveryTypeService.findDeliveryTypeById(deliveryPostDto.getDeliveryTypeId()));
+        deliveryModel.setDeliveryType(deliveryTypeModel);
+        StatusModel statusModel = new StatusModel(statusService.findStatusById(deliveryPostDto.getStatusId()));
         deliveryModel.setStatus(statusModel);
 
-        return new DeliveryFullDto(deliveryRepository.save(deliveryModel));
+        if (deliveryTypeModel.getDeliveryType().equals("WITHDRAWAL")) {
+            return new DeliveryFullDto(deliveryRepository.save(deliveryModel));
+        }
+
+        else if (deliveryTypeModel.getDeliveryType().equals("DELIVERY")) {
+            AddressModel addressModel = new AddressModel(addressService.findAddressById(deliveryPostDto.getAddressId()));
+            deliveryModel.setAddress(addressModel);
+            DeliverymanModel deliverymanModel = new DeliverymanModel(deliverymanService.findDeliverymanById(deliveryPostDto.getDeliverymanId()));
+            deliveryModel.setDeliveryman(deliverymanModel);
+
+            // Delivery Tax by neighbourhood
+            if (deliveryPostDto.getDistanceTaxId() == null) {
+                Double deliveryTax = addressModel.getNeighbourhood().getDeliveryTax();
+                deliveryModel.setTax(deliveryTax);
+            }
+
+            // By distance tax
+            else {
+                DistanceTaxModel distanceTaxModel = new DistanceTaxModel(distanceTaxService.findDistanceTaxById(deliveryPostDto.getDistanceTaxId()));
+                deliveryModel.setDistanceTax(distanceTaxModel);
+                Double deliveryTax = distanceTaxModel.getTax();
+                deliveryModel.setTax(deliveryTax);
+            }
+
+            return new DeliveryFullDto(deliveryRepository.save(deliveryModel));
+        }
+        else {
+            throw new Exception("Delivery type must be DELIVERY or WITHDRAWAL");
+        }
     }
 
     @Transactional

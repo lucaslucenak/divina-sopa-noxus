@@ -28,6 +28,8 @@ public class OrderFullDto {
     @NotNull(message = "Field delivery shouldn't be null")
     private DeliveryModel delivery;
 
+//    private DeliverymanModel deliveryman;
+
     @NotNull(message = "Field clientAccount shouldn't be null")
     private ClientAccountModel clientAccount;
 
@@ -60,6 +62,7 @@ public class OrderFullDto {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
+
 
     public Long getId() {
         return id;

@@ -19,26 +19,37 @@ public class DeliveryFullDto {
 
     private StatusModel status;
 
-    private Double price;
+    private OrderModel order;
+
+    private Double tax;
 
     private Double distance;
 
     public DeliveryFullDto() {
     }
 
-    public DeliveryFullDto(Long id, AddressModel address, DeliverymanModel deliveryman, DeliveryTypeModel deliveryType, DistanceTaxModel distanceTax, StatusModel status, Double price, Double distance) {
+    public DeliveryFullDto(Long id, AddressModel address, DeliverymanModel deliveryman, DeliveryTypeModel deliveryType, DistanceTaxModel distanceTax, StatusModel status, OrderModel order, Double tax, Double distance) {
         this.id = id;
         this.address = address;
         this.deliveryman = deliveryman;
         this.deliveryType = deliveryType;
         this.distanceTax = distanceTax;
         this.status = status;
-        this.price = price;
+        this.order = order;
+        this.tax = tax;
         this.distance = distance;
     }
 
     public DeliveryFullDto(DeliveryModel deliveryModel) {
         BeanUtils.copyProperties(deliveryModel, this);
+    }
+
+    public OrderModel getOrder() {
+        return order;
+    }
+
+    public void setOrder(OrderModel order) {
+        this.order = order;
     }
 
     public Long getId() {
@@ -89,12 +100,12 @@ public class DeliveryFullDto {
         this.status = status;
     }
 
-    public Double getPrice() {
-        return price;
+    public Double getTax() {
+        return tax;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setTax(Double tax) {
+        this.tax = tax;
     }
 
     public Double getDistance() {
