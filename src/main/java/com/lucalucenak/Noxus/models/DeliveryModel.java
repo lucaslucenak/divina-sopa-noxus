@@ -7,7 +7,11 @@ import com.lucalucenak.Noxus.dtos.response.DeliveryReturnDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "delivery")
@@ -47,6 +51,12 @@ public class DeliveryModel {
 
     private Double distance;
 
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
     public DeliveryModel() {
     }
 
@@ -62,7 +72,7 @@ public class DeliveryModel {
         BeanUtils.copyProperties(deliveryReturnDto, this);
     }
 
-    public DeliveryModel(Long id, AddressModel address, DeliverymanModel deliveryman, DeliveryTypeModel deliveryType, DistanceTaxModel distanceTax, StatusModel status, OrderModel order, Double tax, Double distance) {
+    public DeliveryModel(Long id, AddressModel address, DeliverymanModel deliveryman, DeliveryTypeModel deliveryType, DistanceTaxModel distanceTax, StatusModel status, OrderModel order, Double tax, Double distance, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.address = address;
         this.deliveryman = deliveryman;
@@ -72,6 +82,24 @@ public class DeliveryModel {
         this.order = order;
         this.tax = tax;
         this.distance = distance;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public OrderModel getOrder() {

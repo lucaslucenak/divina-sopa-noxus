@@ -9,7 +9,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class DeliverymanFullDto {
@@ -24,6 +27,10 @@ public class DeliverymanFullDto {
 
     private List<OrderModel> orders;
 
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
     public DeliverymanFullDto() {
     }
 
@@ -31,12 +38,30 @@ public class DeliverymanFullDto {
         BeanUtils.copyProperties(deliverymanModel, this);
     }
 
-    public DeliverymanFullDto(Long id, String name, String cellphoneNumber, StatusModel status, List<OrderModel> orders) {
+    public DeliverymanFullDto(Long id, String name, String cellphoneNumber, StatusModel status, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.cellphoneNumber = cellphoneNumber;
         this.status = status;
         this.orders = orders;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public Long getId() {

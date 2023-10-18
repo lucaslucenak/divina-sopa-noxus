@@ -6,7 +6,11 @@ import com.lucalucenak.Noxus.dtos.response.DistanceTaxReturnDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "distance_tax")
@@ -30,6 +34,12 @@ public class DistanceTaxModel {
     @JoinColumn(name = "status_id", nullable = false)
     private StatusModel status;
 
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
     public DistanceTaxModel() {
     }
 
@@ -45,12 +55,30 @@ public class DistanceTaxModel {
         BeanUtils.copyProperties(distanceTaxReturnDto, this);
     }
 
-    public DistanceTaxModel(Long id, Double tax, Double initialDistance, Double finalDistance, StatusModel status) {
+    public DistanceTaxModel(Long id, Double tax, Double initialDistance, Double finalDistance, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.tax = tax;
         this.initialDistance = initialDistance;
         this.finalDistance = finalDistance;
         this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public StatusModel getStatus() {

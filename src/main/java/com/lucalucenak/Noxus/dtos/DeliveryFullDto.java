@@ -5,6 +5,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import org.springframework.beans.BeanUtils;
 
+import java.time.LocalDateTime;
+
 public class DeliveryFullDto {
 
     private Long id;
@@ -25,10 +27,14 @@ public class DeliveryFullDto {
 
     private Double distance;
 
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
     public DeliveryFullDto() {
     }
 
-    public DeliveryFullDto(Long id, AddressModel address, DeliverymanModel deliveryman, DeliveryTypeModel deliveryType, DistanceTaxModel distanceTax, StatusModel status, OrderModel order, Double tax, Double distance) {
+    public DeliveryFullDto(Long id, AddressModel address, DeliverymanModel deliveryman, DeliveryTypeModel deliveryType, DistanceTaxModel distanceTax, StatusModel status, OrderModel order, Double tax, Double distance, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.address = address;
         this.deliveryman = deliveryman;
@@ -38,6 +44,24 @@ public class DeliveryFullDto {
         this.order = order;
         this.tax = tax;
         this.distance = distance;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public DeliveryFullDto(DeliveryModel deliveryModel) {

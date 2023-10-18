@@ -4,6 +4,8 @@ import com.lucalucenak.Noxus.dtos.DeliveryFullDto;
 import com.lucalucenak.Noxus.models.*;
 import org.springframework.beans.BeanUtils;
 
+import java.time.LocalDateTime;
+
 public class DeliveryReturnDto {
 
     private Long id;
@@ -24,6 +26,10 @@ public class DeliveryReturnDto {
 
     private Double distance;
 
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
     public DeliveryReturnDto() {
     }
 
@@ -35,7 +41,8 @@ public class DeliveryReturnDto {
         BeanUtils.copyProperties(deliveryFullDto, this);
     }
 
-    public DeliveryReturnDto(Long id, AddressModel address, DeliverymanModel deliveryman, DeliveryTypeModel deliveryType, DistanceTaxModel distanceTax, StatusModel status, OrderModel order, Double tax, Double distance) {
+
+    public DeliveryReturnDto(Long id, AddressModel address, DeliverymanModel deliveryman, DeliveryTypeModel deliveryType, DistanceTaxModel distanceTax, StatusModel status, OrderModel order, Double tax, Double distance, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.address = address;
         this.deliveryman = deliveryman;
@@ -45,6 +52,24 @@ public class DeliveryReturnDto {
         this.order = order;
         this.tax = tax;
         this.distance = distance;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public OrderModel getOrder() {

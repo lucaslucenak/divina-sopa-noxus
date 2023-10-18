@@ -5,6 +5,8 @@ import com.lucalucenak.Noxus.models.StatusModel;
 import jakarta.persistence.Column;
 import org.springframework.beans.BeanUtils;
 
+import java.time.LocalDateTime;
+
 public class DistanceTaxFullDto {
 
     private Long id;
@@ -17,6 +19,10 @@ public class DistanceTaxFullDto {
 
     private StatusModel status;
 
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
     public DistanceTaxFullDto() {
     }
 
@@ -24,12 +30,30 @@ public class DistanceTaxFullDto {
         BeanUtils.copyProperties(distanceTaxModel, this);
     }
 
-    public DistanceTaxFullDto(Long id, Double tax, Double initialDistance, Double finalDistance, StatusModel status) {
+    public DistanceTaxFullDto(Long id, Double tax, Double initialDistance, Double finalDistance, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.tax = tax;
         this.initialDistance = initialDistance;
         this.finalDistance = finalDistance;
         this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public StatusModel getStatus() {
