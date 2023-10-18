@@ -15,18 +15,12 @@ public class DeliveryTypeFullDto {
 
     private Long id;
 
-    @NotNull(message = "Field deliveryType shouldn't be null")
-    @NotEmpty(message = "Field deliveryType shouldn't be empty")
-    @NotBlank(message = "Field deliveryType shouldn't be blank")
     private String deliveryType;
 
-    @NotNull(message = "Field orders shouldn't be null")
     private List<DeliveryModel> deliveries;
 
-    @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
 
-    @NotNull(message = "Field updatedAt shouldn't be null")
     private LocalDateTime updatedAt;
 
     public DeliveryTypeFullDto() {

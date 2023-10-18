@@ -28,9 +28,6 @@ public class SizeModel {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    @NotNull(message = "Field size shouldn't be null")
-    @NotEmpty(message = "Field size shouldn't be empty")
-    @NotBlank(message = "Field size shouldn't be blank")
     private String size;
 
     @JsonIgnore

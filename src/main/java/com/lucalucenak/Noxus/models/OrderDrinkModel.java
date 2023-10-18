@@ -22,7 +22,6 @@ public class OrderDrinkModel {
     private OrderDrinkPk id = new OrderDrinkPk();
 
     @Column(nullable = false)
-    @NotNull(message = "Field quantity shouldn't be null")
     private Integer quantity;
 
     @CreatedDate

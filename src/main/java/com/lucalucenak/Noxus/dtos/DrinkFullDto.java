@@ -18,22 +18,14 @@ public class DrinkFullDto {
 
     private Long id;
 
-    @NotNull(message = "Field name shouldn't be null")
-    @NotEmpty(message = "Field name shouldn't be empty")
-    @NotBlank(message = "Field name shouldn't be blank")
     private String name;
 
-    @NotNull(message = "Field price shouldn't be null")
-    @DecimalMin(value = "0.0", inclusive = true)
     private Double price;
 
-    @NotNull(message = "Field status shouldn't be null")
     private StatusModel status;
 
-    @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
 
-    @NotNull(message = "Field updatedAt shouldn't be null")
     private LocalDateTime updatedAt;
 
     public DrinkFullDto() {

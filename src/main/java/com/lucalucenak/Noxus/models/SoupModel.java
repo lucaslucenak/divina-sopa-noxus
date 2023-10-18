@@ -29,14 +29,9 @@ public class SoupModel {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    @NotNull(message = "Field name shouldn't be null")
-    @NotEmpty(message = "Field name shouldn't be empty")
-    @NotBlank(message = "Field name shouldn't be blank")
     private String name;
 
     @Column(nullable = false)
-    @NotNull(message = "Field price shouldn't be null")
-    @DecimalMin(value = "0.0", inclusive = true)
     private Double price;
 
     @ManyToOne

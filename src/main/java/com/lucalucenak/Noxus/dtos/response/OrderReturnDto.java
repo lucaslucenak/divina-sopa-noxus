@@ -16,50 +16,32 @@ public class OrderReturnDto {
 
     private Long id;
 
-    @NotNull(message = "Field orderPrice shouldn't be null")
-    @NotEmpty(message = "Field orderPrice shouldn't be empty")
-    @NotBlank(message = "Field orderPrice shouldn't be blank")
     private Double orderPrice;
 
     private String observation;
 
     private List<OrderReturnSoupFieldDto> soups;
-//    private Map<SoupFullDto, Integer> soups;
 
     List<OrderReturnDrinkFieldDto> drinks;
-//    private Map<DrinkFullDto, Integer> drinks;
 
-    @NotNull(message = "Field status shouldn't be null")
     private StatusModel status;
 
-    @NotNull(message = "Field address shouldn't be null")
     private AddressModel address;
 
-    @NotNull(message = "Field clientAccount shouldn't be null")
     private ClientAccountModel clientAccount;
 
-    @NotNull(message = "Field paymentMethod shouldn't be null")
     private PaymentMethodModel paymentMethod;
 
-    @NotNull(message = "Field delivery shouldn't be null")
     private DeliveryModel delivery;
 
     private DeliverymanModel deliveryman;
 
-    @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
 
-    @NotNull(message = "Field updatedAt shouldn't be null")
     private LocalDateTime updatedAt;
 
-    @NotNull(message = "Field dispatchTime shouldn't be null")
-    @NotEmpty(message = "Field dispatchTime shouldn't be empty")
-    @NotBlank(message = "Field dispatchTime shouldn't be blank")
     private LocalDateTime dispatchTime;
 
-    @NotNull(message = "Field arrivalForecast shouldn't be null")
-    @NotEmpty(message = "Field arrivalForecast shouldn't be empty")
-    @NotBlank(message = "Field arrivalForecast shouldn't be blank")
     private LocalDateTime arrivalForecast;
 
     public OrderReturnDto() {

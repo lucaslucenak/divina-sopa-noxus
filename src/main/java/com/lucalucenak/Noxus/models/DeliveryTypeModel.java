@@ -25,7 +25,6 @@ public class DeliveryTypeModel {
     private Long id;
 
     @Column(nullable = false)
-    @NotNull(message = "Field deliveryType shouldn't be null")
     private String deliveryType;
 
     @JsonIgnore

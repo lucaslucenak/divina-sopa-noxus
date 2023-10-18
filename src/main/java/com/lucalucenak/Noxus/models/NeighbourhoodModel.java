@@ -28,15 +28,10 @@ public class NeighbourhoodModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    @NotNull(message = "Field neighbourhood shouldn't be null")
-    @NotEmpty(message = "Field neighbourhood shouldn't be empty")
-    @NotBlank(message = "Field neighbourhood shouldn't be blank")
+    @Column(nullable = false, unique = true)
     private String neighbourhood;
 
     @Column(nullable = false)
-    @NotNull(message = "Field deliveryTax shouldn't be null")
-    @DecimalMin(value = "0.0", inclusive = true)
     private Double deliveryTax;
 
     @JsonIgnore
