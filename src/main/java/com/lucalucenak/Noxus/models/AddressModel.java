@@ -16,6 +16,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 
 @Entity
 @Table(name = "address")
@@ -106,6 +107,28 @@ public class AddressModel {
         this.deliveries = deliveries;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    @PrePersist
+    public void upperCaseName() {
+        if (streetName != null) {
+            streetName = streetName.toUpperCase(Locale.ROOT);
+        }
+        if (houseNumber != null) {
+            houseNumber = houseNumber.toUpperCase(Locale.ROOT);
+        }
+        if (city != null) {
+            city = city.toUpperCase(Locale.ROOT);
+        }
+        if (cep != null) {
+            cep = cep.toUpperCase(Locale.ROOT);
+        }
+        if (complement != null) {
+            complement = complement.toUpperCase(Locale.ROOT);
+        }
+        if (referencePoint != null) {
+            referencePoint = referencePoint.toUpperCase(Locale.ROOT);
+        }
     }
 
     public Long getId() {

@@ -14,6 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 
 @Entity
 @Table(name = "status")
@@ -25,7 +26,7 @@ public class StatusModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @NotNull(message = "Field status shouldn't be null")
     @NotEmpty(message = "Field status shouldn't be empty")
     @NotBlank(message = "Field status shouldn't be blank")
@@ -59,6 +60,13 @@ public class StatusModel {
         this.orders = orders;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    @PrePersist
+    public void upperCaseName() {
+        if (status != null) {
+            status = status.toUpperCase(Locale.ROOT);
+        }
     }
 
     public Long getId() {
