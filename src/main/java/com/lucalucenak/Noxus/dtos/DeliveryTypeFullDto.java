@@ -1,5 +1,6 @@
 package com.lucalucenak.Noxus.dtos;
 
+import com.lucalucenak.Noxus.models.DeliveryModel;
 import com.lucalucenak.Noxus.models.DeliveryTypeModel;
 import com.lucalucenak.Noxus.models.OrderModel;
 import jakarta.validation.constraints.NotBlank;
@@ -20,7 +21,7 @@ public class DeliveryTypeFullDto {
     private String deliveryType;
 
     @NotNull(message = "Field orders shouldn't be null")
-    private List<OrderModel> orders;
+    private List<DeliveryModel> deliveries;
 
     @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
@@ -35,12 +36,20 @@ public class DeliveryTypeFullDto {
         BeanUtils.copyProperties(deliveryTypeModel, this);
     }
 
-    public DeliveryTypeFullDto(Long id, String deliveryType, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public DeliveryTypeFullDto(Long id, String deliveryType, List<DeliveryModel> deliveries, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.deliveryType = deliveryType;
-        this.orders = orders;
+        this.deliveries = deliveries;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public List<DeliveryModel> getDeliveries() {
+        return deliveries;
+    }
+
+    public void setDeliveries(List<DeliveryModel> deliveries) {
+        this.deliveries = deliveries;
     }
 
     public Long getId() {
@@ -57,14 +66,6 @@ public class DeliveryTypeFullDto {
 
     public void setDeliveryType(String deliveryType) {
         this.deliveryType = deliveryType;
-    }
-
-    public List<OrderModel> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<OrderModel> orders) {
-        this.orders = orders;
     }
 
     public LocalDateTime getCreatedAt() {

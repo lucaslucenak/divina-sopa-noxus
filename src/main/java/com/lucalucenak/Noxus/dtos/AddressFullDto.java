@@ -50,7 +50,7 @@ public class AddressFullDto {
     private StatusModel status;
 
     @NotNull(message = "Field orders shouldn't be null")
-    private List<OrderModel> orders;
+    private List<DeliveryModel> deliveries;
 
     @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
@@ -65,7 +65,7 @@ public class AddressFullDto {
         BeanUtils.copyProperties(addressModel, this);
     }
 
-    public AddressFullDto(Long id, String streetName, String houseNumber, String city, String cep, String complement, String referencePoint, NeighbourhoodModel neighbourhood, ClientAccountModel clientAccount, StatusModel status, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public AddressFullDto(Long id, String streetName, String houseNumber, String city, String cep, String complement, String referencePoint, NeighbourhoodModel neighbourhood, ClientAccountModel clientAccount, StatusModel status, List<DeliveryModel> deliveries, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.streetName = streetName;
         this.houseNumber = houseNumber;
@@ -76,7 +76,7 @@ public class AddressFullDto {
         this.neighbourhood = neighbourhood;
         this.clientAccount = clientAccount;
         this.status = status;
-        this.orders = orders;
+        this.deliveries = deliveries;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -153,12 +153,12 @@ public class AddressFullDto {
         this.clientAccount = clientAccount;
     }
 
-    public List<OrderModel> getOrders() {
-        return orders;
+    public List<DeliveryModel> getDeliveries() {
+        return deliveries;
     }
 
-    public void setOrders(List<OrderModel> orders) {
-        this.orders = orders;
+    public void setDeliveries(List<DeliveryModel> deliveries) {
+        this.deliveries = deliveries;
     }
 
     public LocalDateTime getCreatedAt() {

@@ -1,5 +1,6 @@
 package com.lucalucenak.Noxus.dtos.post;
 
+import com.lucalucenak.Noxus.models.DeliveryModel;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
@@ -17,17 +18,14 @@ public class OrderPostDto {
     @NotNull(message = "Field dispatchTime shouldn't be null")
     private LocalDateTime arrivalForecast;
 
-    @NotNull(message = "Field addressId shouldn't be null")
-    private Long addressId;
+    @NotNull(message = "Field deliveryId shouldn't be null")
+    private Long deliveryId;
 
     @NotNull(message = "Field clientAccountId shouldn't be null")
     private Long clientAccountId;
 
     @NotNull(message = "Field paymentMethodId shouldn't be null")
     private Long paymentMethodId;
-
-    @NotNull(message = "Field deliveryTypeId shouldn't be null")
-    private Long deliveryTypeId;
 
     private Map<Long, Integer> soupsIds; // ID | Quantity
 
@@ -36,15 +34,14 @@ public class OrderPostDto {
     public OrderPostDto() {
     }
 
-    public OrderPostDto(Long id, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, Long addressId, Long clientAccountId, Long paymentMethodId, Long deliveryTypeId, Map<Long, Integer> soupsIds, Map<Long, Integer> drinksIds) {
+    public OrderPostDto(Long id, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, Long deliveryId, Long clientAccountId, Long paymentMethodId, Map<Long, Integer> soupsIds, Map<Long, Integer> drinksIds) {
         this.id = id;
         this.observation = observation;
         this.dispatchTime = dispatchTime;
         this.arrivalForecast = arrivalForecast;
-        this.addressId = addressId;
+        this.deliveryId = deliveryId;
         this.clientAccountId = clientAccountId;
         this.paymentMethodId = paymentMethodId;
-        this.deliveryTypeId = deliveryTypeId;
         this.soupsIds = soupsIds;
         this.drinksIds = drinksIds;
     }
@@ -81,12 +78,12 @@ public class OrderPostDto {
         this.arrivalForecast = arrivalForecast;
     }
 
-    public Long getAddressId() {
-        return addressId;
+    public Long getDeliveryId() {
+        return deliveryId;
     }
 
-    public void setAddressId(Long addressId) {
-        this.addressId = addressId;
+    public void setDeliveryId(Long deliveryId) {
+        this.deliveryId = deliveryId;
     }
 
     public Long getClientAccountId() {
@@ -103,14 +100,6 @@ public class OrderPostDto {
 
     public void setPaymentMethodId(Long paymentMethodId) {
         this.paymentMethodId = paymentMethodId;
-    }
-
-    public Long getDeliveryTypeId() {
-        return deliveryTypeId;
-    }
-
-    public void setDeliveryTypeId(Long deliveryTypeId) {
-        this.deliveryTypeId = deliveryTypeId;
     }
 
     public Map<Long, Integer> getSoupsIds() {

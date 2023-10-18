@@ -41,6 +41,13 @@ public class OrderSoupRepositoryTest {
     private ClientAccountRepository clientAccountRepository;
     @Autowired
     private AddressRepository addressRepository;
+    @Autowired
+    private DeliveryRepository deliveryRepository;
+    @Autowired
+    private DeliverymanRepository deliverymanRepository;
+    @Autowired
+    private DistanceTaxRepository distanceTaxRepository;
+
 
     SizeModel sizeModel;
     StatusModel statusModel;
@@ -53,6 +60,9 @@ public class OrderSoupRepositoryTest {
     OrderModel orderModel;
     OrderSoupPk orderSoupPk;
     OrderSoupModel orderSoupModel;
+    DeliveryModel deliveryModel;
+    DeliverymanModel deliverymanModel;
+    DistanceTaxModel distanceTaxModel;
 
     @BeforeEach
     public void setUp() {
@@ -94,16 +104,37 @@ public class OrderSoupRepositoryTest {
                 .build();
         soupRepository.save(soupModel);
 
+        deliverymanModel = DeliverymanModel.builder()
+                .cellphoneNumber("83986907270")
+                .name("LUCAS")
+                .status(statusModel)
+                .build();
+        distanceTaxModel = DistanceTaxModel.builder()
+                .tax(5.0)
+                .initialDistance(0.0)
+                .finalDistance(2.0)
+                .status(statusModel)
+                .build();
+
+        deliveryModel = DeliveryModel.builder()
+                .address(addressModel)
+                .deliveryman(deliverymanModel)
+                .deliveryType(deliveryTypeModel)
+                .distanceTax(distanceTaxModel)
+                .status(statusModel)
+                .tax(9.0)
+                .distance(5.3)
+                .build();
+
         orderModel = OrderModel.builder()
                 .orderPrice(soupModel.getPrice())
                 .observation("OBSERVATION_TEST")
                 .dispatchTime(LocalDateTime.now().plusHours(2))
                 .arrivalForecast(LocalDateTime.now())
                 .status(statusModel)
-                .address(addressModel)
+                .delivery(deliveryModel)
                 .clientAccount(clientAccountModel)
                 .paymentMethod(paymentMethodModel)
-                .deliveryType(deliveryTypeModel)
                 .build();
         orderRepository.save(orderModel);
 

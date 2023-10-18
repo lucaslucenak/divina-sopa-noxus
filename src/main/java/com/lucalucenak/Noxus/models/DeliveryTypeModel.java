@@ -29,7 +29,7 @@ public class DeliveryTypeModel {
 
     @JsonIgnore
     @OneToMany(mappedBy = "deliveryType", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<OrderModel> orders;
+    private List<DeliveryModel> deliveries;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -44,12 +44,20 @@ public class DeliveryTypeModel {
         BeanUtils.copyProperties(deliveryTypeFullDto, this);
     }
 
-    public DeliveryTypeModel(Long id, String deliveryType, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public DeliveryTypeModel(Long id, String deliveryType, List<DeliveryModel> deliveries, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.deliveryType = deliveryType;
-        this.orders = orders;
+        this.deliveries = deliveries;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public List<DeliveryModel> getDeliveries() {
+        return deliveries;
+    }
+
+    public void setDeliveries(List<DeliveryModel> deliveries) {
+        this.deliveries = deliveries;
     }
 
     public Long getId() {
@@ -66,14 +74,6 @@ public class DeliveryTypeModel {
 
     public void setDeliveryType(String deliveryType) {
         this.deliveryType = deliveryType;
-    }
-
-    public List<OrderModel> getOrders() {
-        return orders;
-    }
-
-    public void setOrders(List<OrderModel> orders) {
-        this.orders = orders;
     }
 
     public LocalDateTime getCreatedAt() {

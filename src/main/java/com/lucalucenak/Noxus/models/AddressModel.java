@@ -69,7 +69,7 @@ public class AddressModel {
 
     @JsonIgnore
     @OneToMany(mappedBy = "address", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<OrderModel> orders;
+    private List<DeliveryModel> deliveries;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -92,7 +92,7 @@ public class AddressModel {
         BeanUtils.copyProperties(addressPostDto, this);
     }
 
-    public AddressModel(Long id, String streetName, String houseNumber, String city, String cep, String complement, String referencePoint, NeighbourhoodModel neighbourhood, ClientAccountModel clientAccount, StatusModel status, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public AddressModel(Long id, String streetName, String houseNumber, String city, String cep, String complement, String referencePoint, NeighbourhoodModel neighbourhood, ClientAccountModel clientAccount, StatusModel status, List<DeliveryModel> deliveries, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.streetName = streetName;
         this.houseNumber = houseNumber;
@@ -103,7 +103,7 @@ public class AddressModel {
         this.neighbourhood = neighbourhood;
         this.clientAccount = clientAccount;
         this.status = status;
-        this.orders = orders;
+        this.deliveries = deliveries;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -180,12 +180,12 @@ public class AddressModel {
         this.clientAccount = clientAccount;
     }
 
-    public List<OrderModel> getOrders() {
-        return orders;
+    public List<DeliveryModel> getDeliveries() {
+        return deliveries;
     }
 
-    public void setOrders(List<OrderModel> orders) {
-        this.orders = orders;
+    public void setDeliveries(List<DeliveryModel> deliveries) {
+        this.deliveries = deliveries;
     }
 
     public LocalDateTime getCreatedAt() {

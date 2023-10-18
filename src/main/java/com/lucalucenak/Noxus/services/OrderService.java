@@ -46,6 +46,8 @@ public class OrderService {
     private OrderDrinkService orderDrinkService;
     @Autowired
     private StatusService statusService;
+    @Autowired
+    private DeliveryService deliveryService;
 
     @Transactional
     public OrderReturnDto findOrderById(Long orderId) {
@@ -132,28 +134,26 @@ public class OrderService {
 
 
     @Transactional
-    public OrderReturnDto saveOrder(OrderPostDto orderPostDto) {
+    public OrderReturnDto saveOrder(OrderPostDto orderPostDto) throws Exception {
         OrderModel orderModel = new OrderModel(orderPostDto);
         Double orderPrice = 0.0;
 
-        AddressModel addressModel = new AddressModel(addressService.findAddressById(orderPostDto.getAddressId()));
-        orderModel.setAddress(addressModel);
+        DeliveryModel deliveryModel = new DeliveryModel(deliveryService.findDeliveryById(orderPostDto.getDeliveryId()));
+        orderModel.setDelivery(deliveryModel);
         ClientAccountModel clientAccountModel = new ClientAccountModel(clientAccountService.findClientAccountById(orderPostDto.getClientAccountId()));
         orderModel.setClientAccount(clientAccountModel);
         PaymentMethodModel paymentMethodModel = new PaymentMethodModel(paymentMethodService.findPaymentMethodById(orderPostDto.getPaymentMethodId()));
         orderModel.setPaymentMethod(paymentMethodModel);
-        DeliveryTypeModel deliveryTypeModel = new DeliveryTypeModel(deliveryTypeService.findDeliveryTypeById(orderPostDto.getDeliveryTypeId()));
-        orderModel.setDeliveryType(deliveryTypeModel);
         StatusModel statusModel = new StatusModel(statusService.findStatusByStatus("ORDERED"));
         orderModel.setStatus(statusModel);
 
         if (!addressService.belongsToClientAccount(clientAccountModel.getId())) {
-            throw new AddressNotBelongingToClientAccountException("The given address doesn't belongs to the given client account. Client Account id: " + clientAccountModel.getId() + " | Address id: " + addressModel.getId());
+            throw new AddressNotBelongingToClientAccountException("The given address doesn't belongs to the given client account. Client Account id: " + clientAccountModel.getId() + " | Address id: " + deliveryModel.getAddress().getId());
         }
 
         // Setting Order Price
-        if (deliveryTypeModel.getDeliveryType().equals("DELIVERY")) {
-            orderPrice += addressModel.getNeighbourhood().getDeliveryTax();
+        if (deliveryModel.getDeliveryType().getDeliveryType().equals("DELIVERY")) {
+            orderPrice += deliveryModel.getTax();
         }
 
         for (Map.Entry<Long, Integer> i : orderPostDto.getSoupsIds().entrySet()) {
@@ -219,7 +219,7 @@ public class OrderService {
     }
 
     @Transactional
-    public OrderReturnDto updateOrder(Long orderId, OrderPostDto orderPostDto) {
+    public OrderReturnDto updateOrder(Long orderId, OrderPostDto orderPostDto) throws Exception {
         if (!orderId.equals(orderPostDto.getId())) {
             throw new IncompatibleIdsException("Path param Id and body Id must be equals. Path Param Id: " + orderId + ", Body Id: " + orderPostDto.getId());
         }
@@ -228,21 +228,19 @@ public class OrderService {
         OrderModel updatedOrderModel = new OrderModel(orderPostDto);
         Double orderPrice = 0.0;
 
-        AddressModel addressModel = new AddressModel(addressService.findAddressById(orderPostDto.getAddressId()));
-        updatedOrderModel.setAddress(addressModel);
+        DeliveryModel deliveryModel = new DeliveryModel(deliveryService.findDeliveryById(orderPostDto.getDeliveryId()));
+        updatedOrderModel.setDelivery(deliveryModel);
         ClientAccountModel clientAccountModel = new ClientAccountModel(clientAccountService.findClientAccountById(orderPostDto.getClientAccountId()));
         updatedOrderModel.setClientAccount(clientAccountModel);
         PaymentMethodModel paymentMethodModel = new PaymentMethodModel(paymentMethodService.findPaymentMethodById(orderPostDto.getPaymentMethodId()));
         updatedOrderModel.setPaymentMethod(paymentMethodModel);
-        DeliveryTypeModel deliveryTypeModel = new DeliveryTypeModel(deliveryTypeService.findDeliveryTypeById(orderPostDto.getDeliveryTypeId()));
-        updatedOrderModel.setDeliveryType(deliveryTypeModel);
         StatusModel statusModel = new StatusModel(statusService.findStatusByStatus("ORDERED"));
         updatedOrderModel.setStatus(statusModel);
 
 
         // Setting Order Price
-        if (deliveryTypeModel.getDeliveryType().equals("DELIVERY")) {
-            orderPrice += addressModel.getNeighbourhood().getDeliveryTax();
+        if (deliveryModel.getDeliveryType().getDeliveryType().equals("DELIVERY")) {
+            orderPrice += deliveryModel.getTax();
         }
 
         for (Map.Entry<Long, Integer> i : orderPostDto.getSoupsIds().entrySet()) {

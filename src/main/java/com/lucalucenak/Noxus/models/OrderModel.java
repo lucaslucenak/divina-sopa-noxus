@@ -45,10 +45,6 @@ public class OrderModel {
     private StatusModel status;
 
     @ManyToOne
-    @JoinColumn(name = "address_id", nullable = false)
-    private AddressModel address;
-
-    @ManyToOne
     @JoinColumn(name = "client_account_id", nullable = false)
     private ClientAccountModel clientAccount;
 
@@ -56,9 +52,12 @@ public class OrderModel {
     @JoinColumn(name = "payment_method_id", nullable = false)
     private PaymentMethodModel paymentMethod;
 
-    @ManyToOne
-    @JoinColumn(name = "delivery_type_id", nullable = false)
-    private DeliveryTypeModel deliveryType;
+    @OneToOne()
+    private DeliveryModel delivery;
+
+//    @ManyToOne
+//    @JoinColumn(name = "deliveryman_id", nullable = false)
+//    private DeliverymanModel deliveryman;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -81,20 +80,21 @@ public class OrderModel {
         BeanUtils.copyProperties(orderReturnDto, this);
     }
 
-    public OrderModel(Long id, Double orderPrice, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, StatusModel status, AddressModel address, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, DeliveryTypeModel deliveryType, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public OrderModel(Long id, Double orderPrice, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, StatusModel status, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, DeliveryModel delivery, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.orderPrice = orderPrice;
         this.observation = observation;
         this.dispatchTime = dispatchTime;
         this.arrivalForecast = arrivalForecast;
         this.status = status;
-        this.address = address;
         this.clientAccount = clientAccount;
         this.paymentMethod = paymentMethod;
-        this.deliveryType = deliveryType;
+        this.delivery = delivery;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
+
+
 
     public Long getId() {
         return id;
@@ -144,14 +144,6 @@ public class OrderModel {
         this.status = status;
     }
 
-    public AddressModel getAddress() {
-        return address;
-    }
-
-    public void setAddress(AddressModel address) {
-        this.address = address;
-    }
-
     public ClientAccountModel getClientAccount() {
         return clientAccount;
     }
@@ -168,12 +160,12 @@ public class OrderModel {
         this.paymentMethod = paymentMethod;
     }
 
-    public DeliveryTypeModel getDeliveryType() {
-        return deliveryType;
+    public DeliveryModel getDelivery() {
+        return delivery;
     }
 
-    public void setDeliveryType(DeliveryTypeModel deliveryType) {
-        this.deliveryType = deliveryType;
+    public void setDelivery(DeliveryModel delivery) {
+        this.delivery = delivery;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -192,21 +184,4 @@ public class OrderModel {
         this.updatedAt = updatedAt;
     }
 
-    @Override
-    public String toString() {
-        return "OrderModel{" +
-                "id=" + id +
-                ", orderPrice=" + orderPrice +
-                ", observation='" + observation + '\'' +
-                ", dispatchTime=" + dispatchTime +
-                ", arrivalForecast=" + arrivalForecast +
-                ", status=" + status +
-                ", address=" + address +
-                ", clientAccount=" + clientAccount +
-                ", paymentMethod=" + paymentMethod +
-                ", deliveryType=" + deliveryType +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                '}';
-    }
 }

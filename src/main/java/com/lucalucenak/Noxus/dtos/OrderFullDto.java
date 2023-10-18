@@ -25,17 +25,16 @@ public class OrderFullDto {
     @NotNull(message = "Field status shouldn't be null")
     private StatusModel status;
 
-    @NotNull(message = "Field address shouldn't be null")
-    private AddressModel address;
+    @NotNull(message = "Field delivery shouldn't be null")
+    private DeliveryModel delivery;
+
+//    private DeliverymanModel deliveryman;
 
     @NotNull(message = "Field clientAccount shouldn't be null")
     private ClientAccountModel clientAccount;
 
     @NotNull(message = "Field paymentMethod shouldn't be null")
     private PaymentMethodModel paymentMethod;
-
-    @NotNull(message = "Field deliveryType shouldn't be null")
-    private DeliveryTypeModel deliveryType;
 
     @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
@@ -50,20 +49,20 @@ public class OrderFullDto {
         BeanUtils.copyProperties(orderModel, this);
     }
 
-    public OrderFullDto(Long id, Double orderPrice, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, StatusModel status, AddressModel address, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, DeliveryTypeModel deliveryType, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public OrderFullDto(Long id, Double orderPrice, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, StatusModel status, DeliveryModel delivery, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.orderPrice = orderPrice;
         this.observation = observation;
         this.dispatchTime = dispatchTime;
         this.arrivalForecast = arrivalForecast;
         this.status = status;
-        this.address = address;
+        this.delivery = delivery;
         this.clientAccount = clientAccount;
         this.paymentMethod = paymentMethod;
-        this.deliveryType = deliveryType;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
+
 
     public Long getId() {
         return id;
@@ -113,12 +112,12 @@ public class OrderFullDto {
         this.status = status;
     }
 
-    public AddressModel getAddress() {
-        return address;
+    public DeliveryModel getDelivery() {
+        return delivery;
     }
 
-    public void setAddress(AddressModel address) {
-        this.address = address;
+    public void setDelivery(DeliveryModel delivery) {
+        this.delivery = delivery;
     }
 
     public ClientAccountModel getClientAccount() {
@@ -135,14 +134,6 @@ public class OrderFullDto {
 
     public void setPaymentMethod(PaymentMethodModel paymentMethod) {
         this.paymentMethod = paymentMethod;
-    }
-
-    public DeliveryTypeModel getDeliveryType() {
-        return deliveryType;
-    }
-
-    public void setDeliveryType(DeliveryTypeModel deliveryType) {
-        this.deliveryType = deliveryType;
     }
 
     public LocalDateTime getCreatedAt() {
