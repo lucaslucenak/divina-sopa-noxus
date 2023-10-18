@@ -20,12 +20,11 @@ public class DeliveryPostDto {
 
     private Double distance;
 
-    private Double tax;
 
     public DeliveryPostDto() {
     }
 
-    public DeliveryPostDto(Long id, Long addressId, Long deliverymanId, Long deliveryTypeId, Long distanceTaxId, Long statusId, Double distance, Double tax) {
+    public DeliveryPostDto(Long id, Long addressId, Long deliverymanId, Long deliveryTypeId, Long distanceTaxId, Long statusId, Double distance) {
         this.id = id;
         this.addressId = addressId;
         this.deliverymanId = deliverymanId;
@@ -33,15 +32,6 @@ public class DeliveryPostDto {
         this.distanceTaxId = distanceTaxId;
         this.statusId = statusId;
         this.distance = distance;
-        this.tax = tax;
-    }
-
-    public Double getTax() {
-        return tax;
-    }
-
-    public void setTax(Double tax) {
-        this.tax = tax;
     }
 
     public Double getDistance() {

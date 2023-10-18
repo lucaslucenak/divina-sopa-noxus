@@ -83,7 +83,6 @@ public class DeliveryService {
                 Double deliveryTax = distanceTaxModel.getTax();
                 deliveryModel.setTax(deliveryTax);
             }
-
             return new DeliveryFullDto(deliveryRepository.save(deliveryModel));
         }
         else {
