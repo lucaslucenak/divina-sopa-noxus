@@ -16,6 +16,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 
 @Entity
 @Table(name = "neighbourhood")
@@ -71,6 +72,13 @@ public class NeighbourhoodModel {
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    @PrePersist
+    public void upperCaseName() {
+        if (neighbourhood != null) {
+            neighbourhood = neighbourhood.toUpperCase(Locale.ROOT);
+        }
     }
 
     public Long getId() {

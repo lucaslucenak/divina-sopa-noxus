@@ -12,6 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 
 @Entity
 @Table(name = "delivery_type")
@@ -50,6 +51,13 @@ public class DeliveryTypeModel {
         this.deliveries = deliveries;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    @PrePersist
+    public void upperCaseName() {
+        if (deliveryType != null) {
+            deliveryType = deliveryType.toUpperCase(Locale.ROOT);
+        }
     }
 
     public List<DeliveryModel> getDeliveries() {

@@ -15,6 +15,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 
 @Entity
 @Table(name = "drink")
@@ -26,7 +27,7 @@ public class DrinkModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @NotNull(message = "Field name shouldn't be null")
     @NotEmpty(message = "Field name shouldn't be empty")
     @NotBlank(message = "Field name shouldn't be blank")
@@ -64,6 +65,13 @@ public class DrinkModel {
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    @PrePersist
+    public void upperCaseName() {
+        if (name != null) {
+            name = name.toUpperCase(Locale.ROOT);
+        }
     }
 
     public Long getId() {
