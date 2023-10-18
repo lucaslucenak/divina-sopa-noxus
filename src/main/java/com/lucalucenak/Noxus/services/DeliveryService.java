@@ -47,6 +47,7 @@ public class DeliveryService {
     @Transactional(readOnly = true)
     public Page<DeliveryFullDto> findAllDeliveriesPaginated(Pageable pageable) {
         Page<DeliveryModel> pagedDeliveries = deliveryRepository.findAll(pageable);
+        System.out.println(pagedDeliveries);
         return pagedDeliveries.map(DeliveryFullDto::new);
     }
 

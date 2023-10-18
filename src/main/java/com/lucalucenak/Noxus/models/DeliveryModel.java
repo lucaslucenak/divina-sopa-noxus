@@ -1,5 +1,6 @@
 package com.lucalucenak.Noxus.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lucalucenak.Noxus.dtos.DeliveryFullDto;
 import com.lucalucenak.Noxus.dtos.post.DeliveryPostDto;
 import com.lucalucenak.Noxus.dtos.response.DeliveryReturnDto;
@@ -38,7 +39,7 @@ public class DeliveryModel {
     @JoinColumn(name = "status_id")
     private StatusModel status;
 
-
+    @JsonIgnore
     @OneToOne(mappedBy = "delivery", cascade = CascadeType.ALL)
     private OrderModel order;
 
