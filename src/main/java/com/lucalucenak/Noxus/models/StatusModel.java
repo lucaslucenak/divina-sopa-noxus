@@ -27,9 +27,6 @@ public class StatusModel {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    @NotNull(message = "Field status shouldn't be null")
-    @NotEmpty(message = "Field status shouldn't be empty")
-    @NotBlank(message = "Field status shouldn't be blank")
     private String status;
 
     @JsonIgnore

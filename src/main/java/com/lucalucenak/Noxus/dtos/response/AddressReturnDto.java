@@ -16,46 +16,26 @@ public class AddressReturnDto {
 
     private Long id;
 
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
     private String streetName;
 
-    @NotNull(message = "Field houseNumber shouldn't be null")
-    @NotEmpty(message = "Field houseNumber shouldn't be empty")
-    @NotBlank(message = "Field houseNumber shouldn't be blank")
     private String houseNumber;
 
-    @NotNull(message = "Field city shouldn't be null")
-    @NotEmpty(message = "Field city shouldn't be empty")
-    @NotBlank(message = "Field city shouldn't be blank")
     private String city;
 
-    @NotNull(message = "Field cep shouldn't be null")
-    @NotEmpty(message = "Field cep shouldn't be empty")
-    @NotBlank(message = "Field cep shouldn't be blank")
     private String cep;
 
     private String complement;
 
-    @NotNull(message = "Field referencePoint shouldn't be null")
-    @NotEmpty(message = "Field referencePoint shouldn't be empty")
-    @NotBlank(message = "Field referencePoint shouldn't be blank")
     private String referencePoint;
 
-    @NotNull(message = "Field neighbourhood shouldn't be null")
     private NeighbourhoodModel neighbourhood;
 
-    @NotNull(message = "Field clientAccount shouldn't be null")
     private ClientAccountModel clientAccount;
 
-    @NotNull(message = "Field status shouldn't be null")
     private StatusModel status;
 
-    @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
 
-    @NotNull(message = "Field updatedAt shouldn't be null")
     private LocalDateTime updatedAt;
 
     public AddressReturnDto() {

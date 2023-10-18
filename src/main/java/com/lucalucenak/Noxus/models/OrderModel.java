@@ -26,18 +26,15 @@ public class OrderModel {
     private Long id;
 
     @Column(nullable = false)
-    @NotNull(message = "Field orderPrice shouldn't be null")
     private Double orderPrice;
 
     @Column(nullable = true)
     private String observation;
 
     @Column(nullable = false)
-    @NotNull(message = "Field dispatchTime shouldn't be null")
     private LocalDateTime dispatchTime;
 
     @Column(nullable = false)
-    @NotNull(message = "Field arrivalForecast shouldn't be null")
     private LocalDateTime arrivalForecast;
 
     @ManyToOne
@@ -52,12 +49,8 @@ public class OrderModel {
     @JoinColumn(name = "payment_method_id", nullable = false)
     private PaymentMethodModel paymentMethod;
 
-    @OneToOne()
+    @OneToOne
     private DeliveryModel delivery;
-
-//    @ManyToOne
-//    @JoinColumn(name = "deliveryman_id", nullable = false)
-//    private DeliverymanModel deliveryman;
 
     @CreatedDate
     private LocalDateTime createdAt;

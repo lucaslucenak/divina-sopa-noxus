@@ -15,18 +15,12 @@ public class PaymentMethodFullDto {
 
     private Long id;
 
-    @NotNull(message = "Field paymentMethod shouldn't be null")
-    @NotEmpty(message = "Field paymentMethod shouldn't be empty")
-    @NotBlank(message = "Field paymentMethod shouldn't be blank")
     private PaymentMethodEnum paymentMethod;
 
-    @NotNull(message = "Field orders shouldn't be null")
     private List<OrderModel> orders;
 
-    @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
 
-    @NotNull(message = "Field updatedAt shouldn't be null")
     private LocalDateTime updatedAt;
 
     public PaymentMethodFullDto() {

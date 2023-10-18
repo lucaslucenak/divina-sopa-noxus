@@ -24,10 +24,10 @@ public class DistanceTaxModel {
 
     private Double tax;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private Double initialDistance;
 
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private Double finalDistance;
 
     @ManyToOne

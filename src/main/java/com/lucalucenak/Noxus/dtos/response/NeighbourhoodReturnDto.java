@@ -16,21 +16,14 @@ public class NeighbourhoodReturnDto {
 
     private Long id;
 
-    @NotNull(message = "Field neighbourhood shouldn't be null")
-    @NotEmpty(message = "Field neighbourhood shouldn't be empty")
-    @NotBlank(message = "Field neighbourhood shouldn't be blank")
     private String neighbourhood;
 
-    @NotNull(message = "Field deliveryTax shouldn't be null")
     private Double deliveryTax;
 
-    @NotNull(message = "Field status shouldn't be null")
     private StatusModel status;
 
-    @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
 
-    @NotNull(message = "Field updatedAt shouldn't be null")
     private LocalDateTime updatedAt;
 
     public NeighbourhoodReturnDto() {

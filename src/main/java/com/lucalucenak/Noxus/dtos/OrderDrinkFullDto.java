@@ -11,13 +11,10 @@ public class OrderDrinkFullDto {
 
     private OrderDrinkPk id;
 
-    @NotNull(message = "Field quantity shouldn't be null")
     private Integer quantity;
 
-    @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
 
-    @NotNull(message = "Field updatedAt shouldn't be null")
     private LocalDateTime updatedAt;
 
     public OrderDrinkFullDto() {

@@ -26,9 +26,8 @@ public class PaymentMethodModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "Field paymentMethod shouldn't be null")
     private PaymentMethodEnum paymentMethod;
 
     @JsonIgnore

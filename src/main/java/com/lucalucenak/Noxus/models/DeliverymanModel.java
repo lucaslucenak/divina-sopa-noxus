@@ -29,20 +29,13 @@ public class DeliverymanModel {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    @NotNull(message = "Field name shouldn't be null")
-    @NotEmpty(message = "Field name shouldn't be empty")
-    @NotBlank(message = "Field name shouldn't be blank")
     private String name;
 
     @Column(nullable = false, unique = true)
-    @NotNull(message = "Field cellphoneNumber shouldn't be null")
-    @NotEmpty(message = "Field cellphoneNumber shouldn't be empty")
-    @NotBlank(message = "Field cellphoneNumber shouldn't be blank")
     private String cellphoneNumber;
 
     @ManyToOne
     @JoinColumn(name = "status_id", nullable = false)
-    @NotNull(message = "Field status shouldn't be null")
     private StatusModel status;
 
     @JsonIgnore

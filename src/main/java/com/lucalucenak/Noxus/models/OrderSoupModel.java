@@ -22,7 +22,6 @@ public class OrderSoupModel {
     private OrderSoupPk id = new OrderSoupPk();
 
     @Column(nullable = false)
-    @NotNull(message = "Field quantity shouldn't be null")
     private Integer quantity;
 
     @CreatedDate

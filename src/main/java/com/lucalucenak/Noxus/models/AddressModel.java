@@ -29,31 +29,21 @@ public class AddressModel {
     private Long id;
 
     @Column(nullable = false)
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
     private String streetName;
+
     @Column(nullable = false)
-    @NotNull(message = "Field houseNumber shouldn't be null")
-    @NotEmpty(message = "Field houseNumber shouldn't be empty")
-    @NotBlank(message = "Field houseNumber shouldn't be blank")
     private String houseNumber;
+
     @Column(nullable = false)
-    @NotNull(message = "Field city shouldn't be null")
-    @NotEmpty(message = "Field city shouldn't be empty")
-    @NotBlank(message = "Field city shouldn't be blank")
     private String city;
+
     @Column(nullable = false)
-    @NotNull(message = "Field cep shouldn't be null")
-    @NotEmpty(message = "Field cep shouldn't be empty")
-    @NotBlank(message = "Field cep shouldn't be blank")
     private String cep;
+
     @Column(nullable = true)
     private String complement;
+
     @Column(nullable = false)
-    @NotNull(message = "Field referencePoint shouldn't be null")
-    @NotEmpty(message = "Field referencePoint shouldn't be empty")
-    @NotBlank(message = "Field referencePoint shouldn't be blank")
     private String referencePoint;
 
     @ManyToOne

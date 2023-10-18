@@ -17,21 +17,14 @@ public class SizeFullDto {
 
     private Long id;
 
-    @NotNull(message = "Field size shouldn't be null")
-    @NotEmpty(message = "Field size shouldn't be empty")
-    @NotBlank(message = "Field size shouldn't be blank")
     private String size;
 
-    @NotNull(message = "Field soups shouldn't be null")
     private List<SoupModel> soups;
 
-    @NotNull(message = "Field status shouldn't be null")
     private StatusModel status;
 
-    @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
 
-    @NotNull(message = "Field updatedAt shouldn't be null")
     private LocalDateTime updatedAt;
 
     public SizeFullDto() {

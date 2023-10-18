@@ -11,35 +11,24 @@ public class OrderFullDto {
 
     private Long id;
 
-    @NotNull(message = "Field orderPrice shouldn't be null")
     private Double orderPrice;
 
     private String observation;
 
-    @NotNull(message = "Field dispatchTime shouldn't be null")
     private LocalDateTime dispatchTime;
 
-    @NotNull(message = "Field arrivalForecast shouldn't be null")
     private LocalDateTime arrivalForecast;
 
-    @NotNull(message = "Field status shouldn't be null")
     private StatusModel status;
 
-    @NotNull(message = "Field delivery shouldn't be null")
     private DeliveryModel delivery;
 
-//    private DeliverymanModel deliveryman;
-
-    @NotNull(message = "Field clientAccount shouldn't be null")
     private ClientAccountModel clientAccount;
 
-    @NotNull(message = "Field paymentMethod shouldn't be null")
     private PaymentMethodModel paymentMethod;
 
-    @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
 
-    @NotNull(message = "Field updatedAt shouldn't be null")
     private LocalDateTime updatedAt;
 
     public OrderFullDto() {

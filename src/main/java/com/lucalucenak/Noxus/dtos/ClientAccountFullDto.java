@@ -22,48 +22,26 @@ public class ClientAccountFullDto {
 
     private Long id;
 
-    @NotNull(message = "Field firstName shouldn't be null")
-    @NotEmpty(message = "Field firstName shouldn't be empty")
-    @NotBlank(message = "Field firstName shouldn't be blank")
     private String firstName;
 
-    @NotNull(message = "Field lastName shouldn't be null")
-    @NotEmpty(message = "Field lastName shouldn't be empty")
-    @NotBlank(message = "Field lastName shouldn't be blank")
     private String lastName;
 
-    @NotNull(message = "Field cpf shouldn't be null")
-    @NotEmpty(message = "Field cpf shouldn't be empty")
-    @NotBlank(message = "Field cpf shouldn't be blank")
-    @CPF
     private String cpf;
 
-    @NotNull(message = "Field email shouldn't be null")
-    @NotEmpty(message = "Field email shouldn't be empty")
-    @NotBlank(message = "Field email shouldn't be blank")
-    @Email
     private String email;
 
-    @NotNull(message = "Field cellphoneNumber shouldn't be null")
-    @NotEmpty(message = "Field cellphoneNumber shouldn't be empty")
-    @NotBlank(message = "Field cellphoneNumber shouldn't be blank")
     private String cellphoneNumber;
 
     private Integer placedOrdersQuantity;
 
-    @NotNull(message = "Field status shouldn't be null")
     private StatusModel status;
 
-    @NotNull(message = "Field addresses shouldn't be null")
     private List<AddressModel> addresses;
 
-    @NotNull(message = "Field orders shouldn't be null")
     private List<OrderModel> orders;
 
-    @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
 
-    @NotNull(message = "Field updatedAt shouldn't be null")
     private LocalDateTime updatedAt;
 
     public ClientAccountFullDto() {
