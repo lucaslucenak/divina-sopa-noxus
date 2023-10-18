@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotNull;
 
 public class DeliverymanPostDto {
 
-    @NotNull(message = "Field id shouldn't be null")
     private Long id;
 
     @NotNull(message = "Field name shouldn't be null")
