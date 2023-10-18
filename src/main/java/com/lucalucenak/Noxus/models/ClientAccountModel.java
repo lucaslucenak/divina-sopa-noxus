@@ -56,6 +56,12 @@ public class ClientAccountModel {
     private String email;
 
     @Column(nullable = false)
+    @NotNull(message = "Field cellphoneNumber shouldn't be null")
+    @NotEmpty(message = "Field cellphoneNumber shouldn't be empty")
+    @NotBlank(message = "Field cellphoneNumber shouldn't be blank")
+    private String cellphoneNumber;
+
+    @Column(nullable = false)
     private Integer placedOrdersQuantity;
 
     @ManyToOne
@@ -91,18 +97,27 @@ public class ClientAccountModel {
         BeanUtils.copyProperties(clientAccountReturnDto, this);
     }
 
-    public ClientAccountModel(Long id, String firstName, String lastName, String cpf, String email, Integer placedOrdersQuantity, StatusModel status, List<AddressModel> addresses, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ClientAccountModel(Long id, String firstName, String lastName, String cpf, String email, String cellphoneNumber, Integer placedOrdersQuantity, StatusModel status, List<AddressModel> addresses, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.cpf = cpf;
         this.email = email;
+        this.cellphoneNumber = cellphoneNumber;
         this.placedOrdersQuantity = placedOrdersQuantity;
         this.status = status;
         this.addresses = addresses;
         this.orders = orders;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public String getCellphoneNumber() {
+        return cellphoneNumber;
+    }
+
+    public void setCellphoneNumber(String cellphoneNumber) {
+        this.cellphoneNumber = cellphoneNumber;
     }
 
     public Long getId() {
