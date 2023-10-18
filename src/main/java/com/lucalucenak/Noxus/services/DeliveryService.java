@@ -3,6 +3,7 @@ package com.lucalucenak.Noxus.services;
 import com.lucalucenak.Noxus.dtos.DeliveryFullDto;
 import com.lucalucenak.Noxus.dtos.post.DeliveryPostDto;
 import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
+import com.lucalucenak.Noxus.exceptions.NotRecognizedDeliveryTypeException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.*;
 import com.lucalucenak.Noxus.repositories.DeliveryRepository;
@@ -85,7 +86,7 @@ public class DeliveryService {
             return new DeliveryFullDto(deliveryRepository.save(deliveryModel));
         }
         else {
-            throw new Exception("Delivery type must be DELIVERY or WITHDRAWAL");
+            throw new NotRecognizedDeliveryTypeException("Delivery type must be DELIVERY or WITHDRAWAL");
         }
     }
 
@@ -100,11 +101,43 @@ public class DeliveryService {
 
         // Updating Delivery
         DeliveryModel updatedDeliveryModel = new DeliveryModel(deliveryPostDto);
+
         StatusModel statusModel = new StatusModel(statusService.findStatusById(deliveryPostDto.getStatusId()));
         updatedDeliveryModel.setStatus(statusModel);
-        BeanUtils.copyProperties(updatedDeliveryModel, existentDeliveryModel, "createdAt, updatedAt");
+        DeliveryTypeModel deliveryTypeModel = new DeliveryTypeModel(deliveryTypeService.findDeliveryTypeById(deliveryPostDto.getDeliveryTypeId()));
+        updatedDeliveryModel.setDeliveryType(deliveryTypeModel);
 
-        return new DeliveryFullDto(deliveryRepository.save(existentDeliveryModel));
+        if (deliveryTypeModel.getDeliveryType().equals("WITHDRAWAL")) {
+            BeanUtils.copyProperties(updatedDeliveryModel, existentDeliveryModel, "createdAt, updatedAt");
+            return new DeliveryFullDto(deliveryRepository.save(updatedDeliveryModel));
+        }
+
+        else if (deliveryTypeModel.getDeliveryType().equals("DELIVERY")) {
+            AddressModel addressModel = new AddressModel(addressService.findAddressById(deliveryPostDto.getAddressId()));
+            updatedDeliveryModel.setAddress(addressModel);
+            DeliverymanModel deliverymanModel = new DeliverymanModel(deliverymanService.findDeliverymanById(deliveryPostDto.getDeliverymanId()));
+            updatedDeliveryModel.setDeliveryman(deliverymanModel);
+
+            // Delivery Tax by neighbourhood
+            if (deliveryPostDto.getDistanceTaxId() == null) {
+                Double deliveryTax = addressModel.getNeighbourhood().getDeliveryTax();
+                updatedDeliveryModel.setTax(deliveryTax);
+            }
+
+            // By distance tax
+            else {
+                DistanceTaxModel distanceTaxModel = new DistanceTaxModel(distanceTaxService.findDistanceTaxById(deliveryPostDto.getDistanceTaxId()));
+                updatedDeliveryModel.setDistanceTax(distanceTaxModel);
+                Double deliveryTax = distanceTaxModel.getTax();
+                updatedDeliveryModel.setTax(deliveryTax);
+            }
+
+            BeanUtils.copyProperties(updatedDeliveryModel, existentDeliveryModel, "createdAt, updatedAt");
+            return new DeliveryFullDto(deliveryRepository.save(updatedDeliveryModel));
+        }
+        else {
+            throw new NotRecognizedDeliveryTypeException("Delivery type must be DELIVERY or WITHDRAWAL");
+        }
     }
 
     public void deleteDeliveryById(Long deliveryId) {
