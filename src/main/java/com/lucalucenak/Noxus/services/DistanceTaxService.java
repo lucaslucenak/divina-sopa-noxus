@@ -37,6 +37,17 @@ public class DistanceTaxService {
     }
 
     @Transactional(readOnly = true)
+    public DistanceTaxFullDto findDistanceTaxTopByFinalDistance() {
+        Optional<DistanceTaxModel> distanceTaxOptional = distanceTaxRepository.findTopByFinalDistance();
+
+        if (distanceTaxOptional.isPresent()) {
+            return new DistanceTaxFullDto(distanceTaxOptional.get());
+        } else {
+            throw new ResourceNotFoundException("Resource: DistanceTax.");
+        }
+    }
+
+    @Transactional(readOnly = true)
     public Page<DistanceTaxFullDto> findAllDistanceTaxesPaginated(Pageable pageable) {
         Page<DistanceTaxModel> pagedDistanceTaxes = distanceTaxRepository.findAll(pageable);
         return pagedDistanceTaxes.map(DistanceTaxFullDto::new);
@@ -47,6 +58,14 @@ public class DistanceTaxService {
         if (distanceTaxRepository.existsByInitialDistanceOrFinalDistance(distanceTaxPostDto.getInitialDistance(), distanceTaxPostDto.getFinalDistance())) {
             throw new AlreadyDefinedDistanceTaxMetricException("Metrics already used, please check it out.");
         }
+        DistanceTaxModel topDistanceTax = new DistanceTaxModel(this.findDistanceTaxTopByFinalDistance());
+        if (distanceTaxPostDto.getInitialDistance() < topDistanceTax.getFinalDistance()) {
+            throw new AlreadyDefinedDistanceTaxMetricException("The initialDistance must be greater than " + topDistanceTax.getFinalDistance() + ". Distance Tax with id: " + topDistanceTax.getId() + " have the final tax equal to " + topDistanceTax.getFinalDistance());
+        }
+        if (distanceTaxPostDto.getInitialDistance() > distanceTaxPostDto.getFinalDistance()) {
+            throw new AlreadyDefinedDistanceTaxMetricException("The finalDistance must be greater than " + distanceTaxPostDto.getInitialDistance());
+        }
+
         StatusModel statusModel = new StatusModel(statusService.findStatusById(distanceTaxPostDto.getStatusId()));
 
         DistanceTaxModel distanceTaxModel = new DistanceTaxModel(distanceTaxPostDto);
