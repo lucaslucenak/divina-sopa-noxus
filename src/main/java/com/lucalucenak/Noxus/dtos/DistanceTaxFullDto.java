@@ -9,7 +9,7 @@ public class DistanceTaxFullDto {
 
     private Long id;
 
-    private Double price;
+    private Double tax;
 
     private Double initialDistance;
 
@@ -24,9 +24,9 @@ public class DistanceTaxFullDto {
         BeanUtils.copyProperties(distanceTaxModel, this);
     }
 
-    public DistanceTaxFullDto(Long id, Double price, Double initialDistance, Double finalDistance, StatusModel status) {
+    public DistanceTaxFullDto(Long id, Double tax, Double initialDistance, Double finalDistance, StatusModel status) {
         this.id = id;
-        this.price = price;
+        this.tax = tax;
         this.initialDistance = initialDistance;
         this.finalDistance = finalDistance;
         this.status = status;
@@ -48,12 +48,12 @@ public class DistanceTaxFullDto {
         this.id = id;
     }
 
-    public Double getPrice() {
-        return price;
+    public Double getTax() {
+        return tax;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setTax(Double tax) {
+        this.tax = tax;
     }
 
     public Double getInitialDistance() {

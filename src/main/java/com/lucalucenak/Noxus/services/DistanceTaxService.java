@@ -2,6 +2,7 @@ package com.lucalucenak.Noxus.services;
 
 import com.lucalucenak.Noxus.dtos.DistanceTaxFullDto;
 import com.lucalucenak.Noxus.dtos.post.DistanceTaxPostDto;
+import com.lucalucenak.Noxus.exceptions.AlreadyDefinedDistanceTaxMetricException;
 import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.DistanceTaxModel;
@@ -43,6 +44,9 @@ public class DistanceTaxService {
 
     @Transactional
     public DistanceTaxFullDto saveDistanceTax(DistanceTaxPostDto distanceTaxPostDto) {
+        if (distanceTaxRepository.existsByInitialDistanceOrFinalDistance(distanceTaxPostDto.getInitialDistance(), distanceTaxPostDto.getFinalDistance())) {
+            throw new AlreadyDefinedDistanceTaxMetricException("Metrics already used, please check it out.");
+        }
         StatusModel statusModel = new StatusModel(statusService.findStatusById(distanceTaxPostDto.getStatusId()));
 
         DistanceTaxModel distanceTaxModel = new DistanceTaxModel(distanceTaxPostDto);
@@ -53,7 +57,6 @@ public class DistanceTaxService {
 
     @Transactional
     public DistanceTaxFullDto updateDistanceTax(Long distanceTaxId, DistanceTaxPostDto distanceTaxPostDto) {
-
         if (!distanceTaxId.equals(distanceTaxPostDto.getId())) {
             throw new IncompatibleIdsException("Path param Id and body Id must be equals. Path Param Id: " + distanceTaxId + ", Body Id: " + distanceTaxPostDto.getId());
         }

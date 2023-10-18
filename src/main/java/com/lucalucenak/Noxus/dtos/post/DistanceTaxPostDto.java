@@ -10,7 +10,7 @@ public class DistanceTaxPostDto {
 
     @NotNull(message = "Field price shouldn't be null")
     @DecimalMin(value = "0.0", inclusive = true)
-    private Double price;
+    private Double tax;
 
     @NotNull(message = "Field price shouldn't be null")
     @DecimalMin(value = "0.0", inclusive = true)
@@ -26,9 +26,9 @@ public class DistanceTaxPostDto {
     public DistanceTaxPostDto() {
     }
 
-    public DistanceTaxPostDto(Long id, Double price, Double initialDistance, Double finalDistance, Long statusId) {
+    public DistanceTaxPostDto(Long id, Double tax, Double initialDistance, Double finalDistance, Long statusId) {
         this.id = id;
-        this.price = price;
+        this.tax = tax;
         this.initialDistance = initialDistance;
         this.finalDistance = finalDistance;
         this.statusId = statusId;
@@ -42,12 +42,12 @@ public class DistanceTaxPostDto {
         this.id = id;
     }
 
-    public Double getPrice() {
-        return price;
+    public Double getTax() {
+        return tax;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setTax(Double tax) {
+        this.tax = tax;
     }
 
     public Double getInitialDistance() {

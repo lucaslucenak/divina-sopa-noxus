@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface DistanceTaxRepository extends JpaRepository<DistanceTaxModel, Long> {
+    boolean existsByInitialDistanceOrFinalDistance(Double initialDistance, Double finalDistance);
 }
