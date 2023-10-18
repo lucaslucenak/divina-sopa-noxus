@@ -42,12 +42,12 @@ public class AddressController {
 
     @PostMapping
     public ResponseEntity<AddressReturnDto> saveAddress(@RequestBody @Valid AddressPostDto addressPostDto) {
-        return ResponseEntity.ok().body(addressService.saveAddress(addressPostDto));
+        return ResponseEntity.ok().body(new AddressReturnDto(addressService.saveAddress(addressPostDto)));
     }
 
     @PutMapping(value = "/{addressId}")
     public ResponseEntity<AddressReturnDto> updateAddress(@PathVariable Long addressId, @RequestBody @Valid AddressPostDto addressPostDto) {
-        return ResponseEntity.ok().body(addressService.updateAddress(addressId, addressPostDto));
+        return ResponseEntity.ok().body(new AddressReturnDto(addressService.updateAddress(addressId, addressPostDto)));
     }
 
     @PostMapping(value = "/inactivate/{addressId}")

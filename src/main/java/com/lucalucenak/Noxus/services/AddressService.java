@@ -56,7 +56,7 @@ public class AddressService {
     }
 
     @Transactional
-    public AddressReturnDto saveAddress(AddressPostDto addressPostDto) {
+    public AddressFullDto saveAddress(AddressPostDto addressPostDto) {
         ClientAccountModel clientAccountModel = new ClientAccountModel(clientAccountService.findClientAccountById(addressPostDto.getClientAccountId()));
         NeighbourhoodModel neighbourhoodModel = new NeighbourhoodModel(neighbourhoodService.findNeighbourhoodById(addressPostDto.getNeighbourhoodId()));
         StatusModel statusModel = new StatusModel(statusService.findStatusById(addressPostDto.getStatusId()));
@@ -66,14 +66,11 @@ public class AddressService {
         addressModel.setNeighbourhood(neighbourhoodModel);
         addressModel.setStatus(statusModel);
 
-        addressRepository.save(addressModel);
-
-        AddressReturnDto addressReturnDto = new AddressReturnDto(addressModel);
-        return addressReturnDto;
+        return new AddressFullDto(addressRepository.save(addressModel));
     }
 
     @Transactional
-    public AddressReturnDto updateAddress(Long addressId, AddressPostDto addressPostDto) {
+    public AddressFullDto updateAddress(Long addressId, AddressPostDto addressPostDto) {
 
         if (!addressId.equals(addressPostDto.getId())) {
             throw new IncompatibleIdsException("Path param Id and body Id must be equals. Path Param Id: " + addressId + ", Body Id: " + addressPostDto.getId());
@@ -91,10 +88,7 @@ public class AddressService {
         updatedAddressModel.setStatus(statusModel);
         BeanUtils.copyProperties(updatedAddressModel, existentAddressModel, "createdAt, updatedAt");
 
-        addressRepository.save(existentAddressModel);
-
-        AddressReturnDto addressReturnDto = new AddressReturnDto(existentAddressModel);
-        return addressReturnDto;
+        return new AddressFullDto(addressRepository.save(existentAddressModel));
     }
 
     public void deleteAddressById(Long addressId) {
