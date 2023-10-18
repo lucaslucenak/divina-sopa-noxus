@@ -10,8 +10,11 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Locale;
 
@@ -46,6 +49,12 @@ public class DeliverymanModel {
     @OneToMany(mappedBy = "deliveryman", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<DeliveryModel> deliveries;
 
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
     public DeliverymanModel() {
     }
 
@@ -61,12 +70,14 @@ public class DeliverymanModel {
         BeanUtils.copyProperties(deliverymanReturnDto, this);
     }
 
-    public DeliverymanModel(Long id, String name, String cellphoneNumber, StatusModel status, List<DeliveryModel> deliveries) {
+    public DeliverymanModel(Long id, String name, String cellphoneNumber, StatusModel status, List<DeliveryModel> deliveries, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.cellphoneNumber = cellphoneNumber;
         this.status = status;
         this.deliveries = deliveries;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 
     @PrePersist
@@ -74,6 +85,22 @@ public class DeliverymanModel {
         if (name != null) {
             name = name.toUpperCase(Locale.ROOT);
         }
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public Long getId() {
