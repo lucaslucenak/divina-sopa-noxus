@@ -137,17 +137,13 @@ public class OrderService {
     public OrderReturnDto saveOrder(OrderPostDto orderPostDto) throws Exception {
         OrderModel orderModel = new OrderModel(orderPostDto);
         Double orderPrice = 0.0;
-        DeliveryModel deliveryModel = new DeliveryModel(deliveryService.saveDelivery(orderPostDto.getDelivery()));
+
+        DeliveryModel deliveryModel = new DeliveryModel(deliveryService.findDeliveryById(orderPostDto.getDeliveryId()));
         orderModel.setDelivery(deliveryModel);
-//
-//        AddressModel addressModel = new AddressModel(addressService.findAddressById(orderPostDto.getAddressId()));
-//        orderModel.setAddress(addressModel);
         ClientAccountModel clientAccountModel = new ClientAccountModel(clientAccountService.findClientAccountById(orderPostDto.getClientAccountId()));
         orderModel.setClientAccount(clientAccountModel);
         PaymentMethodModel paymentMethodModel = new PaymentMethodModel(paymentMethodService.findPaymentMethodById(orderPostDto.getPaymentMethodId()));
         orderModel.setPaymentMethod(paymentMethodModel);
-//        DeliveryTypeModel deliveryTypeModel = new DeliveryTypeModel(deliveryTypeService.findDeliveryTypeById(orderPostDto.getDeliveryTypeId()));
-//        orderModel.setDeliveryType(deliveryTypeModel);
         StatusModel statusModel = new StatusModel(statusService.findStatusByStatus("ORDERED"));
         orderModel.setStatus(statusModel);
 
@@ -232,17 +228,12 @@ public class OrderService {
         OrderModel updatedOrderModel = new OrderModel(orderPostDto);
         Double orderPrice = 0.0;
 
-        DeliveryModel deliveryModel = new DeliveryModel(deliveryService.saveDelivery(orderPostDto.getDelivery()));
+        DeliveryModel deliveryModel = new DeliveryModel(deliveryService.findDeliveryById(orderPostDto.getDeliveryId()));
         updatedOrderModel.setDelivery(deliveryModel);
-
-//        AddressModel addressModel = new AddressModel(addressService.findAddressById(orderPostDto.getAddressId()));
-//        updatedOrderModel.setAddress(addressModel);
         ClientAccountModel clientAccountModel = new ClientAccountModel(clientAccountService.findClientAccountById(orderPostDto.getClientAccountId()));
         updatedOrderModel.setClientAccount(clientAccountModel);
         PaymentMethodModel paymentMethodModel = new PaymentMethodModel(paymentMethodService.findPaymentMethodById(orderPostDto.getPaymentMethodId()));
         updatedOrderModel.setPaymentMethod(paymentMethodModel);
-//        DeliveryTypeModel deliveryTypeModel = new DeliveryTypeModel(deliveryTypeService.findDeliveryTypeById(orderPostDto.getDeliveryTypeId()));
-//        updatedOrderModel.setDeliveryType(deliveryTypeModel);
         StatusModel statusModel = new StatusModel(statusService.findStatusByStatus("ORDERED"));
         updatedOrderModel.setStatus(statusModel);
 
