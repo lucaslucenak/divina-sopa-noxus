@@ -5,9 +5,7 @@ import com.lucalucenak.Noxus.dtos.post.OrderPostDto;
 import com.lucalucenak.Noxus.dtos.response.OrderReturnDrinkFieldDto;
 import com.lucalucenak.Noxus.dtos.response.OrderReturnDto;
 import com.lucalucenak.Noxus.dtos.response.OrderReturnSoupFieldDto;
-import com.lucalucenak.Noxus.exceptions.AddressNotBelongingToClientAccountException;
-import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
-import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
+import com.lucalucenak.Noxus.exceptions.*;
 import com.lucalucenak.Noxus.models.*;
 import com.lucalucenak.Noxus.models.pks.OrderDrinkPk;
 import com.lucalucenak.Noxus.models.pks.OrderSoupPk;
@@ -134,7 +132,15 @@ public class OrderService {
 
 
     @Transactional
-    public OrderReturnDto saveOrder(OrderPostDto orderPostDto) throws Exception {
+    public OrderReturnDto saveOrder(OrderPostDto orderPostDto) {
+        if (orderPostDto.getSoupsIds() == null && orderPostDto.getDrinksIds() == null) {
+            throw new MustOrderAtLeastOneSoupOrOneDrinkException("You must to order at least one soup or one drink.");
+        }
+        if (orderRepository.existsByDeliveryId(orderPostDto.getDeliveryId())) {
+            OrderModel existentOrderModel = orderRepository.findByDeliveryId(orderPostDto.getDeliveryId()).get();
+            throw new DeliveryAlreadyUsedAtAnotherOrderException("The given delivery id: " + orderPostDto.getDeliveryId() + " is already used at Order with id: " + existentOrderModel.getId());
+        }
+
         OrderModel orderModel = new OrderModel(orderPostDto);
         Double orderPrice = 0.0;
 
@@ -156,72 +162,83 @@ public class OrderService {
             orderPrice += deliveryModel.getTax();
         }
 
-        for (Map.Entry<Long, Integer> i : orderPostDto.getSoupsIds().entrySet()) {
-            SoupModel soupModel = new SoupModel(soupService.findSoupById(i.getKey()));
-            Integer soupQuantity = i.getValue();
+        if (orderPostDto.getSoupsIds() != null) {
+            for (Map.Entry<Long, Integer> i : orderPostDto.getSoupsIds().entrySet()) {
+                SoupModel soupModel = new SoupModel(soupService.findSoupById(i.getKey()));
+                Integer soupQuantity = i.getValue();
 
-            orderPrice += soupModel.getPrice() * soupQuantity;
+                orderPrice += soupModel.getPrice() * soupQuantity;
+            }
         }
 
-        for (Map.Entry<Long, Integer> i : orderPostDto.getDrinksIds().entrySet()) {
-            DrinkModel drinkModel = new DrinkModel(drinkService.findDrinkById(i.getKey()));
-            Integer drinkQuantity = i.getValue();
+        if (orderPostDto.getDrinksIds() != null) {
+            for (Map.Entry<Long, Integer> i : orderPostDto.getDrinksIds().entrySet()) {
+                DrinkModel drinkModel = new DrinkModel(drinkService.findDrinkById(i.getKey()));
+                Integer drinkQuantity = i.getValue();
 
-            orderPrice += drinkModel.getPrice() * drinkQuantity;
+                orderPrice += drinkModel.getPrice() * drinkQuantity;
+            }
         }
+
         orderModel.setOrderPrice(orderPrice);
 
         //Saving Order
         orderRepository.save(orderModel);
 
+        // Setting Return
+        OrderReturnDto orderReturnDto = new OrderReturnDto(orderModel);
+
         // Saving Order Soup
-        List<OrderReturnSoupFieldDto> soups = new ArrayList<>();
-        for (Map.Entry<Long, Integer> i : orderPostDto.getSoupsIds().entrySet()) {
-            SoupModel soupModel = new SoupModel(soupService.findSoupById(i.getKey()));
-            Integer soupQuantity = i.getValue();
+        if (orderPostDto.getSoupsIds() != null) {
+            List<OrderReturnSoupFieldDto> soups = new ArrayList<>();
+            for (Map.Entry<Long, Integer> i : orderPostDto.getSoupsIds().entrySet()) {
+                SoupModel soupModel = new SoupModel(soupService.findSoupById(i.getKey()));
+                Integer soupQuantity = i.getValue();
 
-            OrderSoupPk orderSoupPk = new OrderSoupPk(orderModel, soupModel);
+                OrderSoupPk orderSoupPk = new OrderSoupPk(orderModel, soupModel);
 
-            OrderSoupFullDto orderSoupFullDto = orderSoupService.saveOrderSoup(new OrderSoupFullDto(orderSoupPk, soupQuantity));
+                OrderSoupFullDto orderSoupFullDto = orderSoupService.saveOrderSoup(new OrderSoupFullDto(orderSoupPk, soupQuantity));
 
-            OrderReturnSoupFieldDto soup = new OrderReturnSoupFieldDto(
-                    soupModel,
-                    soupQuantity,
-                    soupModel.getPrice() * soupQuantity
-            );
-            soups.add(soup);
+                OrderReturnSoupFieldDto soup = new OrderReturnSoupFieldDto(
+                        soupModel,
+                        soupQuantity,
+                        soupModel.getPrice() * soupQuantity
+                );
+                soups.add(soup);
+            }
+            orderReturnDto.setSoups(soups);
         }
 
         // Saving Order Drink
-        List<OrderReturnDrinkFieldDto> drinks = new ArrayList<>();
-        for (Map.Entry<Long, Integer> i : orderPostDto.getDrinksIds().entrySet()) {
-            DrinkModel drinkModel = new DrinkModel(drinkService.findDrinkById(i.getKey()));
-            Integer drinkQuantity = i.getValue();
+        if (orderPostDto.getDrinksIds() != null) {
+            List<OrderReturnDrinkFieldDto> drinks = new ArrayList<>();
+            for (Map.Entry<Long, Integer> i : orderPostDto.getDrinksIds().entrySet()) {
+                DrinkModel drinkModel = new DrinkModel(drinkService.findDrinkById(i.getKey()));
+                Integer drinkQuantity = i.getValue();
 
-            OrderDrinkPk orderDrinkPk = new OrderDrinkPk(orderModel, drinkModel);
+                OrderDrinkPk orderDrinkPk = new OrderDrinkPk(orderModel, drinkModel);
 
-            OrderDrinkFullDto orderDrinkFullDto = orderDrinkService.saveOrderDrink(new OrderDrinkFullDto(orderDrinkPk, drinkQuantity));
+                OrderDrinkFullDto orderDrinkFullDto = orderDrinkService.saveOrderDrink(new OrderDrinkFullDto(orderDrinkPk, drinkQuantity));
 
-            OrderReturnDrinkFieldDto drink = new OrderReturnDrinkFieldDto(
-                    drinkModel,
-                    drinkQuantity,
-                    drinkModel.getPrice() * drinkQuantity
-            );
-            drinks.add(drink);
+                OrderReturnDrinkFieldDto drink = new OrderReturnDrinkFieldDto(
+                        drinkModel,
+                        drinkQuantity,
+                        drinkModel.getPrice() * drinkQuantity
+                );
+                drinks.add(drink);
+            }
+            orderReturnDto.setDrinks(drinks);
         }
-
-        // Setting Return
-        OrderReturnDto orderReturnDto = new OrderReturnDto(orderModel);
-        orderReturnDto.setSoups(soups);
-        orderReturnDto.setDrinks(drinks);
-
         return orderReturnDto;
     }
 
     @Transactional
-    public OrderReturnDto updateOrder(Long orderId, OrderPostDto orderPostDto) throws Exception {
+    public OrderReturnDto updateOrder(Long orderId, OrderPostDto orderPostDto) {
         if (!orderId.equals(orderPostDto.getId())) {
             throw new IncompatibleIdsException("Path param Id and body Id must be equals. Path Param Id: " + orderId + ", Body Id: " + orderPostDto.getId());
+        }
+        if (orderPostDto.getSoupsIds() == null && orderPostDto.getDrinksIds() == null) {
+            throw new MustOrderAtLeastOneSoupOrOneDrinkException("You must to order at least one soup or one drink.");
         }
 
         OrderModel existentOrderModel = new OrderModel(this.findOrderById(orderId));
@@ -243,66 +260,75 @@ public class OrderService {
             orderPrice += deliveryModel.getTax();
         }
 
-        for (Map.Entry<Long, Integer> i : orderPostDto.getSoupsIds().entrySet()) {
-            SoupModel soupModel = new SoupModel(soupService.findSoupById(i.getKey()));
-            Integer soupQuantity = i.getValue();
+        if (orderPostDto.getSoupsIds() != null) {
+            for (Map.Entry<Long, Integer> i : orderPostDto.getSoupsIds().entrySet()) {
+                SoupModel soupModel = new SoupModel(soupService.findSoupById(i.getKey()));
+                Integer soupQuantity = i.getValue();
 
-            orderPrice += soupModel.getPrice() * soupQuantity;
+                orderPrice += soupModel.getPrice() * soupQuantity;
+            }
         }
 
-        for (Map.Entry<Long, Integer> i : orderPostDto.getDrinksIds().entrySet()) {
-            DrinkModel drinkModel = new DrinkModel(drinkService.findDrinkById(i.getKey()));
-            Integer drinkQuantity = i.getValue();
+        if (orderPostDto.getDrinksIds() != null) {
+            for (Map.Entry<Long, Integer> i : orderPostDto.getDrinksIds().entrySet()) {
+                DrinkModel drinkModel = new DrinkModel(drinkService.findDrinkById(i.getKey()));
+                Integer drinkQuantity = i.getValue();
 
-            orderPrice += drinkModel.getPrice() * drinkQuantity;
+                orderPrice += drinkModel.getPrice() * drinkQuantity;
+            }
         }
+
         updatedOrderModel.setOrderPrice(orderPrice);
 
         //Saving Order
         BeanUtils.copyProperties(updatedOrderModel, existentOrderModel, "createdAt, updatedAt");
         orderRepository.save(existentOrderModel);
 
+        // Setting Return
+        OrderReturnDto orderReturnDto = new OrderReturnDto(existentOrderModel);
+
         // Saving Order Soup
-        orderSoupService.deleteOrderSoupByOrderId(orderId); // Delete existent relationships and recreate
-        List<OrderReturnSoupFieldDto> soups = new ArrayList<>();
-        for (Map.Entry<Long, Integer> i : orderPostDto.getSoupsIds().entrySet()) {
-            SoupModel soupModel = new SoupModel(soupService.findSoupById(i.getKey()));
-            Integer soupQuantity = i.getValue();
+        if (orderPostDto.getSoupsIds() != null) {
+            orderSoupService.deleteOrderSoupByOrderId(orderId); // Delete existent relationships and recreate
+            List<OrderReturnSoupFieldDto> soups = new ArrayList<>();
+            for (Map.Entry<Long, Integer> i : orderPostDto.getSoupsIds().entrySet()) {
+                SoupModel soupModel = new SoupModel(soupService.findSoupById(i.getKey()));
+                Integer soupQuantity = i.getValue();
 
-            OrderSoupPk orderSoupPk = new OrderSoupPk(existentOrderModel, soupModel);
+                OrderSoupPk orderSoupPk = new OrderSoupPk(existentOrderModel, soupModel);
 
-            OrderSoupFullDto orderSoupFullDto = orderSoupService.saveOrderSoup(new OrderSoupFullDto(orderSoupPk, soupQuantity));
-            OrderReturnSoupFieldDto soup = new OrderReturnSoupFieldDto(
-                    soupModel,
-                    soupQuantity,
-                    soupModel.getPrice() * soupQuantity
-            );
-            soups.add(soup);
+                OrderSoupFullDto orderSoupFullDto = orderSoupService.saveOrderSoup(new OrderSoupFullDto(orderSoupPk, soupQuantity));
+                OrderReturnSoupFieldDto soup = new OrderReturnSoupFieldDto(
+                        soupModel,
+                        soupQuantity,
+                        soupModel.getPrice() * soupQuantity
+                );
+                soups.add(soup);
+            }
+            orderReturnDto.setSoups(soups);
         }
 
         // Saving Order Drink
-        orderDrinkService.deleteOrderDrinkByOrderId(orderId); // Delete existent relationships and recreate
-        List<OrderReturnDrinkFieldDto> drinks = new ArrayList<>();
-        for (Map.Entry<Long, Integer> i : orderPostDto.getDrinksIds().entrySet()) {
-            DrinkModel drinkModel = new DrinkModel(drinkService.findDrinkById(i.getKey()));
-            Integer drinkQuantity = i.getValue();
+        if (orderPostDto.getDrinksIds() != null) {
+            orderDrinkService.deleteOrderDrinkByOrderId(orderId); // Delete existent relationships and recreate
+            List<OrderReturnDrinkFieldDto> drinks = new ArrayList<>();
+            for (Map.Entry<Long, Integer> i : orderPostDto.getDrinksIds().entrySet()) {
+                DrinkModel drinkModel = new DrinkModel(drinkService.findDrinkById(i.getKey()));
+                Integer drinkQuantity = i.getValue();
 
-            OrderDrinkPk orderDrinkPk = new OrderDrinkPk(existentOrderModel, drinkModel);
+                OrderDrinkPk orderDrinkPk = new OrderDrinkPk(existentOrderModel, drinkModel);
 
-            OrderDrinkFullDto orderDrinkFullDto = orderDrinkService.saveOrderDrink(new OrderDrinkFullDto(orderDrinkPk, drinkQuantity));
+                OrderDrinkFullDto orderDrinkFullDto = orderDrinkService.saveOrderDrink(new OrderDrinkFullDto(orderDrinkPk, drinkQuantity));
 
-            OrderReturnDrinkFieldDto drink = new OrderReturnDrinkFieldDto(
-                    drinkModel,
-                    drinkQuantity,
-                    drinkModel.getPrice() * drinkQuantity
-            );
-            drinks.add(drink);
+                OrderReturnDrinkFieldDto drink = new OrderReturnDrinkFieldDto(
+                        drinkModel,
+                        drinkQuantity,
+                        drinkModel.getPrice() * drinkQuantity
+                );
+                drinks.add(drink);
+            }
+            orderReturnDto.setDrinks(drinks);
         }
-
-        // Setting Return
-        OrderReturnDto orderReturnDto = new OrderReturnDto(existentOrderModel);
-        orderReturnDto.setSoups(soups);
-        orderReturnDto.setDrinks(drinks);
 
         return orderReturnDto;
     }
