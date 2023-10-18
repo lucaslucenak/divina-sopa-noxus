@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -78,6 +79,13 @@ public class DistanceTaxService {
     public DistanceTaxFullDto updateDistanceTax(Long distanceTaxId, DistanceTaxPostDto distanceTaxPostDto) {
         if (!distanceTaxId.equals(distanceTaxPostDto.getId())) {
             throw new IncompatibleIdsException("Path param Id and body Id must be equals. Path Param Id: " + distanceTaxId + ", Body Id: " + distanceTaxPostDto.getId());
+        }
+        DistanceTaxModel topDistanceTax = new DistanceTaxModel(this.findDistanceTaxTopByFinalDistance());
+        if (distanceTaxPostDto.getInitialDistance() < topDistanceTax.getFinalDistance() && !Objects.equals(topDistanceTax.getId(), distanceTaxId)) {
+            throw new AlreadyDefinedDistanceTaxMetricException("The initialDistance must be greater than " + topDistanceTax.getFinalDistance() + ". Distance Tax with id: " + topDistanceTax.getId() + " have the final tax equal to " + topDistanceTax.getFinalDistance());
+        }
+        if (distanceTaxPostDto.getInitialDistance() > distanceTaxPostDto.getFinalDistance()) {
+            throw new AlreadyDefinedDistanceTaxMetricException("The finalDistance must be greater than " + distanceTaxPostDto.getInitialDistance());
         }
 
         DistanceTaxModel existentDistanceTaxModel = new DistanceTaxModel(this.findDistanceTaxById(distanceTaxId));
