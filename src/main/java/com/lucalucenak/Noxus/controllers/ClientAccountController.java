@@ -55,6 +55,11 @@ public class ClientAccountController {
         return ResponseEntity.ok().body(new ClientAccountReturnDto(clientAccountService.inactivateClientAccountById(clientAccountId)));
     }
 
+    @PostMapping(value = "/increase-placed-orders/cpf/{clientAccountCpf}")
+    public ResponseEntity<ClientAccountReturnDto> increasePlacedOrdersQuantityByClientAccountCpf(@PathVariable String clientAccountCpf) {
+        return ResponseEntity.ok().body(new ClientAccountReturnDto(clientAccountService.increasePlacedOrdersQuantityByClientAccountCpf(clientAccountCpf)));
+    }
+
     @DeleteMapping(value = "/{clientAccountId}")
     public ResponseEntity<ClientAccountReturnDto> deleteClientAccountById(@PathVariable Long clientAccountId) {
         clientAccountService.deleteClientAccountById(clientAccountId);

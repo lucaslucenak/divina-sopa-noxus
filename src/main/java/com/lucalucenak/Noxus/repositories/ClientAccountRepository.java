@@ -4,6 +4,9 @@ import com.lucalucenak.Noxus.models.ClientAccountModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface ClientAccountRepository extends JpaRepository<ClientAccountModel, Long> {
+    Optional<ClientAccountModel> findByCpf(String clientAccountCpf);
 }

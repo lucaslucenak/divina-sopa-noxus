@@ -46,6 +46,17 @@ public class ClientAccountService {
     }
 
     @Transactional(readOnly = true)
+    public ClientAccountFullDto findClientAccountByCpf(String clientAccountCpf) {
+        Optional<ClientAccountModel> clientAccountOptional = clientAccountRepository.findByCpf(clientAccountCpf);
+
+        if (clientAccountOptional.isPresent()) {
+            return new ClientAccountFullDto(clientAccountOptional.get());
+        } else {
+            throw new ResourceNotFoundException("Resource: Client. Not found with cpf: " + clientAccountCpf);
+        }
+    }
+
+    @Transactional(readOnly = true)
     public Page<ClientAccountFullDto> findAllClientAccountsPaginated(Pageable pageable) {
         Page<ClientAccountModel> pagedClientAccounts = clientAccountRepository.findAll(pageable);
 
@@ -106,6 +117,15 @@ public class ClientAccountService {
     @Transactional
     public ClientAccountFullDto increasePlacedOrdersQuantityByClientAccountId(Long clientAccountId) {
         ClientAccountModel clientAccountModel = new ClientAccountModel(this.findClientAccountById(clientAccountId));
+        clientAccountModel.setPlacedOrdersQuantity(clientAccountModel.getPlacedOrdersQuantity() + 1);
+        clientAccountRepository.save(clientAccountModel);
+
+        return new ClientAccountFullDto(clientAccountModel);
+    }
+
+    @Transactional
+    public ClientAccountFullDto increasePlacedOrdersQuantityByClientAccountCpf(String clientAccountCpf) {
+        ClientAccountModel clientAccountModel = new ClientAccountModel(this.findClientAccountByCpf(clientAccountCpf));
         clientAccountModel.setPlacedOrdersQuantity(clientAccountModel.getPlacedOrdersQuantity() + 1);
         clientAccountRepository.save(clientAccountModel);
 
