@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/ds_noxus
+    url: jdbc:postgresql://divina-sopa-noxus.cpl462gcizal.us-east-1.rds.amazonaws.com:5432/postgres
     username: postgres
     password: 12345678
   jpa:
