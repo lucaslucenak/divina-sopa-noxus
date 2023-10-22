@@ -6,7 +6,7 @@ Welcome to the Divina Sopa project repository, a comprehensive solution for mana
 ## Architecture Overview
 
 Our project is built on a robust microservices architecture, leveraging the power of Spring Boot to provide flexible and efficient order management. Here's a glimpse of the technologies I've used:
-![architecture](readme/img/architecture.png)
+![architecture](readme/img/architecture1.png)
 
 ### Spring Boot
 Spring Boot for Java development. It empowers me to create reliable and scalable services for your ordering needs.
