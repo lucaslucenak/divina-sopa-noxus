@@ -143,6 +143,15 @@ public class ClientAccountService {
     }
 
     @Transactional
+    public ClientAccountFullDto increasePlacedOrdersQuantityByClientAccountCpf(String clientAccountCpf) {
+        ClientAccountModel clientAccountModel = new ClientAccountModel(this.findClientAccountFullDtoByCpf(clientAccountCpf));
+        clientAccountModel.setPlacedOrdersQuantity(clientAccountModel.getPlacedOrdersQuantity() + 1);
+        clientAccountRepository.save(clientAccountModel);
+
+        return new ClientAccountFullDto(clientAccountModel);
+    }
+
+    @Transactional
     public ClientAccountFullDto inactivateClientAccountById(Long clientAccountId) {
         ClientAccountModel clientAccountModel = new ClientAccountModel(this.findClientAccountById(clientAccountId));
         StatusModel inactiveStatusModel = new StatusModel(statusService.findStatusByStatus("INACTIVE"));
