@@ -17,6 +17,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,6 +36,8 @@ public class ClientAccountService {
     private StatusService statusService;
     @Autowired
     private AddressService addressService;
+    @Autowired
+    private PasswordEncoder bCryptPasswordEncoder;
 
     @Transactional(readOnly = true)
     public ClientAccountFullDto findClientAccountById(Long clientAccountId) {
@@ -42,6 +47,28 @@ public class ClientAccountService {
             return new ClientAccountFullDto(clientAccountOptional.get());
         } else {
             throw new ResourceNotFoundException("Resource: Client. Not found with id: " + clientAccountId);
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public ClientAccountFullDto findClientAccountFullDtoByCpf(String clientAccountCpf) {
+        Optional<ClientAccountModel> clientAccountOptional = clientAccountRepository.findClientAccountModelByCpf(clientAccountCpf);
+
+        if (clientAccountOptional.isPresent()) {
+            return new ClientAccountFullDto(clientAccountOptional.get());
+        } else {
+            throw new ResourceNotFoundException("Resource: Client. Not found with id: " + clientAccountCpf);
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public UserDetails findClientAccountByCpf(String clientAccountCpf) {
+        Optional<UserDetails> clientAccountOptional = clientAccountRepository.findUserDetailsByCpf(clientAccountCpf);
+
+        if (clientAccountOptional.isPresent()) {
+            return clientAccountOptional.get();
+        } else {
+            throw new ResourceNotFoundException("Resource: Client. Not found with cpf: " + clientAccountCpf);
         }
     }
 
@@ -58,6 +85,9 @@ public class ClientAccountService {
         StatusModel statusModel = new StatusModel(statusService.findStatusById(clientAccountPostDto.getStatusId()));
         clientAccountModel.setStatus(statusModel);
         clientAccountModel.setPlacedOrdersQuantity(0);
+
+        String encryptedPassword = bCryptPasswordEncoder.encode(clientAccountPostDto.getPassword());
+        clientAccountModel.setPassword(encryptedPassword);
 
         clientAccountRepository.save(clientAccountModel);
 

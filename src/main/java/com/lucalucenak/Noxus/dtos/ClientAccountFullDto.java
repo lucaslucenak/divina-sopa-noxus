@@ -1,6 +1,7 @@
 package com.lucalucenak.Noxus.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lucalucenak.Noxus.enums.RoleEnum;
 import com.lucalucenak.Noxus.models.AddressModel;
 import com.lucalucenak.Noxus.models.ClientAccountModel;
 import com.lucalucenak.Noxus.models.OrderModel;
@@ -40,6 +41,10 @@ public class ClientAccountFullDto {
 
     private List<OrderModel> orders;
 
+    private String password;
+
+    private RoleEnum role;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
@@ -51,7 +56,7 @@ public class ClientAccountFullDto {
         BeanUtils.copyProperties(clientAccountModel, this);
     }
 
-    public ClientAccountFullDto(Long id, String firstName, String lastName, String cpf, String email, String cellphoneNumber, Integer placedOrdersQuantity, StatusModel status, List<AddressModel> addresses, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ClientAccountFullDto(Long id, String firstName, String lastName, String cpf, String email, String cellphoneNumber, Integer placedOrdersQuantity, StatusModel status, List<AddressModel> addresses, List<OrderModel> orders, String password, RoleEnum role, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -62,8 +67,26 @@ public class ClientAccountFullDto {
         this.status = status;
         this.addresses = addresses;
         this.orders = orders;
+        this.password = password;
+        this.role = role;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public RoleEnum getRole() {
+        return role;
+    }
+
+    public void setRole(RoleEnum role) {
+        this.role = role;
     }
 
     public String getCellphoneNumber() {

@@ -1,6 +1,7 @@
 package com.lucalucenak.Noxus.dtos.response;
 
 import com.lucalucenak.Noxus.dtos.ClientAccountFullDto;
+import com.lucalucenak.Noxus.enums.RoleEnum;
 import com.lucalucenak.Noxus.models.AddressModel;
 import com.lucalucenak.Noxus.models.ClientAccountModel;
 import com.lucalucenak.Noxus.models.OrderModel;
@@ -33,6 +34,8 @@ public class ClientAccountReturnDto {
 
     private StatusModel status;
 
+    private RoleEnum role;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
@@ -48,7 +51,7 @@ public class ClientAccountReturnDto {
         BeanUtils.copyProperties(clientAccountFullDto, this);
     }
 
-    public ClientAccountReturnDto(Long id, String firstName, String lastName, String cpf, String email, String cellphoneNumber, Integer placedOrdersQuantity, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ClientAccountReturnDto(Long id, String firstName, String lastName, String cpf, String email, String cellphoneNumber, Integer placedOrdersQuantity, StatusModel status, RoleEnum role, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -57,8 +60,17 @@ public class ClientAccountReturnDto {
         this.cellphoneNumber = cellphoneNumber;
         this.placedOrdersQuantity = placedOrdersQuantity;
         this.status = status;
+        this.role = role;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public RoleEnum getRole() {
+        return role;
+    }
+
+    public void setRole(RoleEnum role) {
+        this.role = role;
     }
 
     public String getCellphoneNumber() {
