@@ -4,6 +4,7 @@ import com.lucalucenak.Noxus.dtos.ClientAccountFullDto;
 import com.lucalucenak.Noxus.dtos.ClientAccountFullDto;
 import com.lucalucenak.Noxus.dtos.post.ClientAccountPostDto;
 import com.lucalucenak.Noxus.dtos.response.ClientAccountReturnDto;
+import com.lucalucenak.Noxus.exceptions.AlreadyUsedCpfException;
 import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.ClientAccountModel;
@@ -81,6 +82,12 @@ public class ClientAccountService {
 
     @Transactional
     public ClientAccountFullDto saveClientAccount(ClientAccountPostDto clientAccountPostDto) {
+
+        if (clientAccountRepository.existsByCpf(clientAccountPostDto.getCpf())) {
+            ClientAccountModel existentClientAccountModel = new ClientAccountModel(this.findClientAccountFullDtoByCpf(clientAccountPostDto.getCpf()));
+            throw new AlreadyUsedCpfException("CPF Already used for this CPF. See Client Account with id: " + existentClientAccountModel.getId());
+        }
+
         ClientAccountModel clientAccountModel = new ClientAccountModel(clientAccountPostDto);
         StatusModel statusModel = new StatusModel(statusService.findStatusById(clientAccountPostDto.getStatusId()));
         clientAccountModel.setStatus(statusModel);

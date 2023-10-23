@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface ClientAccountRepository extends JpaRepository<ClientAccountModel, Long> {
     Optional<UserDetails> findUserDetailsByCpf(String clientAccountCpf);
     Optional<ClientAccountModel> findClientAccountModelByCpf(String clientAccountCpf);
+    boolean existsByCpf(String cpf);
 }
