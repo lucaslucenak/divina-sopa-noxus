@@ -7,6 +7,7 @@ import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.ProductModel;
 import com.lucalucenak.Noxus.models.ProductTypeModel;
+import com.lucalucenak.Noxus.models.SizeModel;
 import com.lucalucenak.Noxus.models.StatusModel;
 import com.lucalucenak.Noxus.repositories.ProductRepository;
 import org.springframework.beans.BeanUtils;
@@ -28,6 +29,8 @@ public class ProductService {
     private StatusService statusService;
     @Autowired
     private ProductTypeService productTypeService;
+    @Autowired
+    private SizeService sizeService;
 
     @Transactional(readOnly = true)
     public ProductFullDto findProductById(Long productId) {
@@ -53,6 +56,8 @@ public class ProductService {
         productModel.setStatus(statusModel);
         ProductTypeModel productTypeModel = new ProductTypeModel(productTypeService.findProductTypeById(productPostDto.getProductTypeId()));
         productModel.setProductType(productTypeModel);
+        SizeModel sizeModel = new SizeModel(sizeService.findSizeById(productPostDto.getSizeId()));
+        productModel.setSize(sizeModel);
 
         return new ProductFullDto(productRepository.save(productModel));
     }
@@ -68,6 +73,8 @@ public class ProductService {
         updatedProductModel.setStatus(statusModel);
         ProductTypeModel productTypeModel = new ProductTypeModel(productTypeService.findProductTypeById(productPostDto.getProductTypeId()));
         updatedProductModel.setProductType(productTypeModel);
+        SizeModel sizeModel = new SizeModel(sizeService.findSizeById(productPostDto.getSizeId()));
+        updatedProductModel.setSize(sizeModel);
 
         updatedProductModel.setCreatedAt(existingProductModel.getCreatedAt());
         updatedProductModel.setUpdatedAt(LocalDateTime.now());

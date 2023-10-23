@@ -35,6 +35,10 @@ public class ProductModel {
     private Double price;
 
     @ManyToOne
+    @JoinColumn(name = "size_id", nullable = false)
+    private SizeModel size;
+
+    @ManyToOne
     @JoinColumn(name = "product_type_id", nullable = false)
     private ProductTypeModel productType;
 
@@ -59,15 +63,24 @@ public class ProductModel {
         BeanUtils.copyProperties(productTypePostDto, this);
     }
 
-    public ProductModel(Long id, String name, String description, Double price, ProductTypeModel productType, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ProductModel(Long id, String name, String description, Double price, SizeModel size, ProductTypeModel productType, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
+        this.size = size;
         this.productType = productType;
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public SizeModel getSize() {
+        return size;
+    }
+
+    public void setSize(SizeModel size) {
+        this.size = size;
     }
 
     public Long getId() {

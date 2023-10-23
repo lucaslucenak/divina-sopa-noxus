@@ -26,6 +26,9 @@ public class ProductPostDto {
     private Double price;
 
     @NotNull(message = "Field productTypeId shouldn't be null")
+    private Long sizeId;
+
+    @NotNull(message = "Field productTypeId shouldn't be null")
     private Long productTypeId;
 
     @NotNull(message = "Field statusId shouldn't be null")
@@ -34,13 +37,22 @@ public class ProductPostDto {
     public ProductPostDto() {
     }
 
-    public ProductPostDto(Long id, String name, String description, Double price, Long productTypeId, Long statusId) {
+    public ProductPostDto(Long id, String name, String description, Double price, Long sizeId, Long productTypeId, Long statusId) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
+        this.sizeId = sizeId;
         this.productTypeId = productTypeId;
         this.statusId = statusId;
+    }
+
+    public Long getSizeId() {
+        return sizeId;
+    }
+
+    public void setSizeId(Long sizeId) {
+        this.sizeId = sizeId;
     }
 
     public Long getId() {

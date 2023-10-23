@@ -3,6 +3,7 @@ package com.lucalucenak.Noxus.dtos.response;
 import com.lucalucenak.Noxus.dtos.DrinkFullDto;
 import com.lucalucenak.Noxus.dtos.ProductFullDto;
 import com.lucalucenak.Noxus.models.ProductTypeModel;
+import com.lucalucenak.Noxus.models.SizeModel;
 import com.lucalucenak.Noxus.models.StatusModel;
 import org.springframework.beans.BeanUtils;
 
@@ -17,6 +18,8 @@ public class ProductReturnDto {
     private String description;
 
     private Double price;
+
+    private SizeModel size;
 
     private ProductTypeModel productType;
 
@@ -33,15 +36,24 @@ public class ProductReturnDto {
         BeanUtils.copyProperties(productFullDto, this);
     }
 
-    public ProductReturnDto(Long id, String name, String description, Double price, ProductTypeModel productType, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ProductReturnDto(Long id, String name, String description, Double price, SizeModel size, ProductTypeModel productType, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
+        this.size = size;
         this.productType = productType;
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public SizeModel getSize() {
+        return size;
+    }
+
+    public void setSize(SizeModel size) {
+        this.size = size;
     }
 
     public Long getId() {
