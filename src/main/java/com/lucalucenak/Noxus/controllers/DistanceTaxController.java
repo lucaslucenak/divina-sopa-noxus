@@ -1,10 +1,8 @@
 package com.lucalucenak.Noxus.controllers;
 
 import com.lucalucenak.Noxus.dtos.DistanceTaxFullDto;
-import com.lucalucenak.Noxus.dtos.DrinkFullDto;
 import com.lucalucenak.Noxus.dtos.post.DistanceTaxPostDto;
 import com.lucalucenak.Noxus.dtos.response.DistanceTaxReturnDto;
-import com.lucalucenak.Noxus.dtos.response.DrinkReturnDto;
 import com.lucalucenak.Noxus.services.DistanceTaxService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

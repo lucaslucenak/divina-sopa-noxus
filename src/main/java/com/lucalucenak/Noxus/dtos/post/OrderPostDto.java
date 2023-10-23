@@ -27,14 +27,13 @@ public class OrderPostDto {
     @NotNull(message = "Field paymentMethodId shouldn't be null")
     private Long paymentMethodId;
 
-    private Map<Long, Integer> soupsIds; // ID | Quantity
-
-    private Map<Long, Integer> drinksIds; // ID | Quantity
+    @NotNull(message = "Field productsIds shouldn't be null")
+    private Map<Long, Integer> productsIds; // ID | Quantity
 
     public OrderPostDto() {
     }
 
-    public OrderPostDto(Long id, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, Long deliveryId, Long clientAccountId, Long paymentMethodId, Map<Long, Integer> soupsIds, Map<Long, Integer> drinksIds) {
+    public OrderPostDto(Long id, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, Long deliveryId, Long clientAccountId, Long paymentMethodId, Map<Long, Integer> productsIds) {
         this.id = id;
         this.observation = observation;
         this.dispatchTime = dispatchTime;
@@ -42,8 +41,7 @@ public class OrderPostDto {
         this.deliveryId = deliveryId;
         this.clientAccountId = clientAccountId;
         this.paymentMethodId = paymentMethodId;
-        this.soupsIds = soupsIds;
-        this.drinksIds = drinksIds;
+        this.productsIds = productsIds;
     }
 
     public Long getId() {
@@ -102,19 +100,11 @@ public class OrderPostDto {
         this.paymentMethodId = paymentMethodId;
     }
 
-    public Map<Long, Integer> getSoupsIds() {
-        return soupsIds;
+    public Map<Long, Integer> getProductsIds() {
+        return productsIds;
     }
 
-    public void setSoupsIds(Map<Long, Integer> soupsIds) {
-        this.soupsIds = soupsIds;
-    }
-
-    public Map<Long, Integer> getDrinksIds() {
-        return drinksIds;
-    }
-
-    public void setDrinksIds(Map<Long, Integer> drinksIds) {
-        this.drinksIds = drinksIds;
+    public void setProductsIds(Map<Long, Integer> productsIds) {
+        this.productsIds = productsIds;
     }
 }

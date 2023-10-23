@@ -1,9 +1,8 @@
 package com.lucalucenak.Noxus.models;
 
-import com.lucalucenak.Noxus.dtos.OrderDrinkFullDto;
-import com.lucalucenak.Noxus.models.pks.OrderDrinkPk;
+import com.lucalucenak.Noxus.dtos.OrderProductFullDto;
+import com.lucalucenak.Noxus.models.pks.OrderProductPk;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
@@ -13,13 +12,13 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "order_drink")
+@Table(name = "order_product")
 @EntityListeners(AuditingEntityListener.class)
 @Builder
-public class OrderDrinkModel {
+public class OrderProductModel {
 
     @EmbeddedId
-    private OrderDrinkPk id = new OrderDrinkPk();
+    private OrderProductPk id = new OrderProductPk();
 
     @Column(nullable = false)
     private Integer quantity;
@@ -30,25 +29,25 @@ public class OrderDrinkModel {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    public OrderDrinkModel() {
+    public OrderProductModel() {
     }
 
-    public OrderDrinkModel(OrderDrinkFullDto orderDrinkFullDto) {
-        BeanUtils.copyProperties(orderDrinkFullDto, this);
+    public OrderProductModel(OrderProductFullDto orderProductFullDto) {
+        BeanUtils.copyProperties(orderProductFullDto, this);
     }
 
-    public OrderDrinkModel(OrderDrinkPk id, Integer quantity, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public OrderProductModel(OrderProductPk id, Integer quantity, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.quantity = quantity;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
-    public OrderDrinkPk getId() {
+    public OrderProductPk getId() {
         return id;
     }
 
-    public void setId(OrderDrinkPk id) {
+    public void setId(OrderProductPk id) {
         this.id = id;
     }
 

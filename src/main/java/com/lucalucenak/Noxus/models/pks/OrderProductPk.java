@@ -1,8 +1,7 @@
 package com.lucalucenak.Noxus.models.pks;
 
-import com.lucalucenak.Noxus.models.DrinkModel;
 import com.lucalucenak.Noxus.models.OrderModel;
-import com.lucalucenak.Noxus.models.SoupModel;
+import com.lucalucenak.Noxus.models.ProductModel;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -12,22 +11,22 @@ import java.io.Serializable;
 
 @Embeddable
 @Builder
-public class OrderDrinkPk implements Serializable {
+public class OrderProductPk implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
     private OrderModel order;
 
     @ManyToOne
-    @JoinColumn(name = "drink_id")
-    private DrinkModel drink;
+    @JoinColumn(name = "product_id")
+    private ProductModel product;
 
-    public OrderDrinkPk() {
+    public OrderProductPk() {
     }
 
-    public OrderDrinkPk(OrderModel order, DrinkModel drink) {
+    public OrderProductPk(OrderModel order, ProductModel product) {
         this.order = order;
-        this.drink = drink;
+        this.product = product;
     }
 
     public OrderModel getOrder() {
@@ -38,11 +37,11 @@ public class OrderDrinkPk implements Serializable {
         this.order = order;
     }
 
-    public DrinkModel getDrink() {
-        return drink;
+    public ProductModel getProduct() {
+        return product;
     }
 
-    public void setDrink(DrinkModel drink) {
-        this.drink = drink;
+    public void setProduct(ProductModel product) {
+        this.product = product;
     }
 }

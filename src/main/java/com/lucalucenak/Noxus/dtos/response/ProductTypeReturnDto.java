@@ -1,23 +1,21 @@
 package com.lucalucenak.Noxus.dtos.response;
 
-import com.lucalucenak.Noxus.dtos.DrinkFullDto;
-import com.lucalucenak.Noxus.models.DrinkModel;
+import com.lucalucenak.Noxus.dtos.AddressFullDto;
+import com.lucalucenak.Noxus.dtos.ProductTypeFullDto;
+import com.lucalucenak.Noxus.models.AddressModel;
+import com.lucalucenak.Noxus.models.ProductTypeModel;
 import com.lucalucenak.Noxus.models.StatusModel;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
 
-public class DrinkReturnDto {
+public class ProductTypeReturnDto {
 
     private Long id;
 
-    private String name;
+    private String type;
 
-    private Double price;
+    private String description;
 
     private StatusModel status;
 
@@ -25,17 +23,21 @@ public class DrinkReturnDto {
 
     private LocalDateTime updatedAt;
 
-    public DrinkReturnDto() {
+    public ProductTypeReturnDto() {
     }
 
-    public DrinkReturnDto(DrinkFullDto drinkFullDto) {
-        BeanUtils.copyProperties(drinkFullDto, this);
+    public ProductTypeReturnDto(ProductTypeModel productTypeModel) {
+        BeanUtils.copyProperties(productTypeModel, this);
     }
 
-    public DrinkReturnDto(Long id, String name, Double price, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ProductTypeReturnDto(ProductTypeFullDto productTypeFullDto) {
+        BeanUtils.copyProperties(productTypeFullDto, this);
+    }
+
+    public ProductTypeReturnDto(Long id, String type, String description, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
-        this.name = name;
-        this.price = price;
+        this.type = type;
+        this.description = description;
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -49,20 +51,20 @@ public class DrinkReturnDto {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getType() {
+        return type;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public Double getPrice() {
-        return price;
+    public String getDescription() {
+        return description;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public StatusModel getStatus() {

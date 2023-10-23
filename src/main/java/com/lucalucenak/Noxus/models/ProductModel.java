@@ -1,13 +1,8 @@
 package com.lucalucenak.Noxus.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.lucalucenak.Noxus.dtos.SoupFullDto;
-import com.lucalucenak.Noxus.dtos.post.SoupPostDto;
+import com.lucalucenak.Noxus.dtos.ProductFullDto;
+import com.lucalucenak.Noxus.dtos.post.ProductPostDto;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
@@ -15,14 +10,12 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Locale;
 
 @Entity
-@Table(name = "soup")
+@Table(name = "product")
 @EntityListeners(AuditingEntityListener.class)
 @Builder
-public class SoupModel {
+public class ProductModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,12 +24,19 @@ public class SoupModel {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @Column(nullable = true)
+    private String description;
+
     @Column(nullable = false)
     private Double price;
 
     @ManyToOne
     @JoinColumn(name = "size_id", nullable = false)
     private SizeModel size;
+
+    @ManyToOne
+    @JoinColumn(name = "product_type_id", nullable = false)
+    private ProductTypeModel productType;
 
     @ManyToOne
     @JoinColumn(name = "status_id", nullable = false)
@@ -48,32 +48,35 @@ public class SoupModel {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    public SoupModel() {
+    public ProductModel() {
     }
 
-    public SoupModel(SoupFullDto soupFullDto) {
-        BeanUtils.copyProperties(soupFullDto, this);
+    public ProductModel(ProductFullDto productFullDto) {
+        BeanUtils.copyProperties(productFullDto, this);
     }
 
-    public SoupModel(SoupPostDto soupPostDto) {
-        BeanUtils.copyProperties(soupPostDto, this);
+    public ProductModel(ProductPostDto productTypePostDto) {
+        BeanUtils.copyProperties(productTypePostDto, this);
     }
 
-    public SoupModel(Long id, String name, Double price, SizeModel size, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ProductModel(Long id, String name, String description, Double price, SizeModel size, ProductTypeModel productType, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
+        this.description = description;
         this.price = price;
         this.size = size;
+        this.productType = productType;
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
-    @PrePersist
-    public void upperCaseName() {
-        if (name != null) {
-            name = name.toUpperCase(Locale.ROOT);
-        }
+    public SizeModel getSize() {
+        return size;
+    }
+
+    public void setSize(SizeModel size) {
+        this.size = size;
     }
 
     public Long getId() {
@@ -92,6 +95,14 @@ public class SoupModel {
         this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Double getPrice() {
         return price;
     }
@@ -100,12 +111,12 @@ public class SoupModel {
         this.price = price;
     }
 
-    public SizeModel getSize() {
-        return size;
+    public ProductTypeModel getProductType() {
+        return productType;
     }
 
-    public void setSize(SizeModel size) {
-        this.size = size;
+    public void setProductType(ProductTypeModel productType) {
+        this.productType = productType;
     }
 
     public StatusModel getStatus() {

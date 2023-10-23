@@ -1,25 +1,26 @@
-package com.lucalucenak.Noxus.dtos;
+package com.lucalucenak.Noxus.dtos.response;
 
+import com.lucalucenak.Noxus.dtos.ProductFullDto;
+import com.lucalucenak.Noxus.models.ProductTypeModel;
 import com.lucalucenak.Noxus.models.SizeModel;
-import com.lucalucenak.Noxus.models.SoupModel;
 import com.lucalucenak.Noxus.models.StatusModel;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
 
-public class SoupFullDto {
+public class ProductReturnDto {
 
     private Long id;
 
     private String name;
 
+    private String description;
+
     private Double price;
 
     private SizeModel size;
+
+    private ProductTypeModel productType;
 
     private StatusModel status;
 
@@ -27,21 +28,31 @@ public class SoupFullDto {
 
     private LocalDateTime updatedAt;
 
-    public SoupFullDto() {
+    public ProductReturnDto() {
     }
 
-    public SoupFullDto(SoupModel soupModel) {
-        BeanUtils.copyProperties(soupModel, this);
+    public ProductReturnDto(ProductFullDto productFullDto) {
+        BeanUtils.copyProperties(productFullDto, this);
     }
 
-    public SoupFullDto(Long id, String name, Double price, SizeModel size, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ProductReturnDto(Long id, String name, String description, Double price, SizeModel size, ProductTypeModel productType, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
+        this.description = description;
         this.price = price;
         this.size = size;
+        this.productType = productType;
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public SizeModel getSize() {
+        return size;
+    }
+
+    public void setSize(SizeModel size) {
+        this.size = size;
     }
 
     public Long getId() {
@@ -60,6 +71,14 @@ public class SoupFullDto {
         this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Double getPrice() {
         return price;
     }
@@ -68,12 +87,12 @@ public class SoupFullDto {
         this.price = price;
     }
 
-    public SizeModel getSize() {
-        return size;
+    public ProductTypeModel getProductType() {
+        return productType;
     }
 
-    public void setSize(SizeModel size) {
-        this.size = size;
+    public void setProductType(ProductTypeModel productType) {
+        this.productType = productType;
     }
 
     public StatusModel getStatus() {

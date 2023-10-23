@@ -1,12 +1,13 @@
 package com.lucalucenak.Noxus.models;
 
-import com.lucalucenak.Noxus.dtos.DrinkFullDto;
-import com.lucalucenak.Noxus.dtos.post.DrinkPostDto;
+import com.lucalucenak.Noxus.dtos.AddressFullDto;
+import com.lucalucenak.Noxus.dtos.ProductTypeFullDto;
+import com.lucalucenak.Noxus.dtos.StatusFullDto;
+import com.lucalucenak.Noxus.dtos.post.AddressPostDto;
+import com.lucalucenak.Noxus.dtos.post.ProductTypePostDto;
+import com.lucalucenak.Noxus.dtos.response.AddressReturnDto;
+import com.lucalucenak.Noxus.dtos.response.ProductTypeReturnDto;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
@@ -14,24 +15,22 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Locale;
 
 @Entity
-@Table(name = "drink")
+@Table(name = "product_type")
 @EntityListeners(AuditingEntityListener.class)
 @Builder
-public class DrinkModel {
+public class ProductTypeModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
-    private String name;
+    @Column(nullable = false)
+    private String type;
 
     @Column(nullable = false)
-    private Double price;
+    private String description;
 
     @ManyToOne
     @JoinColumn(name = "status_id", nullable = false)
@@ -43,31 +42,29 @@ public class DrinkModel {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    public DrinkModel() {
+    public ProductTypeModel() {
     }
 
-    public DrinkModel(DrinkFullDto drinkFullDto) {
-        BeanUtils.copyProperties(drinkFullDto, this);
+    public ProductTypeModel(ProductTypeFullDto productTypeFullDto) {
+        BeanUtils.copyProperties(productTypeFullDto, this);
     }
 
-    public DrinkModel(DrinkPostDto drinkPostDto) {
-        BeanUtils.copyProperties(drinkPostDto, this);
+    public ProductTypeModel(ProductTypeReturnDto productTypeReturnDto) {
+        BeanUtils.copyProperties(productTypeReturnDto, this);
     }
 
-    public DrinkModel(Long id, String name, Double price, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+
+    public ProductTypeModel(ProductTypePostDto productTypePostDto) {
+        BeanUtils.copyProperties(productTypePostDto, this);
+    }
+
+    public ProductTypeModel(Long id, String type, String description, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
-        this.name = name;
-        this.price = price;
+        this.type = type;
+        this.description = description;
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-    }
-
-    @PrePersist
-    public void upperCaseName() {
-        if (name != null) {
-            name = name.toUpperCase(Locale.ROOT);
-        }
     }
 
     public Long getId() {
@@ -78,20 +75,20 @@ public class DrinkModel {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getType() {
+        return type;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public Double getPrice() {
-        return price;
+    public String getDescription() {
+        return description;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public StatusModel getStatus() {

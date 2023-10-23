@@ -32,7 +32,7 @@ public class SizeModel {
 
     @JsonIgnore
     @OneToMany(mappedBy = "size", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<SoupModel> soups;
+    private List<ProductModel> products;
 
     @ManyToOne
     @JoinColumn(name = "status_id", nullable = false)
@@ -55,10 +55,10 @@ public class SizeModel {
         BeanUtils.copyProperties(sizePostDto, this);
     }
 
-    public SizeModel(Long id, String size, List<SoupModel> soups, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public SizeModel(Long id, String size, List<ProductModel> products, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.size = size;
-        this.soups = soups;
+        this.products = products;
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -87,12 +87,12 @@ public class SizeModel {
         this.size = size;
     }
 
-    public List<SoupModel> getSoups() {
-        return soups;
+    public List<ProductModel> getProducts() {
+        return products;
     }
 
-    public void setSoups(List<SoupModel> soups) {
-        this.soups = soups;
+    public void setProducts(List<ProductModel> products) {
+        this.products = products;
     }
 
     public StatusModel getStatus() {

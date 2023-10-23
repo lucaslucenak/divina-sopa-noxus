@@ -1,26 +1,24 @@
 package com.lucalucenak.Noxus.dtos;
 
-import com.lucalucenak.Noxus.dtos.response.DrinkReturnDto;
-import com.lucalucenak.Noxus.models.DrinkModel;
+import com.lucalucenak.Noxus.models.AddressModel;
+import com.lucalucenak.Noxus.models.ProductTypeModel;
 import com.lucalucenak.Noxus.models.StatusModel;
 import jakarta.persistence.Column;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 
-public class DrinkFullDto {
+public class ProductTypeFullDto {
 
     private Long id;
 
-    private String name;
+    private String type;
 
-    private Double price;
+    private String description;
 
     private StatusModel status;
 
@@ -28,21 +26,17 @@ public class DrinkFullDto {
 
     private LocalDateTime updatedAt;
 
-    public DrinkFullDto() {
+    public ProductTypeFullDto() {
     }
 
-    public DrinkFullDto(DrinkModel drinkModel) {
-        BeanUtils.copyProperties(drinkModel, this);
+    public ProductTypeFullDto(ProductTypeModel productTypeModel) {
+        BeanUtils.copyProperties(productTypeModel, this);
     }
 
-    public DrinkFullDto(DrinkReturnDto drinkReturnDto) {
-        BeanUtils.copyProperties(drinkReturnDto, this);
-    }
-
-    public DrinkFullDto(Long id, String name, Double price, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ProductTypeFullDto(Long id, String type, String description, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
-        this.name = name;
-        this.price = price;
+        this.type = type;
+        this.description = description;
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -56,20 +50,20 @@ public class DrinkFullDto {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getType() {
+        return type;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public Double getPrice() {
-        return price;
+    public String getDescription() {
+        return description;
     }
 
-    public void setPrice(Double price) {
-        this.price = price;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public StatusModel getStatus() {

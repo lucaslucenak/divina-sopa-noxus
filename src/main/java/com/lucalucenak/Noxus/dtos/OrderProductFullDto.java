@@ -1,15 +1,14 @@
 package com.lucalucenak.Noxus.dtos;
 
-import com.lucalucenak.Noxus.models.OrderSoupModel;
-import com.lucalucenak.Noxus.models.pks.OrderSoupPk;
-import jakarta.validation.constraints.NotNull;
+import com.lucalucenak.Noxus.models.OrderProductModel;
+import com.lucalucenak.Noxus.models.pks.OrderProductPk;
 import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
 
-public class OrderSoupFullDto {
+public class OrderProductFullDto {
 
-    private OrderSoupPk id;
+    private OrderProductPk id;
 
     private Integer quantity;
 
@@ -17,30 +16,30 @@ public class OrderSoupFullDto {
 
     private LocalDateTime updatedAt;
 
-    public OrderSoupFullDto() {
+    public OrderProductFullDto() {
     }
 
-    public OrderSoupFullDto(OrderSoupModel orderSoupModel) {
+    public OrderProductFullDto(OrderProductModel orderSoupModel) {
         BeanUtils.copyProperties(orderSoupModel, this);
     }
 
-    public OrderSoupFullDto(OrderSoupPk id, Integer quantity, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public OrderProductFullDto(OrderProductPk id, Integer quantity, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.quantity = quantity;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
-    public OrderSoupFullDto(OrderSoupPk id, Integer quantity) {
+    public OrderProductFullDto(OrderProductPk id, Integer quantity) {
         this.id = id;
         this.quantity = quantity;
     }
 
-    public OrderSoupPk getId() {
+    public OrderProductPk getId() {
         return id;
     }
 
-    public void setId(OrderSoupPk id) {
+    public void setId(OrderProductPk id) {
         this.id = id;
     }
 

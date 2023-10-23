@@ -1,28 +1,28 @@
 package com.lucalucenak.Noxus.dtos.response;
 
-import com.lucalucenak.Noxus.models.DrinkModel;
+import com.lucalucenak.Noxus.models.ProductModel;
 
-public class OrderReturnDrinkFieldDto {
+public class OrderReturnProductFieldDto {
 
-    private DrinkModel drink;
+    private ProductModel product;
     private Integer quantity;
     private Double price;
 
-    public OrderReturnDrinkFieldDto() {
+    public OrderReturnProductFieldDto() {
     }
 
-    public OrderReturnDrinkFieldDto(DrinkModel drink, Integer quantity, Double price) {
-        this.drink = drink;
+    public OrderReturnProductFieldDto(ProductModel product, Integer quantity, Double price) {
+        this.product = product;
         this.quantity = quantity;
         this.price = price;
     }
 
-    public DrinkModel getDrink() {
-        return drink;
+    public ProductModel getProduct() {
+        return product;
     }
 
-    public void setDrink(DrinkModel drink) {
-        this.drink = drink;
+    public void setProduct(ProductModel product) {
+        this.product = product;
     }
 
     public Integer getQuantity() {
