@@ -1,5 +1,6 @@
 package com.lucalucenak.Noxus.dtos.post;
 
+import com.lucalucenak.Noxus.enums.RoleEnum;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -40,10 +41,18 @@ public class ClientAccountPostDto {
     @NotNull(message = "Field statusId shouldn't be null")
     private Long statusId;
 
+    @NotNull(message = "Field password shouldn't be null")
+    @NotEmpty(message = "Field password shouldn't be empty")
+    @NotBlank(message = "Field password shouldn't be blank")
+    private String password;
+
+    @NotNull(message = "Field role shouldn't be null")
+    private RoleEnum role;
+
     public ClientAccountPostDto() {
     }
 
-    public ClientAccountPostDto(Long id, String firstName, String lastName, String cpf, String email, String cellphoneNumber, Long statusId) {
+    public ClientAccountPostDto(Long id, String firstName, String lastName, String cpf, String email, String cellphoneNumber, Long statusId, String password, RoleEnum role) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -51,6 +60,24 @@ public class ClientAccountPostDto {
         this.email = email;
         this.cellphoneNumber = cellphoneNumber;
         this.statusId = statusId;
+        this.password = password;
+        this.role = role;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public RoleEnum getRole() {
+        return role;
+    }
+
+    public void setRole(RoleEnum role) {
+        this.role = role;
     }
 
     public String getCellphoneNumber() {

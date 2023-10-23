@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: ${APP_PROFILE:test}
+    active: ${APP_PROFILE:prod}
   jpa:
     open-in-view: false
   main:
@@ -8,3 +8,7 @@ spring:
 
 cors:
   origins: ${CORS_ORIGINS:http://localhost:5173,http://localhost:3000}
+
+jwt:
+  security:
+    token: doideira-maluco

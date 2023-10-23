@@ -12,7 +12,7 @@ insert into deliveryman(name, cellphone_number, status_id, created_at, updated_a
 
 
 insert into neighbourhood(neighbourhood, delivery_tax, status_id, created_at, updated_at) values ('SAO_JOSE', 7.0, 1, NOW(), NOW());
-insert into client_account(first_name, last_name, cpf, email, cellphone_number, placed_orders_quantity, status_id, created_at, updated_at) values ('Lucas', 'de Lucena Siqueira', '123.123.123-12', 'lucas.lucenak@gmail.com', '83986907270', 10, 1, NOW(), NOW());
+insert into client_account(first_name, last_name, cpf, email, cellphone_number, placed_orders_quantity, status_id, password, role, created_at, updated_at) values ('Lucas', 'de Lucena Siqueira', '123.123.123-12', 'lucas.lucenak@gmail.com', '83986907270', 10, 1, '@1234', 'USER', NOW(), NOW());
 insert into address(street_name, house_number, city, cep, complement, reference_point, neighbourhood_id, client_account_id, status_id, created_at, updated_at) values ('Rua dos bobos', '0', 'Campina Grande', 'CEP', 'não tem nada', 'unica rua do bairro', 1, 1, 1, NOW(), NOW());
 
 insert into soup (name, price, size_id, status_id, created_at, updated_at) values ('FEIJÃO', 10.00, 1, 1, NOW(), NOW());

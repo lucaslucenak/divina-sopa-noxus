@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lucalucenak.Noxus.dtos.ClientAccountFullDto;
 import com.lucalucenak.Noxus.dtos.post.ClientAccountPostDto;
 import com.lucalucenak.Noxus.dtos.response.ClientAccountReturnDto;
+import com.lucalucenak.Noxus.enums.RoleEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -15,15 +16,19 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "client_account")
 @EntityListeners(AuditingEntityListener.class)
 @Builder
-public class ClientAccountModel {
+public class ClientAccountModel implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,6 +51,13 @@ public class ClientAccountModel {
 
     @Column(nullable = false)
     private Integer placedOrdersQuantity;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private RoleEnum role;
 
     @ManyToOne
     @JoinColumn(name = "status_id", nullable = false)
@@ -80,7 +92,7 @@ public class ClientAccountModel {
         BeanUtils.copyProperties(clientAccountReturnDto, this);
     }
 
-    public ClientAccountModel(Long id, String firstName, String lastName, String cpf, String email, String cellphoneNumber, Integer placedOrdersQuantity, StatusModel status, List<AddressModel> addresses, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ClientAccountModel(Long id, String firstName, String lastName, String cpf, String email, String cellphoneNumber, Integer placedOrdersQuantity, String password, RoleEnum role, StatusModel status, List<AddressModel> addresses, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -88,11 +100,17 @@ public class ClientAccountModel {
         this.email = email;
         this.cellphoneNumber = cellphoneNumber;
         this.placedOrdersQuantity = placedOrdersQuantity;
+        this.password = password;
+        this.role = role;
         this.status = status;
         this.addresses = addresses;
         this.orders = orders;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getCellphoneNumber() {
@@ -189,5 +207,52 @@ public class ClientAccountModel {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public RoleEnum getRole() {
+        return role;
+    }
+
+    public void setRole(RoleEnum role) {
+        this.role = role;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (role == RoleEnum.ADMIN) {
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        } else {
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        }
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return cpf;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
