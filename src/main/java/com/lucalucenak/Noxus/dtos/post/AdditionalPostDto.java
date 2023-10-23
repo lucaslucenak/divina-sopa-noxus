@@ -5,6 +5,8 @@ public class AdditionalPostDto {
 
     private String name;
 
+    private String description;
+
     private Double price;
 
     private String type;
@@ -14,12 +16,21 @@ public class AdditionalPostDto {
     public AdditionalPostDto() {
     }
 
-    public AdditionalPostDto(Long id, String name, Double price, String type, Long statusId) {
+    public AdditionalPostDto(Long id, String name, String description, Double price, String type, Long statusId) {
         this.id = id;
         this.name = name;
+        this.description = description;
         this.price = price;
         this.type = type;
         this.statusId = statusId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Long getStatusId() {

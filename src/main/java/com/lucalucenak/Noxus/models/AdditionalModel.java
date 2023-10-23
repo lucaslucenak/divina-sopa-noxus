@@ -25,6 +25,9 @@ public class AdditionalModel {
     private String name;
 
     @Column(nullable = false)
+    private String description;
+
+    @Column(nullable = false)
     private Double price;
 
     @Column(nullable = false)
@@ -51,14 +54,23 @@ public class AdditionalModel {
         BeanUtils.copyProperties(additionalPostDto, this);
     }
 
-    public AdditionalModel(Long id, String name, Double price, String type, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public AdditionalModel(Long id, String name, String description, Double price, String type, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
+        this.description = description;
         this.price = price;
         this.type = type;
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public StatusModel getStatus() {

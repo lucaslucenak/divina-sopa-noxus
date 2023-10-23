@@ -15,6 +15,8 @@ public class AdditionalReturnDto {
 
     private String name;
 
+    private String description;
+
     private Double price;
 
     private String type;
@@ -32,14 +34,23 @@ public class AdditionalReturnDto {
         BeanUtils.copyProperties(additionalFullDto, this);
     }
 
-    public AdditionalReturnDto(Long id, String name, Double price, String type, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public AdditionalReturnDto(Long id, String name, String description, Double price, String type, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
+        this.description = description;
         this.price = price;
         this.type = type;
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public StatusModel getStatus() {
