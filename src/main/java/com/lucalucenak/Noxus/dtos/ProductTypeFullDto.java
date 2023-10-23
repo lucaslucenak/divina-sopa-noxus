@@ -1,64 +1,39 @@
-package com.lucalucenak.Noxus.models;
+package com.lucalucenak.Noxus.dtos;
 
-import com.lucalucenak.Noxus.dtos.AddressFullDto;
-import com.lucalucenak.Noxus.dtos.ProductTypeFullDto;
-import com.lucalucenak.Noxus.dtos.StatusFullDto;
-import com.lucalucenak.Noxus.dtos.post.AddressPostDto;
-import com.lucalucenak.Noxus.dtos.post.ProductTypePostDto;
-import com.lucalucenak.Noxus.dtos.response.AddressReturnDto;
-import com.lucalucenak.Noxus.dtos.response.ProductTypeReturnDto;
-import jakarta.persistence.*;
-import lombok.Builder;
+import com.lucalucenak.Noxus.models.AddressModel;
+import com.lucalucenak.Noxus.models.ProductTypeModel;
+import com.lucalucenak.Noxus.models.StatusModel;
+import jakarta.persistence.Column;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "product_type")
-@EntityListeners(AuditingEntityListener.class)
-@Builder
-public class ProductTypeModel {
+public class ProductTypeFullDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private String type;
 
-    @Column(nullable = false)
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "status_id", nullable = false)
     private StatusModel status;
 
-    @CreatedDate
     private LocalDateTime createdAt;
 
-    @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    public ProductTypeModel() {
+    public ProductTypeFullDto() {
     }
 
-    public ProductTypeModel(ProductTypeFullDto productTypeFullDto) {
-        BeanUtils.copyProperties(productTypeFullDto, this);
+    public ProductTypeFullDto(ProductTypeModel productTypeModel) {
+        BeanUtils.copyProperties(productTypeModel, this);
     }
 
-    public ProductTypeModel(ProductTypeReturnDto productTypeReturnDto) {
-        BeanUtils.copyProperties(productTypeReturnDto, this);
-    }
-
-
-    public ProductTypeModel(ProductTypePostDto productTypePostDto) {
-        BeanUtils.copyProperties(productTypePostDto, this);
-    }
-
-    public ProductTypeModel(Long id, String type, String description, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ProductTypeFullDto(Long id, String type, String description, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.type = type;
         this.description = description;
