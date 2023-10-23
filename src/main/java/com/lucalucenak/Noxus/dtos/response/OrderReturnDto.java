@@ -20,9 +20,7 @@ public class OrderReturnDto {
 
     private String observation;
 
-    private List<OrderReturnSoupFieldDto> soups;
-
-    List<OrderReturnDrinkFieldDto> drinks;
+    private List<OrderReturnProductFieldDto> products;
 
     private StatusModel status;
 
@@ -51,12 +49,11 @@ public class OrderReturnDto {
         BeanUtils.copyProperties(orderModel, this);
     }
 
-    public OrderReturnDto(Long id, Double orderPrice, String observation, List<OrderReturnSoupFieldDto> soups, List<OrderReturnDrinkFieldDto> drinks, StatusModel status, AddressModel address, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, DeliveryModel delivery, DeliverymanModel deliveryman, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime dispatchTime, LocalDateTime arrivalForecast) {
+    public OrderReturnDto(Long id, Double orderPrice, String observation, List<OrderReturnProductFieldDto> products, StatusModel status, AddressModel address, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, DeliveryModel delivery, DeliverymanModel deliveryman, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime dispatchTime, LocalDateTime arrivalForecast) {
         this.id = id;
         this.orderPrice = orderPrice;
         this.observation = observation;
-        this.soups = soups;
-        this.drinks = drinks;
+        this.products = products;
         this.status = status;
         this.address = address;
         this.clientAccount = clientAccount;
@@ -101,20 +98,12 @@ public class OrderReturnDto {
         this.observation = observation;
     }
 
-    public List<OrderReturnSoupFieldDto> getSoups() {
-        return soups;
+    public List<OrderReturnProductFieldDto> getProducts() {
+        return products;
     }
 
-    public void setSoups(List<OrderReturnSoupFieldDto> soups) {
-        this.soups = soups;
-    }
-
-    public List<OrderReturnDrinkFieldDto> getDrinks() {
-        return drinks;
-    }
-
-    public void setDrinks(List<OrderReturnDrinkFieldDto> drinks) {
-        this.drinks = drinks;
+    public void setProducts(List<OrderReturnProductFieldDto> products) {
+        this.products = products;
     }
 
     public StatusModel getStatus() {
