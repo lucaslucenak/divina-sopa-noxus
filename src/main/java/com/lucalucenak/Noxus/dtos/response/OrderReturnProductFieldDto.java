@@ -6,6 +6,7 @@ public class OrderReturnProductFieldDto {
 
     private ProductModel product;
     private Integer quantity;
+    private String additions;
     private Double price;
 
     public OrderReturnProductFieldDto() {
@@ -15,6 +16,21 @@ public class OrderReturnProductFieldDto {
         this.product = product;
         this.quantity = quantity;
         this.price = price;
+    }
+
+    public OrderReturnProductFieldDto(ProductModel product, Integer quantity, String additions, Double price) {
+        this.product = product;
+        this.quantity = quantity;
+        this.additions = additions;
+        this.price = price;
+    }
+
+    public String getAdditions() {
+        return additions;
+    }
+
+    public void setAdditions(String additions) {
+        this.additions = additions;
     }
 
     public ProductModel getProduct() {

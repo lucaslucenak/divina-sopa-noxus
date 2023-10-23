@@ -2,6 +2,7 @@ package com.lucalucenak.Noxus.services;
 
 import com.lucalucenak.Noxus.dtos.*;
 import com.lucalucenak.Noxus.dtos.post.OrderPostDto;
+import com.lucalucenak.Noxus.dtos.post.OrderProductPostDto;
 import com.lucalucenak.Noxus.dtos.response.OrderReturnDto;
 import com.lucalucenak.Noxus.dtos.response.OrderReturnProductFieldDto;
 import com.lucalucenak.Noxus.exceptions.*;
@@ -56,6 +57,7 @@ public class OrderService {
                 OrderReturnProductFieldDto product = new OrderReturnProductFieldDto(
                         new ProductModel(productFullDto),
                         productQuantity,
+                        i.getAdditions(),
                         productFullDto.getPrice() * productQuantity
                 );
                 products.add(product);
@@ -80,10 +82,12 @@ public class OrderService {
             for (OrderProductFullDto j : orderProductService.findOrderProductsByOrderId(i.getId())) {
                 ProductFullDto productFullDto = productService.findProductById(j.getId().getProduct().getId());
                 Integer productQuantity = j.getQuantity();
+                String productAdditions = j.getAdditions();
 
                 OrderReturnProductFieldDto product = new OrderReturnProductFieldDto(
                         new ProductModel(productFullDto),
                         productQuantity,
+                        productAdditions,
                         productFullDto.getPrice() * productQuantity
                 );
                 products.add(product);
@@ -127,12 +131,18 @@ public class OrderService {
             orderPrice += deliveryModel.getTax();
         }
 
-        for (Map.Entry<Long, Integer> i : orderPostDto.getProductsIds().entrySet()) {
-            ProductModel productModel = new ProductModel(productService.findProductById(i.getKey()));
-            Integer productQuantity = i.getValue();
+        for (OrderProductPostDto i : orderPostDto.getProducts()) {
+            ProductModel productModel = new ProductModel(productService.findProductById(i.getProductId()));
+            Integer productQuantity = i.getQuantity();
 
             orderPrice += productModel.getPrice() * productQuantity;
         }
+//        for (Map.Entry<Long, Integer> i : orderPostDto.getProductsIds().entrySet()) {
+//            ProductModel productModel = new ProductModel(productService.findProductById(i.getKey()));
+//            Integer productQuantity = i.getValue();
+//
+//            orderPrice += productModel.getPrice() * productQuantity;
+//        }
 
         orderModel.setOrderPrice(orderPrice);
 
@@ -143,21 +153,39 @@ public class OrderService {
         OrderReturnDto orderReturnDto = new OrderReturnDto(orderModel);
 
         List<OrderReturnProductFieldDto> products = new ArrayList<>();
-        for (Map.Entry<Long, Integer> i : orderPostDto.getProductsIds().entrySet()) {
-            ProductModel productModel = new ProductModel(productService.findProductById(i.getKey()));
-            Integer productQuantity = i.getValue();
+        for (OrderProductPostDto i : orderPostDto.getProducts()) {
+            ProductModel productModel = new ProductModel(productService.findProductById(i.getProductId()));
+            Integer productQuantity = i.getQuantity();
+            String productAdditions = i.getAdditions();
 
             OrderProductPk orderProductPk = new OrderProductPk(orderModel, productModel);
 
-            OrderProductFullDto orderProductFullDto = orderProductService.saveOrderProduct(new OrderProductFullDto(orderProductPk, productQuantity));
+            OrderProductFullDto orderProductFullDto = orderProductService.saveOrderProduct(new OrderProductFullDto(orderProductPk, productAdditions, productQuantity));
 
             OrderReturnProductFieldDto product = new OrderReturnProductFieldDto(
                     productModel,
                     productQuantity,
+                    productAdditions,
                     productModel.getPrice() * productQuantity
             );
             products.add(product);
         }
+
+//        for (Map.Entry<Long, Integer> i : orderPostDto.getProductsIds().entrySet()) {
+//            ProductModel productModel = new ProductModel(productService.findProductById(i.getKey()));
+//            Integer productQuantity = i.getValue();
+//
+//            OrderProductPk orderProductPk = new OrderProductPk(orderModel, productModel);
+//
+//            OrderProductFullDto orderProductFullDto = orderProductService.saveOrderProduct(new OrderProductFullDto(orderProductPk, productQuantity));
+//
+//            OrderReturnProductFieldDto product = new OrderReturnProductFieldDto(
+//                    productModel,
+//                    productQuantity,
+//                    productModel.getPrice() * productQuantity
+//            );
+//            products.add(product);
+//        }
         orderReturnDto.setProducts(products);
 
         return orderReturnDto;
@@ -187,12 +215,19 @@ public class OrderService {
             orderPrice += deliveryModel.getTax();
         }
 
-        for (Map.Entry<Long, Integer> i : orderPostDto.getProductsIds().entrySet()) {
-            ProductModel productModel = new ProductModel(productService.findProductById(i.getKey()));
-            Integer productQuantity = i.getValue();
+        for (OrderProductPostDto i : orderPostDto.getProducts()) {
+            ProductModel productModel = new ProductModel(productService.findProductById(i.getProductId()));
+            Integer productQuantity = i.getQuantity();
 
             orderPrice += productModel.getPrice() * productQuantity;
         }
+
+//        for (Map.Entry<Long, Integer> i : orderPostDto.getProductsIds().entrySet()) {
+//            ProductModel productModel = new ProductModel(productService.findProductById(i.getKey()));
+//            Integer productQuantity = i.getValue();
+//
+//            orderPrice += productModel.getPrice() * productQuantity;
+//        }
 
         updatedOrderModel.setOrderPrice(orderPrice);
 
@@ -203,23 +238,42 @@ public class OrderService {
         // Setting Return
         OrderReturnDto orderReturnDto = new OrderReturnDto(existentOrderModel);
 
+//        List<OrderReturnProductFieldDto> products = new ArrayList<>();
+//        for (Map.Entry<Long, Integer> i : orderPostDto.getProductsIds().entrySet()) {
+//            ProductModel productModel = new ProductModel(productService.findProductById(i.getKey()));
+//            Integer productQuantity = i.getValue();
+//
+//            OrderProductPk orderProductPk = new OrderProductPk(existentOrderModel, productModel);
+//
+//            OrderProductFullDto orderProductFullDto = orderProductService.saveOrderProduct(new OrderProductFullDto(orderProductPk, productQuantity));
+//
+//            OrderReturnProductFieldDto product = new OrderReturnProductFieldDto(
+//                    productModel,
+//                    productQuantity,
+//                    productModel.getPrice() * productQuantity
+//            );
+//            products.add(product);
+//        }
+
         List<OrderReturnProductFieldDto> products = new ArrayList<>();
-        for (Map.Entry<Long, Integer> i : orderPostDto.getProductsIds().entrySet()) {
-            ProductModel productModel = new ProductModel(productService.findProductById(i.getKey()));
-            Integer productQuantity = i.getValue();
+        for (OrderProductPostDto i : orderPostDto.getProducts()) {
+            ProductModel productModel = new ProductModel(productService.findProductById(i.getProductId()));
+            Integer productQuantity = i.getQuantity();
+            String productAdditions = i.getAdditions();
 
             OrderProductPk orderProductPk = new OrderProductPk(existentOrderModel, productModel);
 
-            OrderProductFullDto orderProductFullDto = orderProductService.saveOrderProduct(new OrderProductFullDto(orderProductPk, productQuantity));
+            OrderProductFullDto orderProductFullDto = orderProductService.saveOrderProduct(new OrderProductFullDto(orderProductPk, productAdditions, productQuantity));
 
             OrderReturnProductFieldDto product = new OrderReturnProductFieldDto(
                     productModel,
                     productQuantity,
+                    productAdditions,
                     productModel.getPrice() * productQuantity
             );
             products.add(product);
-            orderReturnDto.setProducts(products);
         }
+        orderReturnDto.setProducts(products);
 
         return orderReturnDto;
     }
@@ -248,6 +302,7 @@ public class OrderService {
             OrderReturnProductFieldDto orderReturnDrinkFieldDto = new OrderReturnProductFieldDto(
                     productModel,
                     i.getQuantity(),
+                    i.getAdditions(),
                     productModel.getPrice() * i.getQuantity()
             );
             products.add(orderReturnDrinkFieldDto);

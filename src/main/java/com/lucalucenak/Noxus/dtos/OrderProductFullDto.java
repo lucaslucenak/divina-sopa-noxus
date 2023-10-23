@@ -2,6 +2,7 @@ package com.lucalucenak.Noxus.dtos;
 
 import com.lucalucenak.Noxus.models.OrderProductModel;
 import com.lucalucenak.Noxus.models.pks.OrderProductPk;
+import jakarta.persistence.Column;
 import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
@@ -11,6 +12,8 @@ public class OrderProductFullDto {
     private OrderProductPk id;
 
     private Integer quantity;
+
+    private String additions;
 
     private LocalDateTime createdAt;
 
@@ -23,16 +26,26 @@ public class OrderProductFullDto {
         BeanUtils.copyProperties(orderSoupModel, this);
     }
 
-    public OrderProductFullDto(OrderProductPk id, Integer quantity, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public OrderProductFullDto(OrderProductPk id, Integer quantity, String additions, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.quantity = quantity;
+        this.additions = additions;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
-    public OrderProductFullDto(OrderProductPk id, Integer quantity) {
+    public OrderProductFullDto(OrderProductPk id, String additions, Integer quantity) {
         this.id = id;
+        this.additions = additions;
         this.quantity = quantity;
+    }
+
+    public String getAdditions() {
+        return additions;
+    }
+
+    public void setAdditions(String additions) {
+        this.additions = additions;
     }
 
     public OrderProductPk getId() {

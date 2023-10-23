@@ -4,6 +4,7 @@ import com.lucalucenak.Noxus.models.DeliveryModel;
 import jakarta.validation.constraints.NotNull;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 public class OrderPostDto {
@@ -27,13 +28,16 @@ public class OrderPostDto {
     @NotNull(message = "Field paymentMethodId shouldn't be null")
     private Long paymentMethodId;
 
-    @NotNull(message = "Field productsIds shouldn't be null")
-    private Map<Long, Integer> productsIds; // ID | Quantity
+//    @NotNull(message = "Field productsIds shouldn't be null")
+//    private Map<Long, Integer> productsIds; // ID | Quantity
+
+    @NotNull(message = "Field products shouldn't be null")
+    private List<OrderProductPostDto> products;
 
     public OrderPostDto() {
     }
 
-    public OrderPostDto(Long id, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, Long deliveryId, Long clientAccountId, Long paymentMethodId, Map<Long, Integer> productsIds) {
+    public OrderPostDto(Long id, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, Long deliveryId, Long clientAccountId, Long paymentMethodId, List<OrderProductPostDto> products) {
         this.id = id;
         this.observation = observation;
         this.dispatchTime = dispatchTime;
@@ -41,7 +45,7 @@ public class OrderPostDto {
         this.deliveryId = deliveryId;
         this.clientAccountId = clientAccountId;
         this.paymentMethodId = paymentMethodId;
-        this.productsIds = productsIds;
+        this.products = products;
     }
 
     public Long getId() {
@@ -100,11 +104,11 @@ public class OrderPostDto {
         this.paymentMethodId = paymentMethodId;
     }
 
-    public Map<Long, Integer> getProductsIds() {
-        return productsIds;
+    public List<OrderProductPostDto> getProducts() {
+        return products;
     }
 
-    public void setProductsIds(Map<Long, Integer> productsIds) {
-        this.productsIds = productsIds;
+    public void setProducts(List<OrderProductPostDto> products) {
+        this.products = products;
     }
 }

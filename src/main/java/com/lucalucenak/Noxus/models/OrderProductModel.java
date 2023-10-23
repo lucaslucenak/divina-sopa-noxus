@@ -20,6 +20,9 @@ public class OrderProductModel {
     @EmbeddedId
     private OrderProductPk id = new OrderProductPk();
 
+    @Column(nullable = true)
+    private String additions;
+
     @Column(nullable = false)
     private Integer quantity;
 
@@ -36,11 +39,20 @@ public class OrderProductModel {
         BeanUtils.copyProperties(orderProductFullDto, this);
     }
 
-    public OrderProductModel(OrderProductPk id, Integer quantity, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public OrderProductModel(OrderProductPk id, String additions, Integer quantity, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
+        this.additions = additions;
         this.quantity = quantity;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public String getAdditions() {
+        return additions;
+    }
+
+    public void setAdditions(String additions) {
+        this.additions = additions;
     }
 
     public OrderProductPk getId() {
