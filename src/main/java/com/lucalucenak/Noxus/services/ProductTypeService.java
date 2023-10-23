@@ -1,12 +1,10 @@
 package com.lucalucenak.Noxus.services;
 
 import com.lucalucenak.Noxus.dtos.ProductTypeFullDto;
-import com.lucalucenak.Noxus.dtos.SoupFullDto;
 import com.lucalucenak.Noxus.dtos.post.ProductTypePostDto;
 import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.ProductTypeModel;
-import com.lucalucenak.Noxus.models.SoupModel;
 import com.lucalucenak.Noxus.models.StatusModel;
 import com.lucalucenak.Noxus.repositories.ProductTypeRepository;
 import org.springframework.beans.BeanUtils;

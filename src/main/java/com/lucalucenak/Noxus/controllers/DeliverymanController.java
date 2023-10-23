@@ -1,10 +1,8 @@
 package com.lucalucenak.Noxus.controllers;
 
 import com.lucalucenak.Noxus.dtos.DeliverymanFullDto;
-import com.lucalucenak.Noxus.dtos.DrinkFullDto;
 import com.lucalucenak.Noxus.dtos.post.DeliverymanPostDto;
 import com.lucalucenak.Noxus.dtos.response.DeliverymanReturnDto;
-import com.lucalucenak.Noxus.dtos.response.DrinkReturnDto;
 import com.lucalucenak.Noxus.services.DeliverymanService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

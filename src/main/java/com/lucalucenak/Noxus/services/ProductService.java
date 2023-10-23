@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -98,5 +100,18 @@ public class ProductService {
         productModel.setStatus(inactiveStatsModel);
 
         return new ProductFullDto(productRepository.save(productModel));
+    }
+
+    @Transactional
+    public List<ProductFullDto> inactivateProductsBySizeId(Long sizeId) {
+        StatusModel inactiveStatusModel = new StatusModel(statusService.findStatusByStatus("INACTIVE"));
+
+        List<ProductFullDto> updatedProducts = new ArrayList<>();
+        for (Optional<ProductModel> i : productRepository.findBySizeId(sizeId)) {
+            ProductModel productModel = i.get();
+            productModel.setStatus(inactiveStatusModel);
+            updatedProducts.add(new ProductFullDto(productRepository.save(productModel)));
+        }
+        return updatedProducts;
     }
 }

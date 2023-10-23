@@ -1,11 +1,7 @@
 package com.lucalucenak.Noxus.models;
 
-import com.lucalucenak.Noxus.dtos.DrinkFullDto;
 import com.lucalucenak.Noxus.dtos.ProductFullDto;
-import com.lucalucenak.Noxus.dtos.ProductTypeFullDto;
-import com.lucalucenak.Noxus.dtos.post.DrinkPostDto;
 import com.lucalucenak.Noxus.dtos.post.ProductPostDto;
-import com.lucalucenak.Noxus.dtos.post.ProductTypePostDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import org.springframework.beans.BeanUtils;

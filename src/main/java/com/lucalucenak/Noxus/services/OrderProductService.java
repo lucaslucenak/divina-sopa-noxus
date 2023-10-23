@@ -22,8 +22,6 @@ public class OrderProductService {
     private OrderProductRepository orderProductRepository;
     @Autowired
     private OrderService orderService;
-    @Autowired
-    private DrinkService drinkService;
 
     @Transactional
     public OrderProductFullDto findOrderProductById(OrderProductPk orderProductPk) {

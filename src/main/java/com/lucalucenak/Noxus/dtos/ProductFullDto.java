@@ -1,6 +1,5 @@
 package com.lucalucenak.Noxus.dtos;
 
-import com.lucalucenak.Noxus.dtos.response.DrinkReturnDto;
 import com.lucalucenak.Noxus.dtos.response.ProductReturnDto;
 import com.lucalucenak.Noxus.models.*;
 import org.springframework.beans.BeanUtils;

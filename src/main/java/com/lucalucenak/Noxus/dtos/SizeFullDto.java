@@ -1,11 +1,8 @@
 package com.lucalucenak.Noxus.dtos;
 
+import com.lucalucenak.Noxus.models.ProductModel;
 import com.lucalucenak.Noxus.models.SizeModel;
-import com.lucalucenak.Noxus.models.SoupModel;
 import com.lucalucenak.Noxus.models.StatusModel;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import org.springframework.beans.BeanUtils;
 
@@ -19,7 +16,7 @@ public class SizeFullDto {
 
     private String size;
 
-    private List<SoupModel> soups;
+    private List<ProductModel> products;
 
     private StatusModel status;
 
@@ -34,10 +31,10 @@ public class SizeFullDto {
         BeanUtils.copyProperties(sizeModel, this);
     }
 
-    public SizeFullDto(Long id, String size, List<SoupModel> soups, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public SizeFullDto(Long id, String size, List<ProductModel> products, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.size = size;
-        this.soups = soups;
+        this.products = products;
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -59,12 +56,12 @@ public class SizeFullDto {
         this.size = size;
     }
 
-    public List<SoupModel> getSoups() {
-        return soups;
+    public List<ProductModel> getProducts() {
+        return products;
     }
 
-    public void setSoups(List<SoupModel> soups) {
-        this.soups = soups;
+    public void setProducts(List<ProductModel> products) {
+        this.products = products;
     }
 
     public StatusModel getStatus() {

@@ -1,9 +1,7 @@
 package com.lucalucenak.Noxus.models;
 
-import com.lucalucenak.Noxus.dtos.OrderDrinkFullDto;
 import com.lucalucenak.Noxus.dtos.OrderProductFullDto;
 import com.lucalucenak.Noxus.models.pks.OrderProductPk;
-import com.lucalucenak.Noxus.models.pks.OrderSoupPk;
 import jakarta.persistence.*;
 import lombok.Builder;
 import org.springframework.beans.BeanUtils;

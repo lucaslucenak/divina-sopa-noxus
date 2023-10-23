@@ -1,6 +1,5 @@
 package com.lucalucenak.Noxus.dtos.response;
 
-import com.lucalucenak.Noxus.dtos.DrinkFullDto;
 import com.lucalucenak.Noxus.dtos.ProductFullDto;
 import com.lucalucenak.Noxus.models.ProductTypeModel;
 import com.lucalucenak.Noxus.models.SizeModel;

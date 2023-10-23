@@ -1,6 +1,5 @@
 package com.lucalucenak.Noxus.repositories;
 
-import com.lucalucenak.Noxus.models.OrderDrinkModel;
 import com.lucalucenak.Noxus.models.OrderProductModel;
 import com.lucalucenak.Noxus.models.pks.OrderProductPk;
 import org.springframework.data.jpa.repository.JpaRepository;

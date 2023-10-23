@@ -1,16 +1,10 @@
 package com.lucalucenak.Noxus.dtos.response;
 
-import com.lucalucenak.Noxus.dtos.DrinkFullDto;
-import com.lucalucenak.Noxus.dtos.SoupFullDto;
 import com.lucalucenak.Noxus.models.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map;
 
 public class OrderReturnDto {
 

@@ -1,6 +1,5 @@
 package com.lucalucenak.Noxus.models.pks;
 
-import com.lucalucenak.Noxus.models.DrinkModel;
 import com.lucalucenak.Noxus.models.OrderModel;
 import com.lucalucenak.Noxus.models.ProductModel;
 import jakarta.persistence.Embeddable;

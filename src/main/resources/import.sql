@@ -15,12 +15,12 @@ insert into neighbourhood(neighbourhood, delivery_tax, status_id, created_at, up
 insert into client_account(first_name, last_name, cpf, email, cellphone_number, placed_orders_quantity, status_id, password, role, created_at, updated_at) values ('Lucas', 'de Lucena Siqueira', '108.917.264-89', 'lucas.lucenak@gmail.com', '83986907270', 10, 1, '$2a$10$.e59Lm98RsgIiO5LVHVXAuWkMWUo0tMDebatRvjr2kNEhtGJ8pALW', 'ADMIN', NOW(), NOW());
 insert into address(street_name, house_number, city, cep, complement, reference_point, neighbourhood_id, client_account_id, status_id, created_at, updated_at) values ('Rua dos bobos', '0', 'Campina Grande', 'CEP', 'não tem nada', 'unica rua do bairro', 1, 1, 1, NOW(), NOW());
 
-insert into soup (name, price, size_id, status_id, created_at, updated_at) values ('FEIJÃO', 10.00, 1, 1, NOW(), NOW());
-insert into drink (name, price, status_id, created_at, updated_at) values ('COCA COLA 500ML', 8.0, 1, NOW(), NOW());
+--insert into soup (name, price, size_id, status_id, created_at, updated_at) values ('FEIJÃO', 10.00, 1, 1, NOW(), NOW());
+--insert into drink (name, price, status_id, created_at, updated_at) values ('COCA COLA 500ML', 8.0, 1, NOW(), NOW());
 
 insert into delivery (address_id, deliveryman_id, delivery_type_id, distance_tax_id, status_id, tax, distance, created_at, updated_at) values (1, 1, 1, 1, 1, 5.0, 2.3, NOW(), NOW());
 
-insert into orderr(order_price, observation, dispatch_time, arrival_forecast, status_id, client_account_id, payment_method_id, delivery_id, created_at, updated_at) values (25.0, 'sem torrada', '2023-07-27T15:30:00', '2023-07-27T16:15:00', 1, 1, 1, 1, NOW(), NOW());
-
-insert into order_drink(order_id, drink_id, quantity) values (1, 1, 1);
-insert into order_soup(order_id, soup_id, quantity) values (1, 1, 1);
+--insert into orderr(order_price, observation, dispatch_time, arrival_forecast, status_id, client_account_id, payment_method_id, delivery_id, created_at, updated_at) values (25.0, 'sem torrada', '2023-07-27T15:30:00', '2023-07-27T16:15:00', 1, 1, 1, 1, NOW(), NOW());
+--
+--insert into order_drink(order_id, drink_id, quantity) values (1, 1, 1);
+--insert into order_soup(order_id, soup_id, quantity) values (1, 1, 1);

@@ -28,7 +28,7 @@ public class SizeService {
     @Autowired
     private StatusService statusService;
     @Autowired
-    private SoupService soupService;
+    private ProductService productService;
 
     @Transactional
     public SizeFullDto findSizeById(Long sizeId) {
@@ -67,7 +67,7 @@ public class SizeService {
         updatedSizeModel.setStatus(statusModel);
 
         if (statusModel.getStatus().equals("INACTIVE")) {
-            soupService.inactivateSoupsBySizeId(sizeId);
+            productService.inactivateProductsBySizeId(sizeId);
         }
 
         BeanUtils.copyProperties(updatedSizeModel, existingSizeModel, "createdAt, updatedAt");
@@ -81,7 +81,7 @@ public class SizeService {
 
         sizeModel.setStatus(inactiveStatusModel);
 
-        soupService.inactivateSoupsBySizeId(sizeId);
+        productService.inactivateProductsBySizeId(sizeId);
         return new SizeFullDto(sizeRepository.save(sizeModel));
     }
 

@@ -1,12 +1,8 @@
 package com.lucalucenak.Noxus.dtos;
 
 import com.lucalucenak.Noxus.models.OrderProductModel;
-import com.lucalucenak.Noxus.models.OrderSoupModel;
 import com.lucalucenak.Noxus.models.pks.OrderProductPk;
-import jakarta.persistence.Column;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 

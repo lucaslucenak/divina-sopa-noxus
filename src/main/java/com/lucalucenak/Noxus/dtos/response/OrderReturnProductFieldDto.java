@@ -1,7 +1,6 @@
 package com.lucalucenak.Noxus.dtos.response;
 
 import com.lucalucenak.Noxus.models.ProductModel;
-import com.lucalucenak.Noxus.models.SoupModel;
 
 public class OrderReturnProductFieldDto {
 
