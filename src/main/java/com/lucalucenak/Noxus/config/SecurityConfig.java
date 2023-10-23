@@ -24,17 +24,29 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain (HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity
-                .csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.POST, "/authentication/login").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/client-account").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/address").hasRole("USER")
-                        .anyRequest().hasRole("ADMIN")
-                )
-                .addFilterBefore(securityFilterUtil, UsernamePasswordAuthenticationFilter.class)
-                .build();
+        httpSecurity.csrf(csrf -> csrf.disable());
+
+        httpSecurity.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        httpSecurity.authorizeHttpRequests(authorize -> authorize
+                .requestMatchers(HttpMethod.POST, "/authentication/login").permitAll()
+                // Address Routes
+                .requestMatchers(HttpMethod.POST, "/address").hasRole("USER")
+                .requestMatchers(HttpMethod.GET, "/address/find-by-client-account-id/{clientAccountId}").hasRole("USER")
+                .requestMatchers(HttpMethod.PUT, "/address/{addressId}").hasRole("USER")
+                // Client Account Routes
+                .requestMatchers(HttpMethod.POST, "/client-account").permitAll() // Create account
+                .requestMatchers(HttpMethod.GET, "/client-account/{clientAccountId}").hasRole("USER")
+                .requestMatchers(HttpMethod.PUT, "/client-account/{clientAccountId}").hasRole("USER")
+                // Order Routes
+                .requestMatchers(HttpMethod.POST, "/order").hasRole("USER")
+                .requestMatchers(HttpMethod.GET, "/order/find-by-client-account-id/{clientAccountId}").hasRole("USER")
+                .anyRequest().hasRole("ADMIN")
+        );
+
+        httpSecurity.addFilterBefore(securityFilterUtil, UsernamePasswordAuthenticationFilter.class);
+
+        return httpSecurity.build();
     }
 
     @Bean
