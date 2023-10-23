@@ -137,12 +137,6 @@ public class OrderService {
 
             orderPrice += productModel.getPrice() * productQuantity;
         }
-//        for (Map.Entry<Long, Integer> i : orderPostDto.getProductsIds().entrySet()) {
-//            ProductModel productModel = new ProductModel(productService.findProductById(i.getKey()));
-//            Integer productQuantity = i.getValue();
-//
-//            orderPrice += productModel.getPrice() * productQuantity;
-//        }
 
         orderModel.setOrderPrice(orderPrice);
 
@@ -171,21 +165,6 @@ public class OrderService {
             products.add(product);
         }
 
-//        for (Map.Entry<Long, Integer> i : orderPostDto.getProductsIds().entrySet()) {
-//            ProductModel productModel = new ProductModel(productService.findProductById(i.getKey()));
-//            Integer productQuantity = i.getValue();
-//
-//            OrderProductPk orderProductPk = new OrderProductPk(orderModel, productModel);
-//
-//            OrderProductFullDto orderProductFullDto = orderProductService.saveOrderProduct(new OrderProductFullDto(orderProductPk, productQuantity));
-//
-//            OrderReturnProductFieldDto product = new OrderReturnProductFieldDto(
-//                    productModel,
-//                    productQuantity,
-//                    productModel.getPrice() * productQuantity
-//            );
-//            products.add(product);
-//        }
         orderReturnDto.setProducts(products);
 
         return orderReturnDto;
@@ -222,13 +201,6 @@ public class OrderService {
             orderPrice += productModel.getPrice() * productQuantity;
         }
 
-//        for (Map.Entry<Long, Integer> i : orderPostDto.getProductsIds().entrySet()) {
-//            ProductModel productModel = new ProductModel(productService.findProductById(i.getKey()));
-//            Integer productQuantity = i.getValue();
-//
-//            orderPrice += productModel.getPrice() * productQuantity;
-//        }
-
         updatedOrderModel.setOrderPrice(orderPrice);
 
         //Saving Order
@@ -237,23 +209,6 @@ public class OrderService {
 
         // Setting Return
         OrderReturnDto orderReturnDto = new OrderReturnDto(existentOrderModel);
-
-//        List<OrderReturnProductFieldDto> products = new ArrayList<>();
-//        for (Map.Entry<Long, Integer> i : orderPostDto.getProductsIds().entrySet()) {
-//            ProductModel productModel = new ProductModel(productService.findProductById(i.getKey()));
-//            Integer productQuantity = i.getValue();
-//
-//            OrderProductPk orderProductPk = new OrderProductPk(existentOrderModel, productModel);
-//
-//            OrderProductFullDto orderProductFullDto = orderProductService.saveOrderProduct(new OrderProductFullDto(orderProductPk, productQuantity));
-//
-//            OrderReturnProductFieldDto product = new OrderReturnProductFieldDto(
-//                    productModel,
-//                    productQuantity,
-//                    productModel.getPrice() * productQuantity
-//            );
-//            products.add(product);
-//        }
 
         List<OrderReturnProductFieldDto> products = new ArrayList<>();
         for (OrderProductPostDto i : orderPostDto.getProducts()) {

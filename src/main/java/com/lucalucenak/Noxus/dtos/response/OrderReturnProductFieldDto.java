@@ -12,12 +12,6 @@ public class OrderReturnProductFieldDto {
     public OrderReturnProductFieldDto() {
     }
 
-    public OrderReturnProductFieldDto(ProductModel product, Integer quantity, Double price) {
-        this.product = product;
-        this.quantity = quantity;
-        this.price = price;
-    }
-
     public OrderReturnProductFieldDto(ProductModel product, Integer quantity, String additions, Double price) {
         this.product = product;
         this.quantity = quantity;

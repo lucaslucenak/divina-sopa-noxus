@@ -28,9 +28,6 @@ public class OrderPostDto {
     @NotNull(message = "Field paymentMethodId shouldn't be null")
     private Long paymentMethodId;
 
-//    @NotNull(message = "Field productsIds shouldn't be null")
-//    private Map<Long, Integer> productsIds; // ID | Quantity
-
     @NotNull(message = "Field products shouldn't be null")
     private List<OrderProductPostDto> products;
 
