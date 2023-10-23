@@ -1,13 +1,15 @@
 package com.lucalucenak.Noxus.models;
 
 import com.lucalucenak.Noxus.dtos.AdditionalFullDto;
-import com.lucalucenak.Noxus.dtos.ProductFullDto;
 import com.lucalucenak.Noxus.dtos.post.AdditionalPostDto;
-import com.lucalucenak.Noxus.dtos.post.ProductPostDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "additional")
@@ -28,6 +30,16 @@ public class AdditionalModel {
     @Column(nullable = false)
     private String type;
 
+    @ManyToOne
+    @JoinColumn(name = "status_id", nullable = false)
+    private StatusModel status;
+
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+
     public AdditionalModel() {
     }
 
@@ -39,11 +51,38 @@ public class AdditionalModel {
         BeanUtils.copyProperties(additionalPostDto, this);
     }
 
-    public AdditionalModel(Long id, String name, Double price, String type) {
+    public AdditionalModel(Long id, String name, Double price, String type, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.type = type;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public StatusModel getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusModel status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public Long getId() {

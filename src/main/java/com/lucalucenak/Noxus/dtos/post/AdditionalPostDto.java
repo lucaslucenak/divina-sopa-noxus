@@ -9,14 +9,25 @@ public class AdditionalPostDto {
 
     private String type;
 
+    private Long statusId;
+
     public AdditionalPostDto() {
     }
 
-    public AdditionalPostDto(Long id, String name, Double price, String type) {
+    public AdditionalPostDto(Long id, String name, Double price, String type, Long statusId) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.type = type;
+        this.statusId = statusId;
+    }
+
+    public Long getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(Long statusId) {
+        this.statusId = statusId;
     }
 
     public Long getId() {
