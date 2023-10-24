@@ -1,6 +1,11 @@
 package com.lucalucenak.Noxus.models;
 
+import com.lucalucenak.Noxus.dtos.AdditionalFullDto;
+import com.lucalucenak.Noxus.dtos.CouponFullDto;
+import com.lucalucenak.Noxus.dtos.post.AdditionalPostDto;
+import com.lucalucenak.Noxus.dtos.post.CouponPostDto;
 import jakarta.persistence.*;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
@@ -38,6 +43,14 @@ public class CouponModel {
     private LocalDateTime updatedAt;
 
     public CouponModel() {
+    }
+
+    public CouponModel(CouponFullDto couponFullDto) {
+        BeanUtils.copyProperties(couponFullDto, this);
+    }
+
+    public CouponModel(CouponPostDto couponPostDto) {
+        BeanUtils.copyProperties(couponPostDto, this);
     }
 
     public CouponModel(Long id, String description, Double value, Double minimumOrderValue, LocalDateTime startAt, LocalDateTime finishAt, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {

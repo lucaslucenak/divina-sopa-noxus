@@ -1,6 +1,11 @@
 package com.lucalucenak.Noxus.dtos;
 
+import com.lucalucenak.Noxus.dtos.response.AdditionalReturnDto;
+import com.lucalucenak.Noxus.dtos.response.CouponReturnDto;
+import com.lucalucenak.Noxus.models.AdditionalModel;
+import com.lucalucenak.Noxus.models.CouponModel;
 import com.lucalucenak.Noxus.models.StatusModel;
+import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
 
@@ -25,6 +30,14 @@ public class CouponFullDto {
     private LocalDateTime updatedAt;
 
     public CouponFullDto() {
+    }
+
+    public CouponFullDto(CouponModel additionalModel) {
+        BeanUtils.copyProperties(additionalModel, this);
+    }
+
+    public CouponFullDto(CouponReturnDto additionalReturnDto) {
+        BeanUtils.copyProperties(additionalReturnDto, this);
     }
 
     public CouponFullDto(Long id, String description, Double value, Double minimumOrderValue, LocalDateTime startAt, LocalDateTime finishAt, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
