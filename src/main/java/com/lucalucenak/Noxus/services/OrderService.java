@@ -124,10 +124,10 @@ public class OrderService {
         StatusModel statusModel = new StatusModel(statusService.findStatusByStatus("ORDERED"));
         orderModel.setStatus(statusModel);
 
-        if (orderPostDto.getCouponId() != null) {
-            CouponModel couponModel = new CouponModel(couponService.findCouponById(orderPostDto.getCouponId()));
-            orderModel.setCoupon(couponModel);
-        }
+//        if (orderPostDto.getCouponId() != null) {
+//            CouponModel couponModel = new CouponModel(couponService.findCouponById(orderPostDto.getCouponId()));
+//            orderModel.setCoupon(couponModel);
+//        }
 
         if (!addressService.belongsToClientAccount(clientAccountModel.getId())) {
             throw new AddressNotBelongingToClientAccountException("The given address doesn't belongs to the given client account. Client Account id: " + clientAccountModel.getId() + " | Address id: " + deliveryModel.getAddress().getId());
@@ -148,11 +148,12 @@ public class OrderService {
         // Discounting Coupon, if available
         if (orderPostDto.getCouponId() != null) {
             CouponModel couponModel = new CouponModel(couponService.findCouponById(orderPostDto.getCouponId()));
+            orderModel.setCoupon(couponModel);
             if (this.countByClientAccountIdAndCouponId(clientAccountModel.getId(), couponModel.getId()) >= couponModel.getMaxUsages()) {
                 throw new CouponMaxUsageReachedException("Coupon Max Usage Reached for Client Account with id: " + clientAccountModel.getId());
             }
             if (couponModel.getStatus().getStatus().equals("EXPIRED") || couponModel.getStatus().getStatus().equals("INACTIVE")) {
-                // thr coupon inactive
+                throw new CouponNotAvailableException("Coupon not available");
             }
 
             if (orderPrice - deliveryModel.getTax() >= couponModel.getMinimumOrderValue()) {
