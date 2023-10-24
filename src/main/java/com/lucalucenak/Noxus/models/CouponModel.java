@@ -1,16 +1,20 @@
 package com.lucalucenak.Noxus.models;
 
-import com.lucalucenak.Noxus.dtos.AdditionalFullDto;
 import com.lucalucenak.Noxus.dtos.CouponFullDto;
-import com.lucalucenak.Noxus.dtos.post.AdditionalPostDto;
 import com.lucalucenak.Noxus.dtos.post.CouponPostDto;
 import jakarta.persistence.*;
+import lombok.Builder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "coupon")
+@EntityListeners(AuditingEntityListener.class)
+@Builder
 public class CouponModel {
 
     @Id
