@@ -151,6 +151,9 @@ public class OrderService {
             if (this.countByClientAccountIdAndCouponId(clientAccountModel.getId(), couponModel.getId()) >= couponModel.getMaxUsages()) {
                 throw new CouponMaxUsageReachedException("Coupon Max Usage Reached for Client Account with id: " + clientAccountModel.getId());
             }
+            if (couponModel.getStatus().getStatus().equals("EXPIRED") || couponModel.getStatus().getStatus().equals("INACTIVE")) {
+                // thr coupon inactive
+            }
 
             if (orderPrice - deliveryModel.getTax() >= couponModel.getMinimumOrderValue()) {
                 orderModel.setCoupon(couponModel);
