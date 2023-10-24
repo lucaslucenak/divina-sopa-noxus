@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<OrderModel, Long> {
     boolean existsByDeliveryId(Long deliveryId);
     Optional<OrderModel> findByDeliveryId(Long deliveryId);
+    Long countByClientAccountIdAndCouponId(Long clientAccountId, Long couponId);
 }
