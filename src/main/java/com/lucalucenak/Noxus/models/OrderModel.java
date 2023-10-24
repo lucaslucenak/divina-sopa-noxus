@@ -38,6 +38,10 @@ public class OrderModel {
     private LocalDateTime arrivalForecast;
 
     @ManyToOne
+    @JoinColumn(name = "coupon_id", nullable = false)
+    private CouponModel coupon;
+
+    @ManyToOne
     @JoinColumn(name = "status_id", nullable = false)
     private StatusModel status;
 
@@ -73,12 +77,13 @@ public class OrderModel {
         BeanUtils.copyProperties(orderReturnDto, this);
     }
 
-    public OrderModel(Long id, Double orderPrice, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, StatusModel status, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, DeliveryModel delivery, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public OrderModel(Long id, Double orderPrice, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, CouponModel coupon, StatusModel status, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, DeliveryModel delivery, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.orderPrice = orderPrice;
         this.observation = observation;
         this.dispatchTime = dispatchTime;
         this.arrivalForecast = arrivalForecast;
+        this.coupon = coupon;
         this.status = status;
         this.clientAccount = clientAccount;
         this.paymentMethod = paymentMethod;
@@ -87,7 +92,13 @@ public class OrderModel {
         this.updatedAt = updatedAt;
     }
 
+    public CouponModel getCoupon() {
+        return coupon;
+    }
 
+    public void setCoupon(CouponModel coupon) {
+        this.coupon = coupon;
+    }
 
     public Long getId() {
         return id;

@@ -41,6 +41,8 @@ public class OrderService {
     private ProductService productService;
     @Autowired
     private OrderProductService orderProductService;
+    @Autowired
+    private CouponService couponService;
 
     @Transactional
     public OrderReturnDto findOrderById(Long orderId) {
@@ -122,6 +124,11 @@ public class OrderService {
         StatusModel statusModel = new StatusModel(statusService.findStatusByStatus("ORDERED"));
         orderModel.setStatus(statusModel);
 
+        if (orderPostDto.getCouponId() != null) {
+            CouponModel couponModel = new CouponModel(couponService.findCouponById(orderPostDto.getCouponId()));
+            orderModel.setCoupon(couponModel);
+        }
+
         if (!addressService.belongsToClientAccount(clientAccountModel.getId())) {
             throw new AddressNotBelongingToClientAccountException("The given address doesn't belongs to the given client account. Client Account id: " + clientAccountModel.getId() + " | Address id: " + deliveryModel.getAddress().getId());
         }
@@ -136,6 +143,17 @@ public class OrderService {
             Integer productQuantity = i.getQuantity();
 
             orderPrice += productModel.getPrice() * productQuantity;
+        }
+
+        // Discounting Coupon, if available
+        if (orderPostDto.getCouponId() != null) {
+            CouponModel couponModel = new CouponModel(couponService.findCouponById(orderPostDto.getCouponId()));
+            if (orderPrice - deliveryModel.getTax() >= couponModel.getMinimumOrderValue()) {
+                orderModel.setCoupon(couponModel);
+                orderPrice -= couponModel.getValue();
+            } else {
+                throw new OrderValueLowerThanCouponMinimumValueException("Can not use Coupon. Order value is lower than coupon minimum value. Minimum value: " + couponModel.getValue() + " | Order Values: " + orderPrice);
+            }
         }
 
         orderModel.setOrderPrice(orderPrice);
@@ -199,6 +217,13 @@ public class OrderService {
             Integer productQuantity = i.getQuantity();
 
             orderPrice += productModel.getPrice() * productQuantity;
+        }
+
+        // Discounting Coupon, if available
+        if (orderPostDto.getCouponId() != null) {
+            CouponModel couponModel = new CouponModel(couponService.findCouponById(orderPostDto.getCouponId()));
+            updatedOrderModel.setCoupon(couponModel);
+            orderPrice -= couponModel.getValue();
         }
 
         updatedOrderModel.setOrderPrice(orderPrice);
