@@ -148,6 +148,10 @@ public class OrderService {
         // Discounting Coupon, if available
         if (orderPostDto.getCouponId() != null) {
             CouponModel couponModel = new CouponModel(couponService.findCouponById(orderPostDto.getCouponId()));
+            if (this.countByClientAccountIdAndCouponId(clientAccountModel.getId(), couponModel.getId()) >= couponModel.getMaxUsages()) {
+                throw new CouponMaxUsageReachedException("Coupon Max Usage Reached for Client Account with id: " + clientAccountModel.getId());
+            }
+
             if (orderPrice - deliveryModel.getTax() >= couponModel.getMinimumOrderValue()) {
                 orderModel.setCoupon(couponModel);
                 orderPrice -= couponModel.getValue();
@@ -266,6 +270,11 @@ public class OrderService {
         } else {
             throw new ResourceNotFoundException("Resource: Order. Not found with id: " + orderId);
         }
+    }
+
+    @Transactional
+    public Long countByClientAccountIdAndCouponId(Long clientAccountId, Long couponId) {
+        return orderRepository.countByClientAccountIdAndCouponId(clientAccountId, couponId);
     }
 
     @Transactional

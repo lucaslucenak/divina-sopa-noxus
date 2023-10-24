@@ -31,6 +31,9 @@ public class CouponModel {
     private Double minimumOrderValue;
 
     @Column(nullable = false)
+    private Integer maxUsages;
+
+    @Column(nullable = false)
     private LocalDateTime startAt;
 
     @Column(nullable = false)
@@ -57,16 +60,25 @@ public class CouponModel {
         BeanUtils.copyProperties(couponPostDto, this);
     }
 
-    public CouponModel(Long id, String description, Double value, Double minimumOrderValue, LocalDateTime startAt, LocalDateTime finishAt, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public CouponModel(Long id, String description, Double value, Double minimumOrderValue, Integer maxUsages, LocalDateTime startAt, LocalDateTime finishAt, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.description = description;
         this.value = value;
         this.minimumOrderValue = minimumOrderValue;
+        this.maxUsages = maxUsages;
         this.startAt = startAt;
         this.finishAt = finishAt;
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public Integer getMaxUsages() {
+        return maxUsages;
+    }
+
+    public void setMaxUsages(Integer maxUsages) {
+        this.maxUsages = maxUsages;
     }
 
     public StatusModel getStatus() {

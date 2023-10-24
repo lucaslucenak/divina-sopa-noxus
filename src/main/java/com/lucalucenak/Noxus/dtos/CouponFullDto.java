@@ -19,6 +19,8 @@ public class CouponFullDto {
 
     private Double minimumOrderValue;
 
+    private Integer maxUsages;
+
     private LocalDateTime startAt;
 
     private LocalDateTime finishAt;
@@ -40,16 +42,25 @@ public class CouponFullDto {
         BeanUtils.copyProperties(additionalReturnDto, this);
     }
 
-    public CouponFullDto(Long id, String description, Double value, Double minimumOrderValue, LocalDateTime startAt, LocalDateTime finishAt, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public CouponFullDto(Long id, String description, Double value, Double minimumOrderValue, Integer maxUsages, LocalDateTime startAt, LocalDateTime finishAt, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.description = description;
         this.value = value;
         this.minimumOrderValue = minimumOrderValue;
+        this.maxUsages = maxUsages;
         this.startAt = startAt;
         this.finishAt = finishAt;
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public Integer getMaxUsages() {
+        return maxUsages;
+    }
+
+    public void setMaxUsages(Integer maxUsages) {
+        this.maxUsages = maxUsages;
     }
 
     public StatusModel getStatus() {
