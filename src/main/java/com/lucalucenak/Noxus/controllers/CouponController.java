@@ -28,6 +28,16 @@ public class CouponController {
         return ResponseEntity.ok().body(new CouponReturnDto(couponService.findCouponById(couponId)));
     }
 
+    @GetMapping(value = "/expires-today")
+    public ResponseEntity<List<CouponReturnDto>> getAllCouponsWithFinishDateEqualsToday() {
+        List<CouponReturnDto> couponReturnDtos = new ArrayList<>();
+        for (CouponFullDto i : couponService.findAllCouponsWithFinishDataEqualsToday()) {
+            couponReturnDtos.add(new CouponReturnDto(i));
+        }
+        return ResponseEntity.ok().body(couponReturnDtos);
+
+    }
+
     @GetMapping
     public ResponseEntity<Page<CouponReturnDto>> getAllAdditions(Pageable pageable) {
         List<CouponReturnDto> couponReturnDtos = new ArrayList<>();
@@ -51,6 +61,11 @@ public class CouponController {
     @PostMapping(value = "/inactivate/{couponId}")
     public ResponseEntity<CouponReturnDto> inactivateCouponById(@PathVariable Long couponId) {
         return ResponseEntity.ok().body(new CouponReturnDto(couponService.inactivateCouponById(couponId)));
+    }
+
+    @PostMapping(value = "/expire/{couponId}")
+    public ResponseEntity<CouponReturnDto> expireCouponById(@PathVariable Long couponId) {
+        return ResponseEntity.ok().body(new CouponReturnDto(couponService.expireCouponById(couponId)));
     }
 
     @DeleteMapping(value = "/{couponId}")

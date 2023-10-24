@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -40,6 +42,15 @@ public class CouponService {
     public Page<CouponFullDto> findAllAdditionsPaginated(Pageable pageable) {
         Page<CouponModel> pagedAdditions = couponRepository.findAll(pageable);
         return pagedAdditions.map(CouponFullDto::new);
+    }
+
+    @Transactional(readOnly = true)
+    public List<CouponFullDto> findAllCouponsWithFinishDataEqualsToday() {
+        List<CouponFullDto> couponFullDtos = new ArrayList<>();
+        for (Optional<CouponModel> i : couponRepository.findAllWithFinishDateEqualsToday()) {
+            couponFullDtos.add(new CouponFullDto(i.get()));
+        }
+        return couponFullDtos;
     }
 
     @Transactional
@@ -81,6 +92,15 @@ public class CouponService {
         CouponModel couponModel = new CouponModel(this.findCouponById(couponId));
         StatusModel inactiveStatsModel = new StatusModel(statusService.findStatusByStatus("INACTIVE"));
         couponModel.setStatus(inactiveStatsModel);
+
+        return new CouponFullDto(couponRepository.save(couponModel));
+    }
+
+    @Transactional
+    public CouponFullDto expireCouponById(Long couponId) {
+        CouponModel couponModel = new CouponModel(this.findCouponById(couponId));
+        StatusModel expiredStatsModel = new StatusModel(statusService.findStatusByStatus("EXPIRED"));
+        couponModel.setStatus(expiredStatsModel);
 
         return new CouponFullDto(couponRepository.save(couponModel));
     }
