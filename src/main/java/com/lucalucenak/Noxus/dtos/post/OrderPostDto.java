@@ -19,7 +19,6 @@ public class OrderPostDto {
     @NotNull(message = "Field dispatchTime shouldn't be null")
     private LocalDateTime arrivalForecast;
 
-    @NotNull(message = "Field couponId shouldn't be null")
     private Long couponId;
 
     @NotNull(message = "Field deliveryId shouldn't be null")
