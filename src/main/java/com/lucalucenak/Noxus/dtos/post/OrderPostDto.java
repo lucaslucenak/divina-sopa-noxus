@@ -19,6 +19,9 @@ public class OrderPostDto {
     @NotNull(message = "Field dispatchTime shouldn't be null")
     private LocalDateTime arrivalForecast;
 
+    @NotNull(message = "Field couponId shouldn't be null")
+    private Long couponId;
+
     @NotNull(message = "Field deliveryId shouldn't be null")
     private Long deliveryId;
 
@@ -34,15 +37,24 @@ public class OrderPostDto {
     public OrderPostDto() {
     }
 
-    public OrderPostDto(Long id, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, Long deliveryId, Long clientAccountId, Long paymentMethodId, List<OrderProductPostDto> products) {
+    public OrderPostDto(Long id, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, Long couponId, Long deliveryId, Long clientAccountId, Long paymentMethodId, List<OrderProductPostDto> products) {
         this.id = id;
         this.observation = observation;
         this.dispatchTime = dispatchTime;
         this.arrivalForecast = arrivalForecast;
+        this.couponId = couponId;
         this.deliveryId = deliveryId;
         this.clientAccountId = clientAccountId;
         this.paymentMethodId = paymentMethodId;
         this.products = products;
+    }
+
+    public Long getCouponId() {
+        return couponId;
+    }
+
+    public void setCouponId(Long couponId) {
+        this.couponId = couponId;
     }
 
     public Long getId() {

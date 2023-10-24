@@ -19,6 +19,8 @@ public class OrderFullDto {
 
     private LocalDateTime arrivalForecast;
 
+    private CouponModel coupon;
+
     private StatusModel status;
 
     private DeliveryModel delivery;
@@ -38,12 +40,13 @@ public class OrderFullDto {
         BeanUtils.copyProperties(orderModel, this);
     }
 
-    public OrderFullDto(Long id, Double orderPrice, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, StatusModel status, DeliveryModel delivery, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public OrderFullDto(Long id, Double orderPrice, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, CouponModel coupon, StatusModel status, DeliveryModel delivery, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.orderPrice = orderPrice;
         this.observation = observation;
         this.dispatchTime = dispatchTime;
         this.arrivalForecast = arrivalForecast;
+        this.coupon = coupon;
         this.status = status;
         this.delivery = delivery;
         this.clientAccount = clientAccount;
@@ -52,6 +55,13 @@ public class OrderFullDto {
         this.updatedAt = updatedAt;
     }
 
+    public CouponModel getCoupon() {
+        return coupon;
+    }
+
+    public void setCoupon(CouponModel coupon) {
+        this.coupon = coupon;
+    }
 
     public Long getId() {
         return id;
