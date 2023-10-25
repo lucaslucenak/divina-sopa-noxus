@@ -38,7 +38,7 @@ public class OrderModel {
     private LocalDateTime arrivalForecast;
 
     @ManyToOne
-    @JoinColumn(name = "coupon_id", nullable = false)
+    @JoinColumn(name = "coupon_id", nullable = true)
     private CouponModel coupon;
 
     @ManyToOne
