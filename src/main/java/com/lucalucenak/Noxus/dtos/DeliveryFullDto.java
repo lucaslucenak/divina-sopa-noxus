@@ -1,5 +1,6 @@
 package com.lucalucenak.Noxus.dtos;
 
+import com.lucalucenak.Noxus.enums.DeliveryTaxCalculusEnum;
 import com.lucalucenak.Noxus.models.*;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -19,6 +20,8 @@ public class DeliveryFullDto {
 
     private DistanceTaxModel distanceTax;
 
+    private DeliveryTaxCalculusEnum deliveryTaxCalculus;
+
     private StatusModel status;
 
     private OrderModel order;
@@ -34,18 +37,27 @@ public class DeliveryFullDto {
     public DeliveryFullDto() {
     }
 
-    public DeliveryFullDto(Long id, AddressModel address, DeliverymanModel deliveryman, DeliveryTypeModel deliveryType, DistanceTaxModel distanceTax, StatusModel status, OrderModel order, Double tax, Double distance, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public DeliveryFullDto(Long id, AddressModel address, DeliverymanModel deliveryman, DeliveryTypeModel deliveryType, DistanceTaxModel distanceTax, DeliveryTaxCalculusEnum deliveryTaxCalculus, StatusModel status, OrderModel order, Double tax, Double distance, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.address = address;
         this.deliveryman = deliveryman;
         this.deliveryType = deliveryType;
         this.distanceTax = distanceTax;
+        this.deliveryTaxCalculus = deliveryTaxCalculus;
         this.status = status;
         this.order = order;
         this.tax = tax;
         this.distance = distance;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public DeliveryTaxCalculusEnum getDeliveryTaxCalculus() {
+        return deliveryTaxCalculus;
+    }
+
+    public void setDeliveryTaxCalculus(DeliveryTaxCalculusEnum deliveryTaxCalculus) {
+        this.deliveryTaxCalculus = deliveryTaxCalculus;
     }
 
     public LocalDateTime getCreatedAt() {

@@ -1,5 +1,6 @@
 package com.lucalucenak.Noxus.dtos.post;
 
+import com.lucalucenak.Noxus.enums.DeliveryTaxCalculusEnum;
 import jakarta.validation.constraints.NotNull;
 
 public class DeliveryPostDto {
@@ -13,7 +14,7 @@ public class DeliveryPostDto {
     @NotNull(message = "Field statusId shouldn't be null")
     private Long deliveryTypeId;
 
-    private Long distanceTaxId;
+    private DeliveryTaxCalculusEnum deliveryTaxCalculus;
 
     @NotNull(message = "Field statusId shouldn't be null")
     private Long statusId;
@@ -24,14 +25,22 @@ public class DeliveryPostDto {
     public DeliveryPostDto() {
     }
 
-    public DeliveryPostDto(Long id, Long addressId, Long deliverymanId, Long deliveryTypeId, Long distanceTaxId, Long statusId, Double distance) {
+    public DeliveryPostDto(Long id, Long addressId, Long deliverymanId, Long deliveryTypeId, DeliveryTaxCalculusEnum deliveryTaxCalculus, Long statusId, Double distance) {
         this.id = id;
         this.addressId = addressId;
         this.deliverymanId = deliverymanId;
         this.deliveryTypeId = deliveryTypeId;
-        this.distanceTaxId = distanceTaxId;
+        this.deliveryTaxCalculus = deliveryTaxCalculus;
         this.statusId = statusId;
         this.distance = distance;
+    }
+
+    public DeliveryTaxCalculusEnum getDeliveryTaxCalculus() {
+        return deliveryTaxCalculus;
+    }
+
+    public void setDeliveryTaxCalculus(DeliveryTaxCalculusEnum deliveryTaxCalculus) {
+        this.deliveryTaxCalculus = deliveryTaxCalculus;
     }
 
     public Double getDistance() {
@@ -72,14 +81,6 @@ public class DeliveryPostDto {
 
     public void setDeliveryTypeId(Long deliveryTypeId) {
         this.deliveryTypeId = deliveryTypeId;
-    }
-
-    public Long getDistanceTaxId() {
-        return distanceTaxId;
-    }
-
-    public void setDistanceTaxId(Long distanceTaxId) {
-        this.distanceTaxId = distanceTaxId;
     }
 
     public Long getStatusId() {

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lucalucenak.Noxus.dtos.DeliveryFullDto;
 import com.lucalucenak.Noxus.dtos.post.DeliveryPostDto;
 import com.lucalucenak.Noxus.dtos.response.DeliveryReturnDto;
+import com.lucalucenak.Noxus.enums.DeliveryTaxCalculusEnum;
 import jakarta.persistence.*;
 import lombok.Builder;
 import org.springframework.beans.BeanUtils;
@@ -24,7 +25,7 @@ public class DeliveryModel {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "address_id", nullable = false)
+    @JoinColumn(name = "address_id", nullable = true)
     private AddressModel address;
 
     @ManyToOne
@@ -34,6 +35,9 @@ public class DeliveryModel {
     @ManyToOne
     @JoinColumn(name = "delivery_type_id", nullable = false)
     private DeliveryTypeModel deliveryType;
+
+    @Enumerated(value = EnumType.ORDINAL)
+    private DeliveryTaxCalculusEnum deliveryTaxCalculus;
 
     @ManyToOne
     @JoinColumn(name = "distance_tax_id")
@@ -72,11 +76,12 @@ public class DeliveryModel {
         BeanUtils.copyProperties(deliveryReturnDto, this);
     }
 
-    public DeliveryModel(Long id, AddressModel address, DeliverymanModel deliveryman, DeliveryTypeModel deliveryType, DistanceTaxModel distanceTax, StatusModel status, OrderModel order, Double tax, Double distance, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public DeliveryModel(Long id, AddressModel address, DeliverymanModel deliveryman, DeliveryTypeModel deliveryType, DeliveryTaxCalculusEnum deliveryTaxCalculus, DistanceTaxModel distanceTax, StatusModel status, OrderModel order, Double tax, Double distance, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.address = address;
         this.deliveryman = deliveryman;
         this.deliveryType = deliveryType;
+        this.deliveryTaxCalculus = deliveryTaxCalculus;
         this.distanceTax = distanceTax;
         this.status = status;
         this.order = order;
@@ -84,6 +89,14 @@ public class DeliveryModel {
         this.distance = distance;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public DeliveryTaxCalculusEnum getDeliveryTaxCalculus() {
+        return deliveryTaxCalculus;
+    }
+
+    public void setDeliveryTaxCalculus(DeliveryTaxCalculusEnum deliveryTaxCalculus) {
+        this.deliveryTaxCalculus = deliveryTaxCalculus;
     }
 
     public LocalDateTime getCreatedAt() {

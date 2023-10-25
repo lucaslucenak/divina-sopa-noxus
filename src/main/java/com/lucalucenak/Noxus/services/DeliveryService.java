@@ -2,6 +2,7 @@ package com.lucalucenak.Noxus.services;
 
 import com.lucalucenak.Noxus.dtos.DeliveryFullDto;
 import com.lucalucenak.Noxus.dtos.post.DeliveryPostDto;
+import com.lucalucenak.Noxus.enums.DeliveryTaxCalculusEnum;
 import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
 import com.lucalucenak.Noxus.exceptions.NotRecognizedDeliveryTypeException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
@@ -61,6 +62,7 @@ public class DeliveryService {
         deliveryModel.setStatus(statusModel);
 
         if (deliveryTypeModel.getDeliveryType().equals("WITHDRAWAL")) {
+            deliveryModel.setTax(0.0);
             return new DeliveryFullDto(deliveryRepository.save(deliveryModel));
         }
 
@@ -71,14 +73,15 @@ public class DeliveryService {
             deliveryModel.setDeliveryman(deliverymanModel);
 
             // Delivery Tax by neighbourhood
-            if (deliveryPostDto.getDistanceTaxId() == null) {
+            if (deliveryPostDto.getDeliveryTaxCalculus().equals(DeliveryTaxCalculusEnum.BY_NEIGHBOURHOOD)) {
                 Double deliveryTax = addressModel.getNeighbourhood().getDeliveryTax();
                 deliveryModel.setTax(deliveryTax);
             }
 
-            // By distance tax
-            else {
-                DistanceTaxModel distanceTaxModel = new DistanceTaxModel(distanceTaxService.findDistanceTaxById(deliveryPostDto.getDistanceTaxId()));
+            // Delivery Tax By distance tax
+            else if (deliveryPostDto.getDeliveryTaxCalculus().equals(DeliveryTaxCalculusEnum.BY_DISTANCE)){
+                Double distance = deliveryPostDto.getDistance();
+                DistanceTaxModel distanceTaxModel = new DistanceTaxModel(distanceTaxService.findDistanceTaxByDistanceInRange(distance));
                 deliveryModel.setDistanceTax(distanceTaxModel);
                 Double deliveryTax = distanceTaxModel.getTax();
                 deliveryModel.setTax(deliveryTax);
@@ -119,14 +122,15 @@ public class DeliveryService {
             updatedDeliveryModel.setDeliveryman(deliverymanModel);
 
             // Delivery Tax by neighbourhood
-            if (deliveryPostDto.getDistanceTaxId() == null) {
+            if (deliveryPostDto.getDeliveryTaxCalculus().equals(DeliveryTaxCalculusEnum.BY_NEIGHBOURHOOD)) {
                 Double deliveryTax = addressModel.getNeighbourhood().getDeliveryTax();
                 updatedDeliveryModel.setTax(deliveryTax);
             }
 
-            // By distance tax
-            else {
-                DistanceTaxModel distanceTaxModel = new DistanceTaxModel(distanceTaxService.findDistanceTaxById(deliveryPostDto.getDistanceTaxId()));
+            // Delivery Tax By distance tax
+            else if (deliveryPostDto.getDeliveryTaxCalculus().equals(DeliveryTaxCalculusEnum.BY_DISTANCE)){
+                Double distance = deliveryPostDto.getDistance();
+                DistanceTaxModel distanceTaxModel = new DistanceTaxModel(distanceTaxService.findDistanceTaxByDistanceInRange(distance));
                 updatedDeliveryModel.setDistanceTax(distanceTaxModel);
                 Double deliveryTax = distanceTaxModel.getTax();
                 updatedDeliveryModel.setTax(deliveryTax);
