@@ -19,7 +19,7 @@ public class CouponPostDto {
 
     @NotNull(message = "Field value shouldn't be null")
     @DecimalMin(value = "0.0", inclusive = true)
-    private Double value;
+    private Double couponValue;
 
     @NotNull(message = "Field minimumOrderValue shouldn't be null")
     @DecimalMin(value = "0.0", inclusive = true)
@@ -38,10 +38,10 @@ public class CouponPostDto {
     public CouponPostDto() {
     }
 
-    public CouponPostDto(Long id, String description, Double value, Double minimumOrderValue, Integer maxUsages, LocalDateTime startAt, LocalDateTime finishAt, Long statusId) {
+    public CouponPostDto(Long id, String description, Double couponValue, Double minimumOrderValue, Integer maxUsages, LocalDateTime startAt, LocalDateTime finishAt, Long statusId) {
         this.id = id;
         this.description = description;
-        this.value = value;
+        this.couponValue = couponValue;
         this.minimumOrderValue = minimumOrderValue;
         this.maxUsages = maxUsages;
         this.startAt = startAt;
@@ -73,12 +73,12 @@ public class CouponPostDto {
         this.description = description;
     }
 
-    public Double getValue() {
-        return value;
+    public Double getCouponValue() {
+        return couponValue;
     }
 
-    public void setValue(Double value) {
-        this.value = value;
+    public void setCouponValue(Double couponValue) {
+        this.couponValue = couponValue;
     }
 
     public Double getMinimumOrderValue() {

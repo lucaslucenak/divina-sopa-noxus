@@ -158,9 +158,9 @@ public class OrderService {
 
             if (orderPrice - deliveryModel.getTax() >= couponModel.getMinimumOrderValue()) {
                 orderModel.setCoupon(couponModel);
-                orderPrice -= couponModel.getValue();
+                orderPrice -= couponModel.getCouponValue();
             } else {
-                throw new OrderValueLowerThanCouponMinimumValueException("Can not use Coupon. Order value is lower than coupon minimum value. Minimum value: " + couponModel.getValue() + " | Order Values: " + orderPrice);
+                throw new OrderValueLowerThanCouponMinimumValueException("Can not use Coupon. Order value is lower than coupon minimum value. Minimum value: " + couponModel.getCouponValue() + " | Order Values: " + orderPrice);
             }
         }
 
@@ -231,7 +231,7 @@ public class OrderService {
         if (orderPostDto.getCouponId() != null) {
             CouponModel couponModel = new CouponModel(couponService.findCouponById(orderPostDto.getCouponId()));
             updatedOrderModel.setCoupon(couponModel);
-            orderPrice -= couponModel.getValue();
+            orderPrice -= couponModel.getCouponValue();
         }
 
         updatedOrderModel.setOrderPrice(orderPrice);

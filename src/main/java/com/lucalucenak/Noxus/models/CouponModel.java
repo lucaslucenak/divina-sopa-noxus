@@ -25,7 +25,7 @@ public class CouponModel {
     private String description;
 
     @Column(nullable = false)
-    private Double value;
+    private Double couponValue;
 
     @Column(nullable = false)
     private Double minimumOrderValue;
@@ -60,10 +60,10 @@ public class CouponModel {
         BeanUtils.copyProperties(couponPostDto, this);
     }
 
-    public CouponModel(Long id, String description, Double value, Double minimumOrderValue, Integer maxUsages, LocalDateTime startAt, LocalDateTime finishAt, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public CouponModel(Long id, String description, Double couponValue, Double minimumOrderValue, Integer maxUsages, LocalDateTime startAt, LocalDateTime finishAt, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.description = description;
-        this.value = value;
+        this.couponValue = couponValue;
         this.minimumOrderValue = minimumOrderValue;
         this.maxUsages = maxUsages;
         this.startAt = startAt;
@@ -113,12 +113,12 @@ public class CouponModel {
         this.description = description;
     }
 
-    public Double getValue() {
-        return value;
+    public Double getCouponValue() {
+        return couponValue;
     }
 
-    public void setValue(Double value) {
-        this.value = value;
+    public void setCouponValue(Double couponValue) {
+        this.couponValue = couponValue;
     }
 
     public LocalDateTime getStartAt() {
