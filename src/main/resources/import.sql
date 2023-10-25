@@ -12,7 +12,7 @@ insert into distance_tax(tax, initial_distance, final_distance, status_id, creat
 insert into deliveryman(name, cellphone_number, status_id, created_at, updated_at) values ('Lucas', '83986907270', 1, NOW(), NOW());
 
 
-insert into neighbourhood(neighbourhood, delivery_tax, status_id, created_at, updated_at) values ('SAO_JOSE', 7.0, 1, NOW(), NOW());
+insert into neighbourhood(neighbourhood, delivery_tax, status_id, created_at, updated_at) values ('SAO_JOSE', 70.0, 1, NOW(), NOW());
 insert into client_account(first_name, last_name, cpf, email, cellphone_number, placed_orders_quantity, status_id, password, role, created_at, updated_at) values ('Lucas', 'de Lucena Siqueira', '108.917.264-89', 'lucas.lucenak@gmail.com', '83986907270', 10, 1, '$2a$10$.e59Lm98RsgIiO5LVHVXAuWkMWUo0tMDebatRvjr2kNEhtGJ8pALW', 'ADMIN', NOW(), NOW());
 insert into address(street_name, house_number, city, cep, complement, reference_point, neighbourhood_id, client_account_id, status_id, created_at, updated_at) values ('Rua dos bobos', '0', 'Campina Grande', 'CEP', 'não tem nada', 'unica rua do bairro', 1, 1, 1, NOW(), NOW());
 

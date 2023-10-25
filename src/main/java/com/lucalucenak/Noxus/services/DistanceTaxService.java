@@ -54,6 +54,17 @@ public class DistanceTaxService {
         return pagedDistanceTaxes.map(DistanceTaxFullDto::new);
     }
 
+    @Transactional(readOnly = true)
+    public DistanceTaxFullDto findDistanceTaxByDistanceInRange(Double distance) {
+        Optional<DistanceTaxModel> distanceTaxOptional = distanceTaxRepository.findDistanceTaxByDistanceInRange(distance);
+
+        if (distanceTaxOptional.isPresent()) {
+            return new DistanceTaxFullDto(distanceTaxOptional.get());
+        } else {
+            throw new ResourceNotFoundException("Resource: DistanceTax. Given Distance is not between any distanceTax. Distance: " + distance);
+        }
+    }
+
     @Transactional
     public DistanceTaxFullDto saveDistanceTax(DistanceTaxPostDto distanceTaxPostDto) {
         if (distanceTaxRepository.existsByInitialDistanceOrFinalDistance(distanceTaxPostDto.getInitialDistance(), distanceTaxPostDto.getFinalDistance())) {

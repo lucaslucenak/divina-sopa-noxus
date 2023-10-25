@@ -1,6 +1,7 @@
 package com.lucalucenak.Noxus.dtos.response;
 
 import com.lucalucenak.Noxus.dtos.DeliveryFullDto;
+import com.lucalucenak.Noxus.enums.DeliveryTaxCalculusEnum;
 import com.lucalucenak.Noxus.models.*;
 import org.springframework.beans.BeanUtils;
 
@@ -18,9 +19,9 @@ public class DeliveryReturnDto {
 
     private DistanceTaxModel distanceTax;
 
-    private StatusModel status;
+    private DeliveryTaxCalculusEnum deliveryTaxCalculus;
 
-    private OrderModel order;
+    private StatusModel status;
 
     private Double tax;
 
@@ -41,19 +42,26 @@ public class DeliveryReturnDto {
         BeanUtils.copyProperties(deliveryFullDto, this);
     }
 
-
-    public DeliveryReturnDto(Long id, AddressModel address, DeliverymanModel deliveryman, DeliveryTypeModel deliveryType, DistanceTaxModel distanceTax, StatusModel status, OrderModel order, Double tax, Double distance, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public DeliveryReturnDto(Long id, AddressModel address, DeliverymanModel deliveryman, DeliveryTypeModel deliveryType, DistanceTaxModel distanceTax, DeliveryTaxCalculusEnum deliveryTaxCalculus, StatusModel status, Double tax, Double distance, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.address = address;
         this.deliveryman = deliveryman;
         this.deliveryType = deliveryType;
         this.distanceTax = distanceTax;
+        this.deliveryTaxCalculus = deliveryTaxCalculus;
         this.status = status;
-        this.order = order;
         this.tax = tax;
         this.distance = distance;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public DeliveryTaxCalculusEnum getDeliveryTaxCalculus() {
+        return deliveryTaxCalculus;
+    }
+
+    public void setDeliveryTaxCalculus(DeliveryTaxCalculusEnum deliveryTaxCalculus) {
+        this.deliveryTaxCalculus = deliveryTaxCalculus;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -70,14 +78,6 @@ public class DeliveryReturnDto {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public OrderModel getOrder() {
-        return order;
-    }
-
-    public void setOrder(OrderModel order) {
-        this.order = order;
     }
 
     public Long getId() {
