@@ -283,7 +283,7 @@ public class OrderService {
     public OrderReturnDto dispatchOrderById(Long orderId) {
         OrderModel orderModel = new OrderModel(this.findOrderById(orderId));
         orderModel.setStatus(new StatusModel(statusService.findStatusByStatus("DISPATCHED")));
-        orderModel.setArrivalForecast(localDateTimeUtil.nowGMT3());
+        orderModel.setDispatchTime(localDateTimeUtil.nowGMT3());
         orderRepository.save(orderModel);
 
         List<OrderProductFullDto> orderProducts = orderProductService.findOrderProductsByOrderId(orderId);
