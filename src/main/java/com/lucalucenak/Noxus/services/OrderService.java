@@ -5,6 +5,7 @@ import com.lucalucenak.Noxus.dtos.post.OrderPostDto;
 import com.lucalucenak.Noxus.dtos.post.OrderProductPostDto;
 import com.lucalucenak.Noxus.dtos.response.OrderReturnDto;
 import com.lucalucenak.Noxus.dtos.response.OrderReturnProductFieldDto;
+import com.lucalucenak.Noxus.enums.PaymentMethodEnum;
 import com.lucalucenak.Noxus.exceptions.*;
 import com.lucalucenak.Noxus.models.*;
 import com.lucalucenak.Noxus.models.pks.OrderProductPk;
@@ -162,6 +163,22 @@ public class OrderService {
             }
         }
 
+        //Setting Paid Value
+        if (orderModel.getPaymentMethod().getPaymentMethod().equals(PaymentMethodEnum.CASH)) {
+
+            if (orderModel.getPaidValue() == null)
+                throw new PaymentMethodCashWithoutPaidValueException("If the payment is in cash, it is necessary to add the paid value.");
+
+            if (orderModel.getPaidValue() < orderPrice)
+                throw new PaidValueLessThanOrderPriceException("The paid value cannot be less than order price.");
+
+            var change = orderModel.getPaidValue() - orderPrice;
+            orderModel.setChange(change);
+        }
+        else {
+            orderModel.setPaidValue(orderPrice);
+        }
+
         orderModel.setOrderPrice(orderPrice);
 
         //Saving Order
@@ -230,6 +247,22 @@ public class OrderService {
             CouponModel couponModel = new CouponModel(couponService.findCouponById(orderPostDto.getCouponId()));
             updatedOrderModel.setCoupon(couponModel);
             orderPrice -= couponModel.getCouponValue();
+        }
+
+        //Setting Paid Value
+        if (updatedOrderModel.getPaymentMethod().getPaymentMethod().equals(PaymentMethodEnum.CASH)) {
+
+            if (updatedOrderModel.getPaidValue() == null)
+                throw new PaymentMethodCashWithoutPaidValueException("If the payment is in cash, it is necessary to add the paid value.");
+
+            if (updatedOrderModel.getPaidValue() < orderPrice)
+                throw new PaidValueLessThanOrderPriceException("The paid value cannot be less than order price.");
+
+            var change = updatedOrderModel.getPaidValue() - orderPrice;
+            updatedOrderModel.setChange(change);
+        }
+        else {
+            updatedOrderModel.setPaidValue(orderPrice);
         }
 
         updatedOrderModel.setOrderPrice(orderPrice);

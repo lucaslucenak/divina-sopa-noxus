@@ -12,6 +12,10 @@ public class OrderReturnDto {
 
     private Double orderPrice;
 
+    private Double paidValue;
+
+    private Double change;
+
     private String observation;
 
     private List<OrderReturnProductFieldDto> products;
@@ -43,9 +47,11 @@ public class OrderReturnDto {
         BeanUtils.copyProperties(orderModel, this);
     }
 
-    public OrderReturnDto(Long id, Double orderPrice, String observation, List<OrderReturnProductFieldDto> products, StatusModel status, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, CouponModel coupon, DeliveryModel delivery, DeliverymanModel deliveryman, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime dispatchTime, LocalDateTime arrivalForecast) {
+    public OrderReturnDto(Long id, Double orderPrice, Double paidValue, Double change, String observation, List<OrderReturnProductFieldDto> products, StatusModel status, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, CouponModel coupon, DeliveryModel delivery, DeliverymanModel deliveryman, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime dispatchTime, LocalDateTime arrivalForecast) {
         this.id = id;
         this.orderPrice = orderPrice;
+        this.paidValue = paidValue;
+        this.change = change;
         this.observation = observation;
         this.products = products;
         this.status = status;
@@ -91,6 +97,14 @@ public class OrderReturnDto {
     public void setOrderPrice(Double orderPrice) {
         this.orderPrice = orderPrice;
     }
+
+    public Double getPaidValue() { return paidValue; }
+
+    public void setPaidValue(Double paidValue) { this.paidValue = paidValue; }
+
+    public Double getChange() { return change; }
+
+    public void setChange(Double change) { this.change = change; }
 
     public String getObservation() {
         return observation;
