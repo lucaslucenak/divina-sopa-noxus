@@ -8,7 +8,7 @@ insert into status(status, created_at, updated_at) values ('DISPATCHED', NOW(), 
 insert into delivery_type(delivery_type, created_at, updated_at) values ('DELIVERY', NOW(), NOW());
 insert into delivery_type(delivery_type, created_at, updated_at) values ('WITHDRAWAL', NOW(), NOW());
 insert into size(size, status_id, created_at, updated_at) values ('ML_300', 1, NOW(), NOW());
-insert into payment_method(payment_method, created_at, updated_at) values ('CASH', NOW(), NOW());
+insert into payment_method(payment_method, status_id, created_at, updated_at) values ('CASH', 1, NOW(), NOW());
 
 insert into distance_tax(tax, initial_distance, final_distance, status_id, created_at, updated_at) values (7.0, 2.0, 5.0, 1, NOW(), NOW());
 insert into deliveryman(name, cellphone_number, status_id, created_at, updated_at) values ('Lucas', '83986907270', 1, NOW(), NOW());

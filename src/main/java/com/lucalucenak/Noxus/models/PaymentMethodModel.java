@@ -34,6 +34,10 @@ public class PaymentMethodModel {
     @OneToMany(mappedBy = "paymentMethod", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<OrderModel> orders;
 
+    @ManyToOne
+    @JoinColumn(name = "status_id", nullable = false)
+    private StatusModel status;
+
     @CreatedDate
     private LocalDateTime createdAt;
 
@@ -47,12 +51,21 @@ public class PaymentMethodModel {
         BeanUtils.copyProperties(paymentMethodFullDto, this);
     }
 
-    public PaymentMethodModel(Long id, PaymentMethodEnum paymentMethod, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public PaymentMethodModel(Long id, PaymentMethodEnum paymentMethod, List<OrderModel> orders, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.paymentMethod = paymentMethod;
         this.orders = orders;
+        this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public StatusModel getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusModel status) {
+        this.status = status;
     }
 
     public Long getId() {
