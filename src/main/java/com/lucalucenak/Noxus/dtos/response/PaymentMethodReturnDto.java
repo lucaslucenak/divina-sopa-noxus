@@ -1,21 +1,20 @@
-package com.lucalucenak.Noxus.dtos;
+package com.lucalucenak.Noxus.dtos.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lucalucenak.Noxus.dtos.PaymentMethodFullDto;
 import com.lucalucenak.Noxus.enums.PaymentMethodEnum;
 import com.lucalucenak.Noxus.models.OrderModel;
 import com.lucalucenak.Noxus.models.PaymentMethodModel;
 import com.lucalucenak.Noxus.models.StatusModel;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jdk.jshell.Snippet;
+import jakarta.persistence.*;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class PaymentMethodFullDto {
-
-    private Long id;
+public class PaymentMethodReturnDto {
 
     private PaymentMethodEnum paymentMethod;
 
@@ -27,36 +26,23 @@ public class PaymentMethodFullDto {
 
     private LocalDateTime updatedAt;
 
-    public PaymentMethodFullDto() {
+    public PaymentMethodReturnDto() {
     }
 
-    public PaymentMethodFullDto(PaymentMethodModel paymentMethodModel) {
+    public PaymentMethodReturnDto(PaymentMethodModel paymentMethodModel) {
         BeanUtils.copyProperties(paymentMethodModel, this);
     }
 
-    public PaymentMethodFullDto(Long id, PaymentMethodEnum paymentMethod, List<OrderModel> orders, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
+    public PaymentMethodReturnDto(PaymentMethodFullDto paymentMethodFullDto) {
+        BeanUtils.copyProperties(paymentMethodFullDto, this);
+    }
+
+    public PaymentMethodReturnDto(PaymentMethodEnum paymentMethod, List<OrderModel> orders, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.paymentMethod = paymentMethod;
         this.orders = orders;
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-    }
-
-    public StatusModel getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusModel status) {
-        this.status = status;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public PaymentMethodEnum getPaymentMethod() {
@@ -73,6 +59,14 @@ public class PaymentMethodFullDto {
 
     public void setOrders(List<OrderModel> orders) {
         this.orders = orders;
+    }
+
+    public StatusModel getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusModel status) {
+        this.status = status;
     }
 
     public LocalDateTime getCreatedAt() {
