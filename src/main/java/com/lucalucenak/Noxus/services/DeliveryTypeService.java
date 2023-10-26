@@ -1,9 +1,13 @@
 package com.lucalucenak.Noxus.services;
 
+import com.lucalucenak.Noxus.dtos.DeliveryFullDto;
 import com.lucalucenak.Noxus.dtos.DeliveryTypeFullDto;
+import com.lucalucenak.Noxus.dtos.post.DeliveryTypePostDto;
 import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
+import com.lucalucenak.Noxus.models.DeliveryModel;
 import com.lucalucenak.Noxus.models.DeliveryTypeModel;
+import com.lucalucenak.Noxus.models.StatusModel;
 import com.lucalucenak.Noxus.repositories.DeliveryTypeRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +23,8 @@ public class DeliveryTypeService {
 
     @Autowired
     private DeliveryTypeRepository deliveryTypeRepository;
+    @Autowired
+    private StatusService statusService;
 
     @Transactional(readOnly = true)
     public DeliveryTypeFullDto findDeliveryTypeById(Long deliveryTypeId) {
@@ -38,22 +44,38 @@ public class DeliveryTypeService {
     }
 
     @Transactional
-    public DeliveryTypeFullDto saveDeliveryType(DeliveryTypeFullDto deliveryTypeFullDto) {
-        DeliveryTypeModel deliveryTypeModel = new DeliveryTypeModel(deliveryTypeFullDto);
+    public DeliveryTypeFullDto saveDeliveryType(DeliveryTypePostDto deliveryTypePostDto) {
+        DeliveryTypeModel deliveryTypeModel = new DeliveryTypeModel(deliveryTypePostDto);
+        StatusModel statusModel = new StatusModel(statusService.findStatusById(deliveryTypePostDto.getStatusId()));
+        deliveryTypeModel.setStatus(statusModel);
+
         return new DeliveryTypeFullDto(deliveryTypeRepository.save(deliveryTypeModel));
     }
 
     @Transactional
-    public DeliveryTypeFullDto updateDeliveryType(Long deliveryTypeId, DeliveryTypeFullDto deliveryTypeFullDto) {
-        if (!deliveryTypeId.equals(deliveryTypeFullDto.getId())) {
-            throw new IncompatibleIdsException("Path param Id and body Id must be equals. Path Param Id: " + deliveryTypeId + ", Body Id: " + deliveryTypeFullDto.getId());
+    public DeliveryTypeFullDto updateDeliveryType(Long deliveryTypeId, DeliveryTypePostDto deliveryTypePostDto) {
+        if (!deliveryTypeId.equals(deliveryTypePostDto.getId())) {
+            throw new IncompatibleIdsException("Path param Id and body Id must be equals. Path Param Id: " + deliveryTypeId + ", Body Id: " + deliveryTypePostDto.getId());
         }
 
         DeliveryTypeModel existingDeliveryTypeModel = new DeliveryTypeModel(this.findDeliveryTypeById(deliveryTypeId));
-        DeliveryTypeModel updatedDeliveryTypeModel = new DeliveryTypeModel(deliveryTypeFullDto);
+        DeliveryTypeModel updatedDeliveryTypeModel = new DeliveryTypeModel(deliveryTypePostDto);
+
+        StatusModel statusModel = new StatusModel(statusService.findStatusById(deliveryTypePostDto.getStatusId()));
+        updatedDeliveryTypeModel.setStatus(statusModel);
+
 
         BeanUtils.copyProperties(existingDeliveryTypeModel, updatedDeliveryTypeModel);
         return new DeliveryTypeFullDto(deliveryTypeRepository.save(updatedDeliveryTypeModel));
+    }
+
+    @Transactional
+    public DeliveryTypeFullDto inactivateDeliveryTypeById(Long deliveryTypeId) {
+        DeliveryTypeModel deliveryTypeModel = new DeliveryTypeModel(this.findDeliveryTypeById(deliveryTypeId));
+        StatusModel inactiveStatusModel = new StatusModel(statusService.findStatusByStatus("INACTIVE"));
+
+        deliveryTypeModel.setStatus(inactiveStatusModel);
+        return new DeliveryTypeFullDto(deliveryTypeRepository.save(deliveryTypeModel));
     }
 
     @Transactional

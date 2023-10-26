@@ -2,6 +2,7 @@ package com.lucalucenak.Noxus.dtos.response;
 
 import com.lucalucenak.Noxus.dtos.DeliveryTypeFullDto;
 import com.lucalucenak.Noxus.models.DeliveryModel;
+import com.lucalucenak.Noxus.models.StatusModel;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -18,6 +19,8 @@ public class DeliveryTypeReturnDto {
 
     private List<DeliveryModel> deliveries;
 
+    private StatusModel status;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
@@ -29,12 +32,21 @@ public class DeliveryTypeReturnDto {
         BeanUtils.copyProperties(deliveryTypeFullDto, this);
     }
 
-    public DeliveryTypeReturnDto(Long id, String deliveryType, List<DeliveryModel> deliveries, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public DeliveryTypeReturnDto(Long id, String deliveryType, List<DeliveryModel> deliveries, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.deliveryType = deliveryType;
         this.deliveries = deliveries;
+        this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public StatusModel getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusModel status) {
+        this.status = status;
     }
 
     public Long getId() {

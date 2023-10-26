@@ -1,6 +1,5 @@
 package com.lucalucenak.Noxus.dtos.post;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotNull;
 

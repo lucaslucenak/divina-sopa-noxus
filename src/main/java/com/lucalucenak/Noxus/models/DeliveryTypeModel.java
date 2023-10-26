@@ -2,6 +2,7 @@ package com.lucalucenak.Noxus.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lucalucenak.Noxus.dtos.DeliveryTypeFullDto;
+import com.lucalucenak.Noxus.dtos.post.DeliveryTypePostDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -31,6 +32,10 @@ public class DeliveryTypeModel {
     @OneToMany(mappedBy = "deliveryType", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<DeliveryModel> deliveries;
 
+    @ManyToOne
+    @JoinColumn(name = "status_id")
+    private StatusModel status;
+
     @CreatedDate
     private LocalDateTime createdAt;
 
@@ -44,10 +49,15 @@ public class DeliveryTypeModel {
         BeanUtils.copyProperties(deliveryTypeFullDto, this);
     }
 
-    public DeliveryTypeModel(Long id, String deliveryType, List<DeliveryModel> deliveries, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public DeliveryTypeModel(DeliveryTypePostDto deliveryTypePostDto) {
+        BeanUtils.copyProperties(deliveryTypePostDto, this);
+    }
+
+    public DeliveryTypeModel(Long id, String deliveryType, List<DeliveryModel> deliveries, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.deliveryType = deliveryType;
         this.deliveries = deliveries;
+        this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -57,6 +67,14 @@ public class DeliveryTypeModel {
         if (deliveryType != null) {
             deliveryType = deliveryType.toUpperCase(Locale.ROOT);
         }
+    }
+
+    public StatusModel getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusModel status) {
+        this.status = status;
     }
 
     public List<DeliveryModel> getDeliveries() {
