@@ -18,8 +18,6 @@ public class OrderReturnDto {
 
     private StatusModel status;
 
-    private AddressModel address;
-
     private ClientAccountModel clientAccount;
 
     private PaymentMethodModel paymentMethod;
@@ -45,13 +43,12 @@ public class OrderReturnDto {
         BeanUtils.copyProperties(orderModel, this);
     }
 
-    public OrderReturnDto(Long id, Double orderPrice, String observation, List<OrderReturnProductFieldDto> products, StatusModel status, AddressModel address, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, CouponModel coupon, DeliveryModel delivery, DeliverymanModel deliveryman, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime dispatchTime, LocalDateTime arrivalForecast) {
+    public OrderReturnDto(Long id, Double orderPrice, String observation, List<OrderReturnProductFieldDto> products, StatusModel status, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, CouponModel coupon, DeliveryModel delivery, DeliverymanModel deliveryman, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime dispatchTime, LocalDateTime arrivalForecast) {
         this.id = id;
         this.orderPrice = orderPrice;
         this.observation = observation;
         this.products = products;
         this.status = status;
-        this.address = address;
         this.clientAccount = clientAccount;
         this.paymentMethod = paymentMethod;
         this.coupon = coupon;
@@ -117,14 +114,6 @@ public class OrderReturnDto {
 
     public void setStatus(StatusModel status) {
         this.status = status;
-    }
-
-    public AddressModel getAddress() {
-        return address;
-    }
-
-    public void setAddress(AddressModel address) {
-        this.address = address;
     }
 
     public ClientAccountModel getClientAccount() {

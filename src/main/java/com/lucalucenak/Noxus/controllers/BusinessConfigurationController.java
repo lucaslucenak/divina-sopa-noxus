@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "business_configuration")
+@RequestMapping(value = "business-configuration")
 public class BusinessConfigurationController {
 
     @Autowired
