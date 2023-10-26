@@ -43,6 +43,11 @@ public class OrderController {
         return ResponseEntity.ok().body(orderService.finishOrderById(orderId));
     }
 
+    @PostMapping(value = "/dispatch/{orderId}")
+    public ResponseEntity<OrderReturnDto> dispatchOrderById(@PathVariable Long orderId) {
+        return ResponseEntity.ok().body(orderService.dispatchOrderById(orderId));
+    }
+
     @DeleteMapping(value = "/{orderId}")
     public ResponseEntity<Void> deleteOrderById(@PathVariable Long orderId) {
         orderService.deleteOrderById(orderId);

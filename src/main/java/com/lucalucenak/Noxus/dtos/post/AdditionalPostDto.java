@@ -1,14 +1,25 @@
 package com.lucalucenak.Noxus.dtos.post;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
 public class AdditionalPostDto {
     private Long id;
 
+    @NotNull(message = "Field name shouldn't be null")
+    @NotEmpty(message = "Field name shouldn't be empty")
+    @NotBlank(message = "Field name shouldn't be blank")
     private String name;
 
     private String description;
 
+    @NotNull(message = "Field price shouldn't be null")
     private Double price;
 
+    @NotNull(message = "Field type shouldn't be null")
+    @NotEmpty(message = "Field type shouldn't be empty")
+    @NotBlank(message = "Field type shouldn't be blank")
     private String type;
 
     private Long statusId;
