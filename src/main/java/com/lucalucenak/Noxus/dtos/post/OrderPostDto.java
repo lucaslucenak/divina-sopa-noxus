@@ -13,12 +13,6 @@ public class OrderPostDto {
 
     private String observation;
 
-    @NotNull(message = "Field dispatchTime shouldn't be null")
-    private LocalDateTime dispatchTime;
-
-    @NotNull(message = "Field dispatchTime shouldn't be null")
-    private LocalDateTime arrivalForecast;
-
     private Long couponId;
 
     @NotNull(message = "Field deliveryId shouldn't be null")
@@ -30,22 +24,32 @@ public class OrderPostDto {
     @NotNull(message = "Field paymentMethodId shouldn't be null")
     private Long paymentMethodId;
 
+    @NotNull(message = "Field paymentMethodId shouldn't be null")
+    private LocalDateTime arrivalForecast;
+
     @NotNull(message = "Field products shouldn't be null")
     private List<OrderProductPostDto> products;
 
     public OrderPostDto() {
     }
 
-    public OrderPostDto(Long id, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, Long couponId, Long deliveryId, Long clientAccountId, Long paymentMethodId, List<OrderProductPostDto> products) {
+    public OrderPostDto(Long id, String observation, Long couponId, Long deliveryId, Long clientAccountId, Long paymentMethodId, LocalDateTime arrivalForecast, List<OrderProductPostDto> products) {
         this.id = id;
         this.observation = observation;
-        this.dispatchTime = dispatchTime;
-        this.arrivalForecast = arrivalForecast;
         this.couponId = couponId;
         this.deliveryId = deliveryId;
         this.clientAccountId = clientAccountId;
         this.paymentMethodId = paymentMethodId;
+        this.arrivalForecast = arrivalForecast;
         this.products = products;
+    }
+
+    public LocalDateTime getArrivalForecast() {
+        return arrivalForecast;
+    }
+
+    public void setArrivalForecast(LocalDateTime arrivalForecast) {
+        this.arrivalForecast = arrivalForecast;
     }
 
     public Long getCouponId() {
@@ -70,22 +74,6 @@ public class OrderPostDto {
 
     public void setObservation(String observation) {
         this.observation = observation;
-    }
-
-    public LocalDateTime getDispatchTime() {
-        return dispatchTime;
-    }
-
-    public void setDispatchTime(LocalDateTime dispatchTime) {
-        this.dispatchTime = dispatchTime;
-    }
-
-    public LocalDateTime getArrivalForecast() {
-        return arrivalForecast;
-    }
-
-    public void setArrivalForecast(LocalDateTime arrivalForecast) {
-        this.arrivalForecast = arrivalForecast;
     }
 
     public Long getDeliveryId() {

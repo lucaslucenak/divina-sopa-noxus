@@ -31,7 +31,7 @@ public class OrderModel {
     @Column(nullable = true)
     private String observation;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private LocalDateTime dispatchTime;
 
     @Column(nullable = false)

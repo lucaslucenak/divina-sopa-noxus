@@ -9,6 +9,7 @@ import com.lucalucenak.Noxus.exceptions.*;
 import com.lucalucenak.Noxus.models.*;
 import com.lucalucenak.Noxus.models.pks.OrderProductPk;
 import com.lucalucenak.Noxus.repositories.OrderRepository;
+import com.lucalucenak.Noxus.utils.LocalDateTimeUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,6 +19,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZoneId;
 import java.util.*;
 
 @Service
@@ -43,6 +45,8 @@ public class OrderService {
     private OrderProductService orderProductService;
     @Autowired
     private CouponService couponService;
+    @Autowired
+    private LocalDateTimeUtil localDateTimeUtil;
 
     @Transactional
     public OrderReturnDto findOrderById(Long orderId) {
@@ -103,7 +107,6 @@ public class OrderService {
         return orderReturnDtoPage;
     }
 
-
     @Transactional
     public OrderReturnDto saveOrder(OrderPostDto orderPostDto) {
 
@@ -123,11 +126,6 @@ public class OrderService {
         orderModel.setPaymentMethod(paymentMethodModel);
         StatusModel statusModel = new StatusModel(statusService.findStatusByStatus("ORDERED"));
         orderModel.setStatus(statusModel);
-
-//        if (orderPostDto.getCouponId() != null) {
-//            CouponModel couponModel = new CouponModel(couponService.findCouponById(orderPostDto.getCouponId()));
-//            orderModel.setCoupon(couponModel);
-//        }
 
         if (!addressService.belongsToClientAccount(clientAccountModel.getId())) {
             throw new AddressNotBelongingToClientAccountException("The given address doesn't belongs to the given client account. Client Account id: " + clientAccountModel.getId() + " | Address id: " + deliveryModel.getAddress().getId());
@@ -279,6 +277,33 @@ public class OrderService {
     @Transactional
     public Long countByClientAccountIdAndCouponId(Long clientAccountId, Long couponId) {
         return orderRepository.countByClientAccountIdAndCouponId(clientAccountId, couponId);
+    }
+
+    @Transactional
+    public OrderReturnDto dispatchOrderById(Long orderId) {
+        OrderModel orderModel = new OrderModel(this.findOrderById(orderId));
+        orderModel.setStatus(new StatusModel(statusService.findStatusByStatus("DISPATCHED")));
+        orderModel.setDispatchTime(localDateTimeUtil.nowGMT3());
+        orderRepository.save(orderModel);
+
+        List<OrderProductFullDto> orderProducts = orderProductService.findOrderProductsByOrderId(orderId);
+        List<OrderReturnProductFieldDto> products = new ArrayList<>();
+        for (OrderProductFullDto i : orderProducts) {
+            ProductModel productModel = i.getId().getProduct();
+            OrderReturnProductFieldDto orderReturnDrinkFieldDto = new OrderReturnProductFieldDto(
+                    productModel,
+                    i.getQuantity(),
+                    i.getAdditions(),
+                    productModel.getPrice() * i.getQuantity()
+            );
+            products.add(orderReturnDrinkFieldDto);
+        }
+
+        OrderReturnDto orderReturnDto = new OrderReturnDto(orderModel);
+        orderReturnDto.setProducts(products);
+
+        return orderReturnDto;
+
     }
 
     @Transactional
