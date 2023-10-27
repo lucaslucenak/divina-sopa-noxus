@@ -29,6 +29,12 @@ public class OrderModel {
     private Double orderPrice;
 
     @Column(nullable = true)
+    private Double paidValue;
+
+    @Column(nullable = true)
+    private Double change;
+
+    @Column(nullable = true)
     private String observation;
 
     @Column(nullable = true)
@@ -76,10 +82,11 @@ public class OrderModel {
     public OrderModel(OrderReturnDto orderReturnDto) {
         BeanUtils.copyProperties(orderReturnDto, this);
     }
-
-    public OrderModel(Long id, Double orderPrice, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, CouponModel coupon, StatusModel status, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, DeliveryModel delivery, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public OrderModel(Long id, Double orderPrice, Double paidValue, Double change, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, CouponModel coupon, StatusModel status, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, DeliveryModel delivery, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.orderPrice = orderPrice;
+        this.paidValue = paidValue;
+        this.change = change;
         this.observation = observation;
         this.dispatchTime = dispatchTime;
         this.arrivalForecast = arrivalForecast;
@@ -114,6 +121,22 @@ public class OrderModel {
 
     public void setOrderPrice(Double orderPrice) {
         this.orderPrice = orderPrice;
+    }
+
+    public Double getPaidValue() {
+        return paidValue;
+    }
+
+    public void setPaidValue(Double paidValue) {
+        this.paidValue = paidValue;
+    }
+
+    public Double getChange() {
+        return change;
+    }
+
+    public void setChange(Double change) {
+        this.change = change;
     }
 
     public String getObservation() {

@@ -1,6 +1,7 @@
 package com.lucalucenak.Noxus.dtos;
 
 import com.lucalucenak.Noxus.models.*;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.BeanUtils;
@@ -12,6 +13,10 @@ public class OrderFullDto {
     private Long id;
 
     private Double orderPrice;
+
+    private Double paidValue;
+
+    private Double change;
 
     private String observation;
 
@@ -40,9 +45,11 @@ public class OrderFullDto {
         BeanUtils.copyProperties(orderModel, this);
     }
 
-    public OrderFullDto(Long id, Double orderPrice, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, CouponModel coupon, StatusModel status, DeliveryModel delivery, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public OrderFullDto(Long id, Double orderPrice, Double paidValue, Double change, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, CouponModel coupon, StatusModel status, DeliveryModel delivery, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.orderPrice = orderPrice;
+        this.paidValue = paidValue;
+        this.change = change;
         this.observation = observation;
         this.dispatchTime = dispatchTime;
         this.arrivalForecast = arrivalForecast;
@@ -78,6 +85,14 @@ public class OrderFullDto {
     public void setOrderPrice(Double orderPrice) {
         this.orderPrice = orderPrice;
     }
+
+    public Double getPaidValue() { return paidValue; }
+
+    public void setPaidValue(Double paidValue) { this.paidValue = paidValue; }
+
+    public Double getChange() { return change; }
+
+    public void setChange(Double change) { this.change = change; }
 
     public String getObservation() {
         return observation;

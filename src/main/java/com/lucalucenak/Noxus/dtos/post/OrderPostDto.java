@@ -15,6 +15,8 @@ public class OrderPostDto {
 
     private Long couponId;
 
+    private Double paidValue;
+
     @NotNull(message = "Field deliveryId shouldn't be null")
     private Long deliveryId;
 
@@ -33,10 +35,11 @@ public class OrderPostDto {
     public OrderPostDto() {
     }
 
-    public OrderPostDto(Long id, String observation, Long couponId, Long deliveryId, Long clientAccountId, Long paymentMethodId, LocalDateTime arrivalForecast, List<OrderProductPostDto> products) {
+    public OrderPostDto(Long id, String observation, Long couponId, Double paidValue, Long deliveryId, Long clientAccountId, Long paymentMethodId, LocalDateTime arrivalForecast, List<OrderProductPostDto> products) {
         this.id = id;
         this.observation = observation;
         this.couponId = couponId;
+        this.paidValue = paidValue;
         this.deliveryId = deliveryId;
         this.clientAccountId = clientAccountId;
         this.paymentMethodId = paymentMethodId;
@@ -67,6 +70,10 @@ public class OrderPostDto {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public Double getPaidValue() { return paidValue; }
+
+    public void setPaidValue(Double paidValue) { this.paidValue = paidValue; }
 
     public String getObservation() {
         return observation;
