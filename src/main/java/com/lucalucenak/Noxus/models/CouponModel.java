@@ -2,6 +2,7 @@ package com.lucalucenak.Noxus.models;
 
 import com.lucalucenak.Noxus.dtos.CouponFullDto;
 import com.lucalucenak.Noxus.dtos.post.CouponPostDto;
+import com.lucalucenak.Noxus.utils.LocalDateTimeUtil;
 import jakarta.persistence.*;
 import lombok.Builder;
 import org.springframework.beans.BeanUtils;
@@ -10,6 +11,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.Locale;
 
 @Entity
 @Table(name = "coupon")
@@ -71,6 +73,14 @@ public class CouponModel {
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (description != null) description = description.toUpperCase(Locale.ROOT);
+
+        LocalDateTimeUtil localDateTimeUtil = new LocalDateTimeUtil();
+        if (updatedAt != null) updatedAt = localDateTimeUtil.nowGMT3();
     }
 
     public Integer getMaxUsages() {

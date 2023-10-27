@@ -3,6 +3,7 @@ package com.lucalucenak.Noxus.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lucalucenak.Noxus.dtos.NeighbourhoodFullDto;
 import com.lucalucenak.Noxus.dtos.post.NeighbourhoodPostDto;
+import com.lucalucenak.Noxus.utils.LocalDateTimeUtil;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
@@ -70,10 +71,11 @@ public class NeighbourhoodModel {
     }
 
     @PrePersist
-    public void upperCaseName() {
-        if (neighbourhood != null) {
-            neighbourhood = neighbourhood.toUpperCase(Locale.ROOT);
-        }
+    public void prePersist() {
+        if (neighbourhood != null) neighbourhood = neighbourhood.toUpperCase(Locale.ROOT);
+
+        LocalDateTimeUtil localDateTimeUtil = new LocalDateTimeUtil();
+        if (updatedAt != null) updatedAt = localDateTimeUtil.nowGMT3();
     }
 
     public Long getId() {

@@ -66,6 +66,7 @@ public class NeighbourhoodService {
             addressService.inactivateAddressesByNeighbourhoodId(neighbourhoodId);
         }
 
+        updatedNeighbourhoodModel.setCreatedAt(existingNeighbourhoodModel.getCreatedAt());
         BeanUtils.copyProperties(updatedNeighbourhoodModel, existingNeighbourhoodModel, "createdAt, updatedAt");
         return new NeighbourhoodFullDto(neighbourhoodRepository.save(existingNeighbourhoodModel));
     }

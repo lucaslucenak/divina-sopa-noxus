@@ -3,6 +3,7 @@ package com.lucalucenak.Noxus.models;
 import com.lucalucenak.Noxus.dtos.DistanceTaxFullDto;
 import com.lucalucenak.Noxus.dtos.post.DistanceTaxPostDto;
 import com.lucalucenak.Noxus.dtos.response.DistanceTaxReturnDto;
+import com.lucalucenak.Noxus.utils.LocalDateTimeUtil;
 import jakarta.persistence.*;
 import lombok.Builder;
 import org.springframework.beans.BeanUtils;
@@ -63,6 +64,12 @@ public class DistanceTaxModel {
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        LocalDateTimeUtil localDateTimeUtil = new LocalDateTimeUtil();
+        if (updatedAt != null) updatedAt = localDateTimeUtil.nowGMT3();
     }
 
     public LocalDateTime getCreatedAt() {

@@ -3,6 +3,7 @@ package com.lucalucenak.Noxus.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lucalucenak.Noxus.dtos.SizeFullDto;
 import com.lucalucenak.Noxus.dtos.post.SizePostDto;
+import com.lucalucenak.Noxus.utils.LocalDateTimeUtil;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -65,10 +66,11 @@ public class SizeModel {
     }
 
     @PrePersist
-    public void upperCaseName() {
-        if (size != null) {
-            size = size.toUpperCase(Locale.ROOT);
-        }
+    public void prePersist() {
+        if (size != null) size = size.toUpperCase(Locale.ROOT);
+
+        LocalDateTimeUtil localDateTimeUtil = new LocalDateTimeUtil();
+        if (updatedAt != null) updatedAt = localDateTimeUtil.nowGMT3();
     }
 
     public Long getId() {

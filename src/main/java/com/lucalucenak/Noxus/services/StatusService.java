@@ -63,6 +63,7 @@ public class StatusService {
         StatusModel existingStatusModel = new StatusModel(this.findStatusById(statusId));
         StatusModel updatedStatusModel = new StatusModel(statusFullDto);
 
+        updatedStatusModel.setCreatedAt(existingStatusModel.getCreatedAt());
         BeanUtils.copyProperties(existingStatusModel, updatedStatusModel);
         return new StatusFullDto(statusRepository.save(updatedStatusModel));
     }

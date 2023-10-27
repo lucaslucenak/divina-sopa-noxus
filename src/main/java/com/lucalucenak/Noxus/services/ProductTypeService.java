@@ -77,7 +77,6 @@ public class ProductTypeService {
         updatedProductTypeModel.setStatus(statusModel);
 
         updatedProductTypeModel.setCreatedAt(existingProductTypeModel.getCreatedAt());
-        updatedProductTypeModel.setUpdatedAt(LocalDateTime.now());
         BeanUtils.copyProperties(updatedProductTypeModel, existingProductTypeModel);
         return new ProductTypeFullDto(productTypeRepository.save(updatedProductTypeModel));
     }

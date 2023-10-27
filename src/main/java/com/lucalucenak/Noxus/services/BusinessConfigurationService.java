@@ -62,7 +62,6 @@ public class BusinessConfigurationService {
         updatedBusinessConfigurationModel.setStatus(statusModel);
 
         updatedBusinessConfigurationModel.setCreatedAt(existingBusinessConfigurationModel.getCreatedAt());
-        updatedBusinessConfigurationModel.setUpdatedAt(LocalDateTime.now());
         BeanUtils.copyProperties(updatedBusinessConfigurationModel, existingBusinessConfigurationModel);
         return new BusinessConfigurationFullDto(businessConfigurationRepository.save(updatedBusinessConfigurationModel));
     }

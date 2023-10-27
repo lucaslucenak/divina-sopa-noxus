@@ -5,6 +5,7 @@ import com.lucalucenak.Noxus.dtos.ClientAccountFullDto;
 import com.lucalucenak.Noxus.dtos.post.ClientAccountPostDto;
 import com.lucalucenak.Noxus.dtos.response.ClientAccountReturnDto;
 import com.lucalucenak.Noxus.enums.RoleEnum;
+import com.lucalucenak.Noxus.utils.LocalDateTimeUtil;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -23,6 +24,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 @Entity
 @Table(name = "client_account")
@@ -107,6 +109,18 @@ public class ClientAccountModel implements UserDetails {
         this.orders = orders;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (firstName != null) firstName = firstName.toUpperCase(Locale.ROOT);
+        if (lastName != null) lastName = lastName.toUpperCase(Locale.ROOT);
+        if (cpf != null) cpf = cpf.replaceAll("[^0-9]", "");
+        if (email != null) email = email.toLowerCase(Locale.ROOT);
+        if (cellphoneNumber != null) cellphoneNumber = cellphoneNumber.replaceAll("[^0-9]", "");
+
+        LocalDateTimeUtil localDateTimeUtil = new LocalDateTimeUtil();
+        if (updatedAt != null) updatedAt = localDateTimeUtil.nowGMT3();
     }
 
     public void setPassword(String password) {

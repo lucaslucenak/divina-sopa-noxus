@@ -2,6 +2,7 @@ package com.lucalucenak.Noxus.models;
 
 import com.lucalucenak.Noxus.dtos.ProductFullDto;
 import com.lucalucenak.Noxus.dtos.post.ProductPostDto;
+import com.lucalucenak.Noxus.utils.LocalDateTimeUtil;
 import jakarta.persistence.*;
 import lombok.Builder;
 import org.springframework.beans.BeanUtils;
@@ -10,6 +11,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.Locale;
 
 @Entity
 @Table(name = "product")
@@ -69,6 +71,15 @@ public class ProductModel {
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (name != null) name  = name.toUpperCase(Locale.ROOT);
+        if (description != null) description = description.toUpperCase(Locale.ROOT);
+
+        LocalDateTimeUtil localDateTimeUtil = new LocalDateTimeUtil();
+        if (updatedAt != null) updatedAt = localDateTimeUtil.nowGMT3();
     }
 
     public SizeModel getSize() {

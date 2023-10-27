@@ -136,6 +136,7 @@ public class DeliveryService {
                 updatedDeliveryModel.setTax(deliveryTax);
             }
 
+            updatedDeliveryModel.setCreatedAt(existentDeliveryModel.getCreatedAt());
             BeanUtils.copyProperties(updatedDeliveryModel, existentDeliveryModel, "createdAt, updatedAt");
             return new DeliveryFullDto(deliveryRepository.save(updatedDeliveryModel));
         }

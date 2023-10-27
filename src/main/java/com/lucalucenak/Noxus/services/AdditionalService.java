@@ -65,7 +65,6 @@ public class AdditionalService {
         updatedAdditionalModel.setStatus(statusModel);
 
         updatedAdditionalModel.setCreatedAt(existingAdditionalModel.getCreatedAt());
-        updatedAdditionalModel.setUpdatedAt(LocalDateTime.now());
         BeanUtils.copyProperties(updatedAdditionalModel, existingAdditionalModel);
         return new AdditionalFullDto(additionalRepository.save(updatedAdditionalModel));
     }

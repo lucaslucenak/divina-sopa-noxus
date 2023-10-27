@@ -73,7 +73,6 @@ public class CouponService {
         updatedCouponModel.setStatus(statusModel);
 
         updatedCouponModel.setCreatedAt(existingCouponModel.getCreatedAt());
-        updatedCouponModel.setUpdatedAt(LocalDateTime.now());
         BeanUtils.copyProperties(updatedCouponModel, existingCouponModel);
         return new CouponFullDto(couponRepository.save(updatedCouponModel));
     }

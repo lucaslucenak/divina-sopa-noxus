@@ -4,6 +4,7 @@ import com.lucalucenak.Noxus.dtos.AdditionalFullDto;
 import com.lucalucenak.Noxus.dtos.BusinessConfigurationFullDto;
 import com.lucalucenak.Noxus.dtos.post.AdditionalPostDto;
 import com.lucalucenak.Noxus.dtos.post.BusinessConfigurationPostDto;
+import com.lucalucenak.Noxus.utils.LocalDateTimeUtil;
 import jakarta.persistence.*;
 import lombok.Builder;
 import org.springframework.beans.BeanUtils;
@@ -12,6 +13,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.Locale;
 
 @Entity
 @Table(name = "business_configuration")
@@ -61,6 +63,16 @@ public class BusinessConfigurationModel {
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (configKey != null) configKey = configKey.toUpperCase(Locale.ROOT);
+        if (configValue != null) configValue = configValue.toUpperCase(Locale.ROOT);
+        if (configDescription != null) configDescription = configDescription.toUpperCase(Locale.ROOT);
+
+        LocalDateTimeUtil localDateTimeUtil = new LocalDateTimeUtil();
+        if (updatedAt != null) updatedAt = localDateTimeUtil.nowGMT3();
     }
 
     public StatusModel getStatus() {

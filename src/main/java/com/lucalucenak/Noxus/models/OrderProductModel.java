@@ -2,6 +2,7 @@ package com.lucalucenak.Noxus.models;
 
 import com.lucalucenak.Noxus.dtos.OrderProductFullDto;
 import com.lucalucenak.Noxus.models.pks.OrderProductPk;
+import com.lucalucenak.Noxus.utils.LocalDateTimeUtil;
 import jakarta.persistence.*;
 import lombok.Builder;
 import org.springframework.beans.BeanUtils;
@@ -45,6 +46,12 @@ public class OrderProductModel {
         this.quantity = quantity;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        LocalDateTimeUtil localDateTimeUtil = new LocalDateTimeUtil();
+        if (updatedAt != null) updatedAt = localDateTimeUtil.nowGMT3();
     }
 
     public String getAdditions() {

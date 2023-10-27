@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lucalucenak.Noxus.dtos.AddressFullDto;
 import com.lucalucenak.Noxus.dtos.post.AddressPostDto;
 import com.lucalucenak.Noxus.dtos.response.AddressReturnDto;
+import com.lucalucenak.Noxus.utils.LocalDateTimeUtil;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -100,25 +101,16 @@ public class AddressModel {
     }
 
     @PrePersist
-    public void upperCaseName() {
-        if (streetName != null) {
-            streetName = streetName.toUpperCase(Locale.ROOT);
-        }
-        if (houseNumber != null) {
-            houseNumber = houseNumber.toUpperCase(Locale.ROOT);
-        }
-        if (city != null) {
-            city = city.toUpperCase(Locale.ROOT);
-        }
-        if (cep != null) {
-            cep = cep.toUpperCase(Locale.ROOT);
-        }
-        if (complement != null) {
-            complement = complement.toUpperCase(Locale.ROOT);
-        }
-        if (referencePoint != null) {
-            referencePoint = referencePoint.toUpperCase(Locale.ROOT);
-        }
+    public void prePersist() {
+        if (streetName != null) streetName = streetName.toUpperCase(Locale.ROOT);
+        if (houseNumber != null) houseNumber = houseNumber.toUpperCase(Locale.ROOT);
+        if (city != null) city = city.toUpperCase(Locale.ROOT);
+        if (cep != null) cep = cep.toUpperCase(Locale.ROOT);
+        if (complement != null) complement = complement.toUpperCase(Locale.ROOT);
+        if (referencePoint != null) referencePoint = referencePoint.toUpperCase(Locale.ROOT);
+
+        LocalDateTimeUtil localDateTimeUtil = new LocalDateTimeUtil();
+        if (updatedAt != null) updatedAt = localDateTimeUtil.nowGMT3();
     }
 
     public Long getId() {
