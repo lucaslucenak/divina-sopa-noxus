@@ -27,6 +27,8 @@ public class AdditionalService {
     private AdditionalRepository additionalRepository;
     @Autowired
     private StatusService statusService;
+    @Autowired
+    private AdditionalTypeService additionalTypeService;
 
     @Transactional(readOnly = true)
     public AdditionalFullDto findAdditionalById(Long additionalId) {
@@ -50,6 +52,8 @@ public class AdditionalService {
         AdditionalModel additionalModel = new AdditionalModel(additionalPostDto);
         StatusModel statusModel = new StatusModel(statusService.findStatusById(additionalPostDto.getStatusId()));
         additionalModel.setStatus(statusModel);
+        AdditionalTypeModel additionalTypeModel = new AdditionalTypeModel(additionalTypeService.findAdditionalTypeById(additionalPostDto.getAdditionalTypeId()));
+        additionalModel.setAdditionalType(additionalTypeModel);
 
         return new AdditionalFullDto(additionalRepository.save(additionalModel));
     }
@@ -63,6 +67,8 @@ public class AdditionalService {
         AdditionalModel updatedAdditionalModel = new AdditionalModel(additionalPostDto);
         StatusModel statusModel = new StatusModel(statusService.findStatusById(additionalPostDto.getStatusId()));
         updatedAdditionalModel.setStatus(statusModel);
+        AdditionalTypeModel additionalTypeModel = new AdditionalTypeModel(additionalTypeService.findAdditionalTypeById(additionalPostDto.getAdditionalTypeId()));
+        updatedAdditionalModel.setAdditionalType(additionalTypeModel);
 
         updatedAdditionalModel.setCreatedAt(existingAdditionalModel.getCreatedAt());
         updatedAdditionalModel.setUpdatedAt(LocalDateTime.now());

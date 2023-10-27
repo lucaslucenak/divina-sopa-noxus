@@ -32,8 +32,9 @@ public class AdditionalModel {
     @Column(nullable = false)
     private Double price;
 
-    @Column(nullable = false)
-    private String type;
+    @ManyToOne
+    @JoinColumn(name = "additional_type_id", nullable = false)
+    private AdditionalTypeModel additionalType;
 
     @ManyToOne
     @JoinColumn(name = "status_id", nullable = false)
@@ -56,12 +57,12 @@ public class AdditionalModel {
         BeanUtils.copyProperties(additionalPostDto, this);
     }
 
-    public AdditionalModel(Long id, String name, String description, Double price, String type, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public AdditionalModel(Long id, String name, String description, Double price, AdditionalTypeModel additionalType, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
-        this.type = type;
+        this.additionalType = additionalType;
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -135,11 +136,11 @@ public class AdditionalModel {
         this.price = price;
     }
 
-    public String getType() {
-        return type;
+    public AdditionalTypeModel getAdditionalType() {
+        return additionalType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setAdditionalType(AdditionalTypeModel additionalType) {
+        this.additionalType = additionalType;
     }
 }

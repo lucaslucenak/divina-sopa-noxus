@@ -23,6 +23,7 @@ insert into coupon (description, coupon_value, minimum_order_value, max_usages, 
 insert into product_type (type, description, status_id, created_at, updated_at) values ('SOUP', 'soups with water', 1, NOW(), NOW());
 insert into product (name, description, price, size_id, status_id, product_type_id, created_at, updated_at) values ('Sopa de Feijão', 'Sopa com macarrão e água e feijão', 15.50, 1, 1, 1, NOW(), NOW());
 
+
 --insert into soup (name, price, size_id, status_id, created_at, updated_at) values ('FEIJÃO', 10.00, 1, 1, NOW(), NOW());
 --insert into drink (name, price, status_id, created_at, updated_at) values ('COCA COLA 500ML', 8.0, 1, NOW(), NOW());
 
