@@ -11,6 +11,6 @@ import java.util.Optional;
 @Repository
 public interface CouponRepository extends JpaRepository<CouponModel, Long> {
 
-    @Query("SELECT c FROM CouponModel c WHERE DATE(c.finishAt) = CURRENT_DATE")
+    @Query("SELECT c FROM CouponModel c WHERE EXTRACT(day FROM c.finishAt) = EXTRACT(day FROM NOW())")
     List<Optional<CouponModel>> findAllWithFinishDateEqualsToday();
 }
