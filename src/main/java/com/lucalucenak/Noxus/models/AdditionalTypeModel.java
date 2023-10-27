@@ -1,7 +1,11 @@
 package com.lucalucenak.Noxus.models;
 
-import com.lucalucenak.Noxus.dtos.AdditionalFullDto;
-import com.lucalucenak.Noxus.dtos.post.AdditionalPostDto;
+import com.lucalucenak.Noxus.dtos.AdditionalTypeFullDto;
+import com.lucalucenak.Noxus.dtos.ProductTypeFullDto;
+import com.lucalucenak.Noxus.dtos.post.AdditionalTypePostDto;
+import com.lucalucenak.Noxus.dtos.post.ProductTypePostDto;
+import com.lucalucenak.Noxus.dtos.response.AdditionalTypeReturnDto;
+import com.lucalucenak.Noxus.dtos.response.ProductTypeReturnDto;
 import com.lucalucenak.Noxus.utils.LocalDateTimeUtil;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -10,30 +14,25 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.io.StringReader;
 import java.time.LocalDateTime;
 import java.util.Locale;
 
 @Entity
-@Table(name = "additional")
+@Table(name = "additional_type")
 @EntityListeners(AuditingEntityListener.class)
 @Builder
-public class AdditionalModel {
+public class AdditionalTypeModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String name;
-
-    @Column(nullable = false)
-    private String description;
-
-    @Column(nullable = false)
-    private Double price;
-
-    @Column(nullable = false)
     private String type;
+
+    @Column(nullable = true)
+    private String description;
 
     @ManyToOne
     @JoinColumn(name = "status_id", nullable = false)
@@ -45,23 +44,26 @@ public class AdditionalModel {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
-    public AdditionalModel() {
+    public AdditionalTypeModel(){
     }
 
-    public AdditionalModel(AdditionalFullDto additionalFullDto) {
-        BeanUtils.copyProperties(additionalFullDto, this);
+    public AdditionalTypeModel(AdditionalTypeFullDto additionalTypeFullDto) {
+        BeanUtils.copyProperties(additionalTypeFullDto, this);
     }
 
-    public AdditionalModel(AdditionalPostDto additionalPostDto) {
-        BeanUtils.copyProperties(additionalPostDto, this);
+    public AdditionalTypeModel(AdditionalTypeReturnDto additionalTypeReturnDto) {
+        BeanUtils.copyProperties(additionalTypeReturnDto, this);
     }
 
-    public AdditionalModel(Long id, String name, String description, Double price, String type, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+
+    public AdditionalTypeModel(AdditionalTypePostDto additionalTypePostDto) {
+        BeanUtils.copyProperties(additionalTypePostDto, this);
+    }
+
+    public AdditionalTypeModel(Long id, String type, String description, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
-        this.name = name;
-        this.description = description;
-        this.price = price;
         this.type = type;
+        this.description = description;
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -69,14 +71,30 @@ public class AdditionalModel {
 
     @PrePersist
     public void prePersist() {
-        if (name != null) {
-            name = name.toUpperCase(Locale.ROOT);
+        if (type != null) {
+            type = type.toUpperCase(Locale.ROOT);
         }
 
         LocalDateTimeUtil localDateTimeUtil = new LocalDateTimeUtil();
         if (updatedAt != null) {
             updatedAt = localDateTimeUtil.nowGMT3();
         }
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getDescription() {
@@ -109,37 +127,5 @@ public class AdditionalModel {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 }

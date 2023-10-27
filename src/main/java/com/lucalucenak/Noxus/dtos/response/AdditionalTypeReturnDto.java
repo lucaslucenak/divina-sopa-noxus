@@ -1,15 +1,15 @@
 package com.lucalucenak.Noxus.dtos.response;
 
-import com.lucalucenak.Noxus.dtos.AddressFullDto;
+import com.lucalucenak.Noxus.dtos.AdditionalTypeFullDto;
 import com.lucalucenak.Noxus.dtos.ProductTypeFullDto;
-import com.lucalucenak.Noxus.models.AddressModel;
+import com.lucalucenak.Noxus.models.AdditionalTypeModel;
 import com.lucalucenak.Noxus.models.ProductTypeModel;
 import com.lucalucenak.Noxus.models.StatusModel;
 import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
 
-public class ProductTypeReturnDto {
+public class AdditionalTypeReturnDto {
 
     private Long id;
 
@@ -23,19 +23,18 @@ public class ProductTypeReturnDto {
 
     private LocalDateTime updatedAt;
 
-    public ProductTypeReturnDto() {
+    public AdditionalTypeReturnDto(){
     }
 
-    public ProductTypeReturnDto(ProductTypeModel productTypeModel) {
-
-        BeanUtils.copyProperties(productTypeModel, this);
+    public AdditionalTypeReturnDto(AdditionalTypeModel additionalTypeModel) {
+        BeanUtils.copyProperties(additionalTypeModel, this);
     }
 
-    public ProductTypeReturnDto(ProductTypeFullDto productTypeFullDto) {
-        BeanUtils.copyProperties(productTypeFullDto, this);
+    public AdditionalTypeReturnDto(AdditionalTypeFullDto additionalTypeFullDto) {
+        BeanUtils.copyProperties(additionalTypeFullDto, this);
     }
 
-    public ProductTypeReturnDto(Long id, String type, String description, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public AdditionalTypeReturnDto(Long id, String type, String description, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.type = type;
         this.description = description;
