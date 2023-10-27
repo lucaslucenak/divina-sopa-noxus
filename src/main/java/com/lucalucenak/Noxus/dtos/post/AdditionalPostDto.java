@@ -17,22 +17,20 @@ public class AdditionalPostDto {
     @NotNull(message = "Field price shouldn't be null")
     private Double price;
 
-    @NotNull(message = "Field type shouldn't be null")
-    @NotEmpty(message = "Field type shouldn't be empty")
-    @NotBlank(message = "Field type shouldn't be blank")
-    private String type;
+    @NotNull(message = "Field additionalTypeId shouldn't be null")
+    private Long additionalTypeId;
 
     private Long statusId;
 
     public AdditionalPostDto() {
     }
 
-    public AdditionalPostDto(Long id, String name, String description, Double price, String type, Long statusId) {
+    public AdditionalPostDto(Long id, String name, String description, Double price, Long additionalTypeId, Long statusId) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
-        this.type = type;
+        this.additionalTypeId = additionalTypeId;
         this.statusId = statusId;
     }
 
@@ -76,11 +74,11 @@ public class AdditionalPostDto {
         this.price = price;
     }
 
-    public String getType() {
-        return type;
+    public Long getAdditionalTypeId() {
+        return additionalTypeId;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setAdditionalTypeId(Long additionalTypeId) {
+        this.additionalTypeId = additionalTypeId;
     }
 }

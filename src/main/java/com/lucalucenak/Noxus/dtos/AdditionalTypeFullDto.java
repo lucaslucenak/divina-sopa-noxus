@@ -1,15 +1,13 @@
-package com.lucalucenak.Noxus.dtos.response;
+package com.lucalucenak.Noxus.dtos;
 
-import com.lucalucenak.Noxus.dtos.AddressFullDto;
-import com.lucalucenak.Noxus.dtos.ProductTypeFullDto;
-import com.lucalucenak.Noxus.models.AddressModel;
+import com.lucalucenak.Noxus.models.AdditionalTypeModel;
 import com.lucalucenak.Noxus.models.ProductTypeModel;
 import com.lucalucenak.Noxus.models.StatusModel;
 import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
 
-public class ProductTypeReturnDto {
+public class AdditionalTypeFullDto {
 
     private Long id;
 
@@ -23,19 +21,14 @@ public class ProductTypeReturnDto {
 
     private LocalDateTime updatedAt;
 
-    public ProductTypeReturnDto() {
+    public AdditionalTypeFullDto(){
     }
 
-    public ProductTypeReturnDto(ProductTypeModel productTypeModel) {
-
-        BeanUtils.copyProperties(productTypeModel, this);
+    public AdditionalTypeFullDto(AdditionalTypeModel additionalTypeModel) {
+        BeanUtils.copyProperties(additionalTypeModel, this);
     }
 
-    public ProductTypeReturnDto(ProductTypeFullDto productTypeFullDto) {
-        BeanUtils.copyProperties(productTypeFullDto, this);
-    }
-
-    public ProductTypeReturnDto(Long id, String type, String description, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public AdditionalTypeFullDto(Long id, String type, String description, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.type = type;
         this.description = description;

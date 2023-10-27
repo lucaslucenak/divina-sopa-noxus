@@ -1,7 +1,6 @@
 package com.lucalucenak.Noxus.services;
 
 import com.lucalucenak.Noxus.dtos.ProductFullDto;
-import com.lucalucenak.Noxus.dtos.ProductTypeFullDto;
 import com.lucalucenak.Noxus.dtos.post.ProductPostDto;
 import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
@@ -44,7 +43,6 @@ public class ProductService {
             throw new ResourceNotFoundException("Resource: Product. Not found with id: " + productId);
         }
     }
-
     @Transactional(readOnly = true)
     public Page<ProductFullDto> findAllProductsPaginated(Pageable pageable) {
         Page<ProductModel> pagedProducts = productRepository.findAll(pageable);

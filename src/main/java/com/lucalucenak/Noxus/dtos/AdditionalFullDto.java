@@ -4,6 +4,7 @@ package com.lucalucenak.Noxus.dtos;
 import com.lucalucenak.Noxus.dtos.response.AdditionalReturnDto;
 import com.lucalucenak.Noxus.dtos.response.ProductReturnDto;
 import com.lucalucenak.Noxus.models.AdditionalModel;
+import com.lucalucenak.Noxus.models.AdditionalTypeModel;
 import com.lucalucenak.Noxus.models.ProductModel;
 import com.lucalucenak.Noxus.models.StatusModel;
 import org.springframework.beans.BeanUtils;
@@ -22,7 +23,7 @@ public class AdditionalFullDto {
 
     private Double price;
 
-    private String type;
+    private AdditionalTypeModel additionalType;
 
     private StatusModel status;
 
@@ -41,12 +42,12 @@ public class AdditionalFullDto {
         BeanUtils.copyProperties(additionalReturnDto, this);
     }
 
-    public AdditionalFullDto(Long id, String name, String description, Double price, String type, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public AdditionalFullDto(Long id, String name, String description, Double price, AdditionalTypeModel additionalType, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
-        this.type = type;
+        this.additionalType = additionalType;
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -108,11 +109,11 @@ public class AdditionalFullDto {
         this.price = price;
     }
 
-    public String getType() {
-        return type;
+    public AdditionalTypeModel getAdditionalType() {
+        return additionalType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setAdditionalType(AdditionalTypeModel additionalType) {
+        this.additionalType = additionalType;
     }
 }
