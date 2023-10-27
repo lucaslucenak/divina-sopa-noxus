@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lucalucenak.Noxus.dtos.DeliverymanFullDto;
 import com.lucalucenak.Noxus.dtos.post.DeliverymanPostDto;
 import com.lucalucenak.Noxus.dtos.response.DeliverymanReturnDto;
+import com.lucalucenak.Noxus.utils.LocalDateTimeUtil;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -74,10 +75,12 @@ public class DeliverymanModel {
     }
 
     @PrePersist
-    public void upperCaseName() {
-        if (name != null) {
-            name = name.toUpperCase(Locale.ROOT);
-        }
+    public void prePersist() {
+        if (name != null) name = name.toUpperCase(Locale.ROOT);
+        if (cellphoneNumber != null) cellphoneNumber = cellphoneNumber.replaceAll("[^0-9]", "");
+
+        LocalDateTimeUtil localDateTimeUtil = new LocalDateTimeUtil();
+        if (updatedAt != null) updatedAt = localDateTimeUtil.nowGMT3();
     }
 
     public LocalDateTime getCreatedAt() {

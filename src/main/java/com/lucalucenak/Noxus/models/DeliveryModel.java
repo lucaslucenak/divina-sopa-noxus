@@ -5,6 +5,7 @@ import com.lucalucenak.Noxus.dtos.DeliveryFullDto;
 import com.lucalucenak.Noxus.dtos.post.DeliveryPostDto;
 import com.lucalucenak.Noxus.dtos.response.DeliveryReturnDto;
 import com.lucalucenak.Noxus.enums.DeliveryTaxCalculusEnum;
+import com.lucalucenak.Noxus.utils.LocalDateTimeUtil;
 import jakarta.persistence.*;
 import lombok.Builder;
 import org.springframework.beans.BeanUtils;
@@ -89,6 +90,12 @@ public class DeliveryModel {
         this.distance = distance;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        LocalDateTimeUtil localDateTimeUtil = new LocalDateTimeUtil();
+        if (updatedAt != null) updatedAt = localDateTimeUtil.nowGMT3();
     }
 
     public DeliveryTaxCalculusEnum getDeliveryTaxCalculus() {

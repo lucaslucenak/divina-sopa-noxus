@@ -3,6 +3,7 @@ package com.lucalucenak.Noxus.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lucalucenak.Noxus.dtos.DeliveryTypeFullDto;
 import com.lucalucenak.Noxus.dtos.post.DeliveryTypePostDto;
+import com.lucalucenak.Noxus.utils.LocalDateTimeUtil;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -63,10 +64,11 @@ public class DeliveryTypeModel {
     }
 
     @PrePersist
-    public void upperCaseName() {
-        if (deliveryType != null) {
-            deliveryType = deliveryType.toUpperCase(Locale.ROOT);
-        }
+    public void prePersist() {
+        if (deliveryType != null) deliveryType = deliveryType.toUpperCase(Locale.ROOT);
+
+        LocalDateTimeUtil localDateTimeUtil = new LocalDateTimeUtil();
+        if (updatedAt != null) updatedAt = localDateTimeUtil.nowGMT3();
     }
 
     public StatusModel getStatus() {

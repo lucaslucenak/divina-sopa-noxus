@@ -3,6 +3,7 @@ package com.lucalucenak.Noxus.models;
 import com.lucalucenak.Noxus.dtos.OrderFullDto;
 import com.lucalucenak.Noxus.dtos.post.OrderPostDto;
 import com.lucalucenak.Noxus.dtos.response.OrderReturnDto;
+import com.lucalucenak.Noxus.utils.LocalDateTimeUtil;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
@@ -13,6 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 @Entity
@@ -82,6 +84,7 @@ public class OrderModel {
     public OrderModel(OrderReturnDto orderReturnDto) {
         BeanUtils.copyProperties(orderReturnDto, this);
     }
+
     public OrderModel(Long id, Double orderPrice, Double paidValue, Double change, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, CouponModel coupon, StatusModel status, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, DeliveryModel delivery, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.orderPrice = orderPrice;
@@ -97,6 +100,14 @@ public class OrderModel {
         this.delivery = delivery;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (observation != null) observation = observation.toUpperCase(Locale.ROOT);
+
+        LocalDateTimeUtil localDateTimeUtil = new LocalDateTimeUtil();
+        if (updatedAt != null) updatedAt = localDateTimeUtil.nowGMT3();
     }
 
     public CouponModel getCoupon() {

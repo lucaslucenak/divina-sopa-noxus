@@ -2,6 +2,7 @@ package com.lucalucenak.Noxus.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lucalucenak.Noxus.dtos.StatusFullDto;
+import com.lucalucenak.Noxus.utils.LocalDateTimeUtil;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -60,10 +61,11 @@ public class StatusModel {
     }
 
     @PrePersist
-    public void upperCaseName() {
-        if (status != null) {
-            status = status.toUpperCase(Locale.ROOT);
-        }
+    public void prePersist() {
+        if (status != null) status = status.toUpperCase(Locale.ROOT);
+
+        LocalDateTimeUtil localDateTimeUtil = new LocalDateTimeUtil();
+        if (updatedAt != null) updatedAt = localDateTimeUtil.nowGMT3();
     }
 
     public Long getId() {
