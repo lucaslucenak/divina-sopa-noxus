@@ -82,6 +82,8 @@ public class DeliverymanService {
         DeliverymanModel updatedDeliverymanModel = new DeliverymanModel(deliverymanPostDto);
         StatusModel statusModel = new StatusModel(statusService.findStatusById(deliverymanPostDto.getStatusId()));
         updatedDeliverymanModel.setStatus(statusModel);
+
+        updatedDeliverymanModel.setCreatedAt(existentDeliverymanModel.getCreatedAt());
         BeanUtils.copyProperties(updatedDeliverymanModel, existentDeliverymanModel, "createdAt, updatedAt");
 
         return new DeliverymanFullDto(deliverymanRepository.save(existentDeliverymanModel));

@@ -64,7 +64,7 @@ public class DeliveryTypeService {
         StatusModel statusModel = new StatusModel(statusService.findStatusById(deliveryTypePostDto.getStatusId()));
         updatedDeliveryTypeModel.setStatus(statusModel);
 
-
+        updatedDeliveryTypeModel.setCreatedAt(existingDeliveryTypeModel.getCreatedAt());
         BeanUtils.copyProperties(existingDeliveryTypeModel, updatedDeliveryTypeModel);
         return new DeliveryTypeFullDto(deliveryTypeRepository.save(updatedDeliveryTypeModel));
     }

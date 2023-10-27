@@ -115,6 +115,7 @@ public class ClientAccountService {
         updatedClientAccountModel.setStatus(statusModel);
         updatedClientAccountModel.setPlacedOrdersQuantity(existentClientAccountModel.getPlacedOrdersQuantity());
 
+        updatedClientAccountModel.setCreatedAt(existentClientAccountModel.getCreatedAt());
         BeanUtils.copyProperties(updatedClientAccountModel, existentClientAccountModel, "updatedAt, createdAt");
 
         clientAccountRepository.save(existentClientAccountModel);

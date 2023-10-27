@@ -55,6 +55,7 @@ public class PaymentMethodService {
         PaymentMethodModel existingPaymentMethodModel = new PaymentMethodModel(this.findPaymentMethodById(paymentMethodId));
         PaymentMethodModel updatedPaymentMethodModel = new PaymentMethodModel(paymentMethodFullDto);
 
+        updatedPaymentMethodModel.setCreatedAt(existingPaymentMethodModel.getCreatedAt());
         BeanUtils.copyProperties(existingPaymentMethodModel, updatedPaymentMethodModel);
         return new PaymentMethodFullDto(paymentMethodRepository.save(updatedPaymentMethodModel));
     }

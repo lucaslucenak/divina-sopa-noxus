@@ -105,6 +105,8 @@ public class DistanceTaxService {
         DistanceTaxModel updatedDistanceTaxModel = new DistanceTaxModel(distanceTaxPostDto);
         StatusModel statusModel = new StatusModel(statusService.findStatusById(distanceTaxPostDto.getStatusId()));
         updatedDistanceTaxModel.setStatus(statusModel);
+
+        updatedDistanceTaxModel.setCreatedAt(existentDistanceTaxModel.getCreatedAt());
         BeanUtils.copyProperties(updatedDistanceTaxModel, existentDistanceTaxModel, "createdAt, updatedAt");
 
         return new DistanceTaxFullDto(distanceTaxRepository.save(existentDistanceTaxModel));

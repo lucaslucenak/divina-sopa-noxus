@@ -79,7 +79,6 @@ public class ProductService {
         updatedProductModel.setSize(sizeModel);
 
         updatedProductModel.setCreatedAt(existingProductModel.getCreatedAt());
-        updatedProductModel.setUpdatedAt(LocalDateTime.now());
         BeanUtils.copyProperties(updatedProductModel, existingProductModel);
         return new ProductFullDto(productRepository.save(updatedProductModel));
     }

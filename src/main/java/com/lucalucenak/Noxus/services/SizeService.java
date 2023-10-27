@@ -70,6 +70,7 @@ public class SizeService {
             productService.inactivateProductsBySizeId(sizeId);
         }
 
+        updatedSizeModel.setCreatedAt(existingSizeModel.getCreatedAt());
         BeanUtils.copyProperties(updatedSizeModel, existingSizeModel, "createdAt, updatedAt");
         return new SizeFullDto(sizeRepository.save(existingSizeModel));
     }

@@ -246,7 +246,19 @@ public class OrderService {
         if (orderPostDto.getCouponId() != null) {
             CouponModel couponModel = new CouponModel(couponService.findCouponById(orderPostDto.getCouponId()));
             updatedOrderModel.setCoupon(couponModel);
-            orderPrice -= couponModel.getCouponValue();
+            if (this.countByClientAccountIdAndCouponId(clientAccountModel.getId(), couponModel.getId()) >= couponModel.getMaxUsages()) {
+                throw new CouponMaxUsageReachedException("Coupon Max Usage Reached for Client Account with id: " + clientAccountModel.getId());
+            }
+            if (couponModel.getStatus().getStatus().equals("EXPIRED") || couponModel.getStatus().getStatus().equals("INACTIVE")) {
+                throw new CouponNotAvailableException("Coupon not available");
+            }
+
+            if (orderPrice - deliveryModel.getTax() >= couponModel.getMinimumOrderValue()) {
+                updatedOrderModel.setCoupon(couponModel);
+                orderPrice -= couponModel.getCouponValue();
+            } else {
+                throw new OrderValueLowerThanCouponMinimumValueException("Can not use Coupon. Order value is lower than coupon minimum value. Minimum value: " + couponModel.getCouponValue() + " | Order Values: " + orderPrice);
+            }
         }
 
         //Setting Paid Value
@@ -268,6 +280,7 @@ public class OrderService {
         updatedOrderModel.setOrderPrice(orderPrice);
 
         //Saving Order
+        updatedOrderModel.setCreatedAt(existentOrderModel.getCreatedAt());
         BeanUtils.copyProperties(updatedOrderModel, existentOrderModel, "createdAt, updatedAt");
         orderRepository.save(existentOrderModel);
 

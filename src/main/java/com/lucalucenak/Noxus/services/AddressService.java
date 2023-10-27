@@ -86,6 +86,8 @@ public class AddressService {
         updatedAddressModel.setNeighbourhood(neighbourhoodModel);
         StatusModel statusModel = new StatusModel(statusService.findStatusById(addressPostDto.getStatusId()));
         updatedAddressModel.setStatus(statusModel);
+
+        updatedAddressModel.setCreatedAt(existentAddressModel.getCreatedAt());
         BeanUtils.copyProperties(updatedAddressModel, existentAddressModel, "createdAt, updatedAt");
 
         return new AddressFullDto(addressRepository.save(existentAddressModel));
