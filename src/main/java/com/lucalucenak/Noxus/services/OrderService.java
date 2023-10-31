@@ -9,8 +9,10 @@ import com.lucalucenak.Noxus.enums.PaymentMethodEnum;
 import com.lucalucenak.Noxus.exceptions.*;
 import com.lucalucenak.Noxus.models.*;
 import com.lucalucenak.Noxus.models.pks.OrderProductPk;
+import com.lucalucenak.Noxus.repositories.CashRegisterBalanceRepository;
 import com.lucalucenak.Noxus.repositories.OrderRepository;
 import com.lucalucenak.Noxus.utils.LocalDateTimeUtil;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,6 +22,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.*;
 
@@ -48,6 +52,8 @@ public class OrderService {
     private CouponService couponService;
     @Autowired
     private LocalDateTimeUtil localDateTimeUtil;
+    @Autowired
+    private CashRegisterBalanceRepository cashRegisterBalanceRepository;
 
     @Transactional
     public OrderReturnDto findOrderById(Long orderId) {
@@ -118,6 +124,13 @@ public class OrderService {
 
         OrderModel orderModel = new OrderModel(orderPostDto);
         Double orderPrice = 0.0;
+
+        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+        LocalDateTime endOfDay = startOfDay.plusDays(1).minusNanos(1);
+        CashRegisterBalanceModel cashRegisterBalance = cashRegisterBalanceRepository.findTopByCreatedAtBetweenOrderByCreatedAtDesc(startOfDay, endOfDay)
+                .orElseThrow(() -> new ResourceNotFoundException("CashRegisterBalance not found for current day."));
+
+        orderModel.setCashRegisterBalance(cashRegisterBalance);
 
         DeliveryModel deliveryModel = new DeliveryModel(deliveryService.findDeliveryById(orderPostDto.getDeliveryId()));
         orderModel.setDelivery(deliveryModel);
@@ -357,6 +370,7 @@ public class OrderService {
         OrderModel orderModel = new OrderModel(this.findOrderById(orderId));
         orderModel.setStatus(new StatusModel(statusService.findStatusByStatus("FINISHED")));
         orderRepository.save(orderModel);
+        System.out.println(orderModel.getCashRegisterBalance().getId());
         clientAccountService.increasePlacedOrdersQuantityByClientAccountId(orderModel.getClientAccount().getId());
 
         List<OrderProductFullDto> orderProducts = orderProductService.findOrderProductsByOrderId(orderId);

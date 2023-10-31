@@ -34,6 +34,8 @@ public class OrderFullDto {
 
     private PaymentMethodModel paymentMethod;
 
+    private CashRegisterBalanceModel cashRegisterBalance;
+
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
@@ -45,7 +47,7 @@ public class OrderFullDto {
         BeanUtils.copyProperties(orderModel, this);
     }
 
-    public OrderFullDto(Long id, Double orderPrice, Double paidValue, Double change, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, CouponModel coupon, StatusModel status, DeliveryModel delivery, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public OrderFullDto(Long id, Double orderPrice, Double paidValue, Double change, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, CouponModel coupon, StatusModel status, DeliveryModel delivery, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, CashRegisterBalanceModel cashRegisterBalance, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.orderPrice = orderPrice;
         this.paidValue = paidValue;
@@ -58,6 +60,7 @@ public class OrderFullDto {
         this.delivery = delivery;
         this.clientAccount = clientAccount;
         this.paymentMethod = paymentMethod;
+        this.cashRegisterBalance = cashRegisterBalance;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -148,6 +151,14 @@ public class OrderFullDto {
 
     public void setPaymentMethod(PaymentMethodModel paymentMethod) {
         this.paymentMethod = paymentMethod;
+    }
+
+    public CashRegisterBalanceModel getCashRegisterBalance() {
+        return cashRegisterBalance;
+    }
+
+    public void setCashRegisterBalance(CashRegisterBalanceModel cashRegisterBalance) {
+        this.cashRegisterBalance = cashRegisterBalance;
     }
 
     public LocalDateTime getCreatedAt() {

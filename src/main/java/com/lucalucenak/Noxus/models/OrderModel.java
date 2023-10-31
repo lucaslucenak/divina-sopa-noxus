@@ -61,6 +61,10 @@ public class OrderModel {
     @JoinColumn(name = "payment_method_id", nullable = false)
     private PaymentMethodModel paymentMethod;
 
+    @ManyToOne
+    @JoinColumn(name = "cash_register_balance_id", nullable = false)
+    private CashRegisterBalanceModel cashRegisterBalance;
+
     @OneToOne
     private DeliveryModel delivery;
 
@@ -85,7 +89,7 @@ public class OrderModel {
         BeanUtils.copyProperties(orderReturnDto, this);
     }
 
-    public OrderModel(Long id, Double orderPrice, Double paidValue, Double change, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, CouponModel coupon, StatusModel status, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, DeliveryModel delivery, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public OrderModel(Long id, Double orderPrice, Double paidValue, Double change, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, CouponModel coupon, StatusModel status, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, CashRegisterBalanceModel cashRegisterBalance, DeliveryModel delivery, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.orderPrice = orderPrice;
         this.paidValue = paidValue;
@@ -97,6 +101,7 @@ public class OrderModel {
         this.status = status;
         this.clientAccount = clientAccount;
         this.paymentMethod = paymentMethod;
+        this.cashRegisterBalance = cashRegisterBalance;
         this.delivery = delivery;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -196,6 +201,14 @@ public class OrderModel {
 
     public void setPaymentMethod(PaymentMethodModel paymentMethod) {
         this.paymentMethod = paymentMethod;
+    }
+
+    public CashRegisterBalanceModel getCashRegisterBalance() {
+        return cashRegisterBalance;
+    }
+
+    public void setCashRegisterBalance(CashRegisterBalanceModel cashRegisterBalance) {
+        this.cashRegisterBalance = cashRegisterBalance;
     }
 
     public DeliveryModel getDelivery() {

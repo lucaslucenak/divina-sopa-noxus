@@ -26,6 +26,8 @@ public class OrderReturnDto {
 
     private PaymentMethodModel paymentMethod;
 
+    private CashRegisterBalanceModel cashRegisterBalance;
+
     private CouponModel coupon;
 
     private DeliveryModel delivery;
@@ -47,7 +49,7 @@ public class OrderReturnDto {
         BeanUtils.copyProperties(orderModel, this);
     }
 
-    public OrderReturnDto(Long id, Double orderPrice, Double paidValue, Double change, String observation, List<OrderReturnProductFieldDto> products, StatusModel status, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, CouponModel coupon, DeliveryModel delivery, DeliverymanModel deliveryman, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime dispatchTime, LocalDateTime arrivalForecast) {
+    public OrderReturnDto(Long id, Double orderPrice, Double paidValue, Double change, String observation, List<OrderReturnProductFieldDto> products, StatusModel status, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, CashRegisterBalanceModel cashRegisterBalance, CouponModel coupon, DeliveryModel delivery, DeliverymanModel deliveryman, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime dispatchTime, LocalDateTime arrivalForecast) {
         this.id = id;
         this.orderPrice = orderPrice;
         this.paidValue = paidValue;
@@ -57,6 +59,7 @@ public class OrderReturnDto {
         this.status = status;
         this.clientAccount = clientAccount;
         this.paymentMethod = paymentMethod;
+        this.cashRegisterBalance = cashRegisterBalance;
         this.coupon = coupon;
         this.delivery = delivery;
         this.deliveryman = deliveryman;
@@ -144,6 +147,14 @@ public class OrderReturnDto {
 
     public void setPaymentMethod(PaymentMethodModel paymentMethod) {
         this.paymentMethod = paymentMethod;
+    }
+
+    public CashRegisterBalanceModel getCashRegisterBalance() {
+        return cashRegisterBalance;
+    }
+
+    public void setCashRegisterBalance(CashRegisterBalanceModel cashRegisterBalance) {
+        this.cashRegisterBalance = cashRegisterBalance;
     }
 
     public DeliveryModel getDelivery() {
