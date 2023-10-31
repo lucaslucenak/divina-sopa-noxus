@@ -17,6 +17,5 @@ public class DateTimeConfig {
     @Bean
     public ZoneId zoneId() {
         return ZoneId.of("GMT-3");
-
     }
 }
