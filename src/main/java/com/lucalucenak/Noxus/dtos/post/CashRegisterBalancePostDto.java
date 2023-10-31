@@ -18,20 +18,14 @@ public class CashRegisterBalancePostDto {
     @NotNull(message = "Field statusId shouldn't be null")
     private Long statusId;
 
-    private LocalDateTime createdAt;
-
-    private LocalDateTime updatedAt;
-
     public CashRegisterBalancePostDto(){
     }
 
-    public CashRegisterBalancePostDto(Long id, Double registeredValue, Double accountedValue, Long statusId, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public CashRegisterBalancePostDto(Long id, Double registeredValue, Double accountedValue, Long statusId) {
         this.id = id;
         this.registeredValue = registeredValue;
         this.accountedValue = accountedValue;
         this.statusId = statusId;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public Long getId() {
@@ -64,21 +58,5 @@ public class CashRegisterBalancePostDto {
 
     public void setStatusId(Long statusId) {
         this.statusId = statusId;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
     }
 }
