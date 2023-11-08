@@ -18,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/address")
+@CrossOrigin(origins = "http://localhost:4200")
 public class AddressController {
 
     @Autowired
