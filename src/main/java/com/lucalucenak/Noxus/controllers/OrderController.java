@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 
 @RestController
 @RequestMapping(value = "/order")
+@CrossOrigin(origins = "http://localhost:4200")
 public class OrderController {
 
     @Autowired
