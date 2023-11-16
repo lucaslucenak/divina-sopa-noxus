@@ -34,31 +34,13 @@ public class SecurityFilterUtil extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             var jwtToken = this.recoverJwtToken(request);
-            if (jwtToken == null) {
+            if (jwtToken != null) {
+                var cpf = jwtTokenService.validateJwtToken(jwtToken);
+                UserDetails userDetails = clientAccountService.findClientAccountByCpf(cpf);
 
-                response.setContentType("application/json");
-                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-
-                Map<String, Object> errorDetails = new LinkedHashMap<>();
-                errorDetails.put("status", "Access denied. No token provided.");
-
-                Map<String, Object> errorResponse = new LinkedHashMap<>();
-                errorResponse.put("errors", errorDetails);
-                errorResponse.put("httpStatus", "FORBIDDEN");
-                errorResponse.put("zonedDateTime", ZonedDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME));
-
-                String json = new ObjectMapper().writeValueAsString(errorResponse);
-
-                response.getWriter().write(json);
-                return;
+                var authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-
-            var cpf = jwtTokenService.validateJwtToken(jwtToken);
-            UserDetails userDetails = clientAccountService.findClientAccountByCpf(cpf);
-
-            var authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-
             filterChain.doFilter(request, response);
         } catch (TokenExpiredException e) {
 
