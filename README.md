@@ -1,4 +1,4 @@
-# Divina Sopa - *Noxus*
+﻿# Divina Sopa - *Noxus*
 ![banner](readme/img/banner.png)
 
 Welcome to the Divina Sopa project repository, a comprehensive solution for managing orders at "Divina Sopa" soup shop. This repository is a part of a microservices solution.
@@ -6,7 +6,7 @@ Welcome to the Divina Sopa project repository, a comprehensive solution for mana
 ## Architecture Overview
 
 Our project is built on a robust microservices architecture, leveraging the power of Spring Boot to provide flexible and efficient order management. Here's a glimpse of the technologies I've used:
-![architecture](readme/img/architecture1.png)
+![architecture](readme/img/architecture.png)
 
 ### Spring Boot
 Spring Boot for Java development. It empowers me to create reliable and scalable services for your ordering needs.
@@ -39,11 +39,11 @@ Follow the setup instructions below to get started with our project:
 
 3. Run the Docker container to host the PostgreSQL database locally.
 
-4. Run `mvn package -Pdev -f pom.xml` to create the .jar file.
+4. Run `mvn package -f pom.xml` to create the .jar file. 
 
-5. Run `git` to create the application image.
+5. Run `docker build -t noxus-docker.jar .` to create the application image.
 
-6. Run `docker-compose up -d` to up the container.
+6. Run `docker-compose up` to up the container.
 
 7. Take a look at wiki for Postman Collection.
 

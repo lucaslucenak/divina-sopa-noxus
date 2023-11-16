@@ -20,7 +20,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/client-account")
-@CrossOrigin(origins = "http://localhost:4200")
 public class ClientAccountController {
 
     @Autowired
@@ -43,22 +42,12 @@ public class ClientAccountController {
 
     @PostMapping
     public ResponseEntity<ClientAccountReturnDto> saveClientAccount(@RequestBody @Valid ClientAccountPostDto clientAccountPostDto) {
-        return ResponseEntity.ok().body(new ClientAccountReturnDto(clientAccountService.saveClientAccount(clientAccountPostDto)));
+        return ResponseEntity.ok().body(clientAccountService.saveClientAccount(clientAccountPostDto));
     }
 
     @PutMapping(value = "/{clientAccountId}")
     public ResponseEntity<ClientAccountReturnDto> updateClientAccount(@PathVariable Long clientAccountId, @RequestBody @Valid ClientAccountPostDto clientAccountPostDto) {
-        return ResponseEntity.ok().body(new ClientAccountReturnDto(clientAccountService.updateClientAccount(clientAccountId, clientAccountPostDto)));
-    }
-
-    @PostMapping(value = "/inactivate/{clientAccountId}")
-    public ResponseEntity<ClientAccountReturnDto> inactivateClientAccount(@PathVariable Long clientAccountId) {
-        return ResponseEntity.ok().body(new ClientAccountReturnDto(clientAccountService.inactivateClientAccountById(clientAccountId)));
-    }
-
-    @PostMapping(value = "/increase-placed-orders/cpf/{clientAccountCpf}")
-    public ResponseEntity<ClientAccountReturnDto> increasePlacedOrdersQuantityByClientAccountCpf(@PathVariable String clientAccountCpf) {
-        return ResponseEntity.ok().body(new ClientAccountReturnDto(clientAccountService.increasePlacedOrdersQuantityByClientAccountCpf(clientAccountCpf)));
+        return ResponseEntity.ok().body(clientAccountService.updateClientAccount(clientAccountId, clientAccountPostDto));
     }
 
     @DeleteMapping(value = "/{clientAccountId}")

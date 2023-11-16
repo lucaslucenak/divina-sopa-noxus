@@ -18,7 +18,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/size")
-@CrossOrigin(origins = "http://localhost:4200")
 public class SizeController {
 
     @Autowired
@@ -47,11 +46,6 @@ public class SizeController {
     @PutMapping(value = "/{sizeId}")
     public ResponseEntity<SizeReturnDto> updateSize(@PathVariable Long sizeId, @RequestBody @Valid SizePostDto sizePostDto) throws Exception {
         return ResponseEntity.ok().body(new SizeReturnDto(sizeService.updateSize(sizeId, sizePostDto)));
-    }
-
-    @PostMapping(value = "/inactivate/{sizeId}")
-    public ResponseEntity<SizeReturnDto> inactivateSizeById(@PathVariable Long sizeId) {
-        return ResponseEntity.ok().body(new SizeReturnDto(sizeService.inactivateSizeById(sizeId)));
     }
 
     @DeleteMapping(value = "/{sizeId}")

@@ -18,17 +18,13 @@ public class NeighbourhoodPostDto {
     @DecimalMin(value = "0.0", inclusive = true)
     private Double deliveryTax;
 
-    @NotNull(message = "Field statusId shouldn't be null")
-    private Long statusId;
-
     public NeighbourhoodPostDto() {
     }
 
-    public NeighbourhoodPostDto(Long id, String neighbourhood, Double deliveryTax, Long statusId) {
+    public NeighbourhoodPostDto(Long id, String neighbourhood, Double deliveryTax) {
         this.id = id;
         this.neighbourhood = neighbourhood;
         this.deliveryTax = deliveryTax;
-        this.statusId = statusId;
     }
 
     public Long getId() {
@@ -53,13 +49,5 @@ public class NeighbourhoodPostDto {
 
     public void setDeliveryTax(Double deliveryTax) {
         this.deliveryTax = deliveryTax;
-    }
-
-    public Long getStatusId() {
-        return statusId;
-    }
-
-    public void setStatusId(Long statusId) {
-        this.statusId = statusId;
     }
 }

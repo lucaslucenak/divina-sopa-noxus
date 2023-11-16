@@ -5,7 +5,6 @@ import com.lucalucenak.Noxus.dtos.post.NeighbourhoodPostDto;
 import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.NeighbourhoodModel;
-import com.lucalucenak.Noxus.models.StatusModel;
 import com.lucalucenak.Noxus.repositories.NeighbourhoodRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +20,6 @@ public class NeighbourhoodService {
 
     @Autowired
     private NeighbourhoodRepository neighbourhoodRepository;
-    @Autowired
-    private StatusService statusService;
-    @Autowired
-    private AddressService addressService;
 
     @Transactional
     public NeighbourhoodFullDto findNeighbourhoodById(Long neighbourhoodId) {
@@ -46,8 +41,6 @@ public class NeighbourhoodService {
     @Transactional
     public NeighbourhoodFullDto saveNeighbourhood(NeighbourhoodPostDto neighbourhoodPostDto) {
         NeighbourhoodModel neighbourhoodModel = new NeighbourhoodModel(neighbourhoodPostDto);
-        StatusModel statusModel = new StatusModel(statusService.findStatusById(neighbourhoodPostDto.getStatusId()));
-        neighbourhoodModel.setStatus(statusModel);
         return new NeighbourhoodFullDto(neighbourhoodRepository.save(neighbourhoodModel));
     }
 
@@ -59,20 +52,9 @@ public class NeighbourhoodService {
 
         NeighbourhoodModel existingNeighbourhoodModel = new NeighbourhoodModel(this.findNeighbourhoodById(neighbourhoodId));
         NeighbourhoodModel updatedNeighbourhoodModel = new NeighbourhoodModel(neighbourhoodPostDto);
-        StatusModel statusModel = new StatusModel(statusService.findStatusById(neighbourhoodPostDto.getStatusId()));
-        updatedNeighbourhoodModel.setStatus(statusModel);
 
-        if (statusModel.getStatus().equals("INACTIVE")) {
-            addressService.inactivateAddressesByNeighbourhoodId(neighbourhoodId);
-        }
-
-        updatedNeighbourhoodModel.setCreatedAt(existingNeighbourhoodModel.getCreatedAt());
         BeanUtils.copyProperties(updatedNeighbourhoodModel, existingNeighbourhoodModel, "createdAt, updatedAt");
         return new NeighbourhoodFullDto(neighbourhoodRepository.save(existingNeighbourhoodModel));
-    }
-
-    public boolean existsById(Long neighbourhoodId) {
-        return neighbourhoodRepository.existsById(neighbourhoodId);
     }
 
     @Transactional
@@ -82,16 +64,5 @@ public class NeighbourhoodService {
         } else {
             throw new ResourceNotFoundException("Resource: Neighbourhood. Not found with id: " + neighbourhoodId);
         }
-    }
-
-    @Transactional
-    public NeighbourhoodFullDto inactivateNeighbourhoodById(Long neighbourhoodId) {
-        NeighbourhoodModel neighbourhoodModel = new NeighbourhoodModel(this.findNeighbourhoodById(neighbourhoodId));
-        StatusModel inactiveStatusModel = new StatusModel(statusService.findStatusByStatus("INACTIVE"));
-
-        neighbourhoodModel.setStatus(inactiveStatusModel);
-        addressService.inactivateAddressesByNeighbourhoodId(neighbourhoodId);
-
-        return new NeighbourhoodFullDto(neighbourhoodRepository.save(neighbourhoodModel));
     }
 }

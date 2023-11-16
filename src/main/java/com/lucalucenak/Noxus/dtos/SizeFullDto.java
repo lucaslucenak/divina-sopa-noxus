@@ -1,27 +1,31 @@
 package com.lucalucenak.Noxus.dtos;
 
-import com.lucalucenak.Noxus.models.ProductModel;
 import com.lucalucenak.Noxus.models.SizeModel;
-import com.lucalucenak.Noxus.models.StatusModel;
-import lombok.Builder;
+import com.lucalucenak.Noxus.models.SoupModel;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Builder
 public class SizeFullDto {
 
     private Long id;
 
+    @NotNull(message = "Field size shouldn't be null")
+    @NotEmpty(message = "Field size shouldn't be empty")
+    @NotBlank(message = "Field size shouldn't be blank")
     private String size;
 
-    private List<ProductModel> products;
+    @NotNull(message = "Field soups shouldn't be null")
+    private List<SoupModel> soups;
 
-    private StatusModel status;
-
+    @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
 
+    @NotNull(message = "Field updatedAt shouldn't be null")
     private LocalDateTime updatedAt;
 
     public SizeFullDto() {
@@ -31,11 +35,10 @@ public class SizeFullDto {
         BeanUtils.copyProperties(sizeModel, this);
     }
 
-    public SizeFullDto(Long id, String size, List<ProductModel> products, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public SizeFullDto(Long id, String size, List<SoupModel> soups, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.size = size;
-        this.products = products;
-        this.status = status;
+        this.soups = soups;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -56,20 +59,12 @@ public class SizeFullDto {
         this.size = size;
     }
 
-    public List<ProductModel> getProducts() {
-        return products;
+    public List<SoupModel> getSoups() {
+        return soups;
     }
 
-    public void setProducts(List<ProductModel> products) {
-        this.products = products;
-    }
-
-    public StatusModel getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusModel status) {
-        this.status = status;
+    public void setSoups(List<SoupModel> soups) {
+        this.soups = soups;
     }
 
     public LocalDateTime getCreatedAt() {

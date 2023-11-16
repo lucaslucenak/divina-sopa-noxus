@@ -1,16 +1,14 @@
 version: "3.8"
 services:
-#  api:
-#    image: noxus-image.jar:latest
-#    environment:
-#      - SPRING_PROFILES_ACTIVE=dev
-#    ports:
-#      - 8080:8080
-#    depends_on:
-#      - database
+  api:
+    image: noxus-docker.jar:latest
+    ports:
+      - 8080:8080
+    depends_on:
+      - database
   database:
     image: postgres:alpine
-    container_name: postgres-noxus
+    container_name: dev-postgres-noxus
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=123456

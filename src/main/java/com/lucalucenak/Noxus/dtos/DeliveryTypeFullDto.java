@@ -1,13 +1,16 @@
 package com.lucalucenak.Noxus.dtos;
 
-import com.lucalucenak.Noxus.models.DeliveryModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lucalucenak.Noxus.enums.DeliveryTypeEnum;
 import com.lucalucenak.Noxus.models.DeliveryTypeModel;
 import com.lucalucenak.Noxus.models.OrderModel;
-import com.lucalucenak.Noxus.models.StatusModel;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,14 +19,18 @@ public class DeliveryTypeFullDto {
 
     private Long id;
 
-    private String deliveryType;
+    @NotNull(message = "Field deliveryType shouldn't be null")
+    @NotEmpty(message = "Field deliveryType shouldn't be empty")
+    @NotBlank(message = "Field deliveryType shouldn't be blank")
+    private DeliveryTypeEnum deliveryType;
 
-    private List<DeliveryModel> deliveries;
+    @NotNull(message = "Field orders shouldn't be null")
+    private List<OrderModel> orders;
 
-    private StatusModel status;
-
+    @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
 
+    @NotNull(message = "Field updatedAt shouldn't be null")
     private LocalDateTime updatedAt;
 
     public DeliveryTypeFullDto() {
@@ -33,29 +40,12 @@ public class DeliveryTypeFullDto {
         BeanUtils.copyProperties(deliveryTypeModel, this);
     }
 
-    public DeliveryTypeFullDto(Long id, String deliveryType, List<DeliveryModel> deliveries, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public DeliveryTypeFullDto(Long id, DeliveryTypeEnum deliveryType, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.deliveryType = deliveryType;
-        this.deliveries = deliveries;
-        this.status = status;
+        this.orders = orders;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-    }
-
-    public StatusModel getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusModel status) {
-        this.status = status;
-    }
-
-    public List<DeliveryModel> getDeliveries() {
-        return deliveries;
-    }
-
-    public void setDeliveries(List<DeliveryModel> deliveries) {
-        this.deliveries = deliveries;
     }
 
     public Long getId() {
@@ -66,12 +56,20 @@ public class DeliveryTypeFullDto {
         this.id = id;
     }
 
-    public String getDeliveryType() {
+    public DeliveryTypeEnum getDeliveryType() {
         return deliveryType;
     }
 
-    public void setDeliveryType(String deliveryType) {
+    public void setDeliveryType(DeliveryTypeEnum deliveryType) {
         this.deliveryType = deliveryType;
+    }
+
+    public List<OrderModel> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<OrderModel> orders) {
+        this.orders = orders;
     }
 
     public LocalDateTime getCreatedAt() {

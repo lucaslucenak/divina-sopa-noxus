@@ -18,7 +18,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/neighbourhood")
-@CrossOrigin(origins = "http://localhost:4200")
 public class NeighbourhoodController {
 
     @Autowired
@@ -47,11 +46,6 @@ public class NeighbourhoodController {
     @PutMapping(value = "/{neighbourhoodId}")
     public ResponseEntity<NeighbourhoodReturnDto> updateNeighbourhood(@PathVariable Long neighbourhoodId, @RequestBody @Valid NeighbourhoodPostDto neighbourhoodPostDto) {
         return ResponseEntity.ok().body(new NeighbourhoodReturnDto(neighbourhoodService.updateNeighbourhood(neighbourhoodId, neighbourhoodPostDto)));
-    }
-
-    @PostMapping(value = "/inactivate/{neighbourhoodId}")
-    public ResponseEntity<NeighbourhoodReturnDto> inactivateNeighbourhoodById(@PathVariable Long neighbourhoodId) {
-        return ResponseEntity.ok().body(new NeighbourhoodReturnDto(neighbourhoodService.inactivateNeighbourhoodById(neighbourhoodId)));
     }
 
     @DeleteMapping(value = "/{neighbourhoodId}")

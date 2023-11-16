@@ -4,7 +4,6 @@ import com.lucalucenak.Noxus.dtos.AddressFullDto;
 import com.lucalucenak.Noxus.models.AddressModel;
 import com.lucalucenak.Noxus.models.ClientAccountModel;
 import com.lucalucenak.Noxus.models.NeighbourhoodModel;
-import com.lucalucenak.Noxus.models.StatusModel;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -16,26 +15,43 @@ public class AddressReturnDto {
 
     private Long id;
 
+    @NotNull(message = "Field streetName shouldn't be null")
+    @NotEmpty(message = "Field streetName shouldn't be empty")
+    @NotBlank(message = "Field streetName shouldn't be blank")
     private String streetName;
 
+    @NotNull(message = "Field houseNumber shouldn't be null")
+    @NotEmpty(message = "Field houseNumber shouldn't be empty")
+    @NotBlank(message = "Field houseNumber shouldn't be blank")
     private String houseNumber;
 
+    @NotNull(message = "Field city shouldn't be null")
+    @NotEmpty(message = "Field city shouldn't be empty")
+    @NotBlank(message = "Field city shouldn't be blank")
     private String city;
 
+    @NotNull(message = "Field cep shouldn't be null")
+    @NotEmpty(message = "Field cep shouldn't be empty")
+    @NotBlank(message = "Field cep shouldn't be blank")
     private String cep;
 
     private String complement;
 
+    @NotNull(message = "Field referencePoint shouldn't be null")
+    @NotEmpty(message = "Field referencePoint shouldn't be empty")
+    @NotBlank(message = "Field referencePoint shouldn't be blank")
     private String referencePoint;
 
+    @NotNull(message = "Field neighbourhood shouldn't be null")
     private NeighbourhoodModel neighbourhood;
 
+    @NotNull(message = "Field clientAccount shouldn't be null")
     private ClientAccountModel clientAccount;
 
-    private StatusModel status;
-
+    @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
 
+    @NotNull(message = "Field updatedAt shouldn't be null")
     private LocalDateTime updatedAt;
 
     public AddressReturnDto() {
@@ -49,7 +65,7 @@ public class AddressReturnDto {
         BeanUtils.copyProperties(addressFullDto, this);
     }
 
-    public AddressReturnDto(Long id, String streetName, String houseNumber, String city, String cep, String complement, String referencePoint, NeighbourhoodModel neighbourhood, ClientAccountModel clientAccount, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public AddressReturnDto(Long id, String streetName, String houseNumber, String city, String cep, String complement, String referencePoint, NeighbourhoodModel neighbourhood, ClientAccountModel clientAccount, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.streetName = streetName;
         this.houseNumber = houseNumber;
@@ -59,7 +75,6 @@ public class AddressReturnDto {
         this.referencePoint = referencePoint;
         this.neighbourhood = neighbourhood;
         this.clientAccount = clientAccount;
-        this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -150,13 +165,5 @@ public class AddressReturnDto {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
-    }
-
-    public StatusModel getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusModel status) {
-        this.status = status;
     }
 }

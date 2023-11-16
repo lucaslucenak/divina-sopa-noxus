@@ -1,7 +1,6 @@
 package com.lucalucenak.Noxus.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.lucalucenak.Noxus.enums.RoleEnum;
 import com.lucalucenak.Noxus.models.AddressModel;
 import com.lucalucenak.Noxus.models.ClientAccountModel;
 import com.lucalucenak.Noxus.models.OrderModel;
@@ -23,30 +22,43 @@ public class ClientAccountFullDto {
 
     private Long id;
 
+    @NotNull(message = "Field firstName shouldn't be null")
+    @NotEmpty(message = "Field firstName shouldn't be empty")
+    @NotBlank(message = "Field firstName shouldn't be blank")
     private String firstName;
 
+    @NotNull(message = "Field lastName shouldn't be null")
+    @NotEmpty(message = "Field lastName shouldn't be empty")
+    @NotBlank(message = "Field lastName shouldn't be blank")
     private String lastName;
 
+    @NotNull(message = "Field cpf shouldn't be null")
+    @NotEmpty(message = "Field cpf shouldn't be empty")
+    @NotBlank(message = "Field cpf shouldn't be blank")
+    @CPF
     private String cpf;
 
+    @NotNull(message = "Field email shouldn't be null")
+    @NotEmpty(message = "Field email shouldn't be empty")
+    @NotBlank(message = "Field email shouldn't be blank")
+    @Email
     private String email;
-
-    private String cellphoneNumber;
 
     private Integer placedOrdersQuantity;
 
+    @NotNull(message = "Field status shouldn't be null")
     private StatusModel status;
 
+    @NotNull(message = "Field addresses shouldn't be null")
     private List<AddressModel> addresses;
 
+    @NotNull(message = "Field orders shouldn't be null")
     private List<OrderModel> orders;
 
-    private String password;
-
-    private RoleEnum role;
-
+    @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
 
+    @NotNull(message = "Field updatedAt shouldn't be null")
     private LocalDateTime updatedAt;
 
     public ClientAccountFullDto() {
@@ -56,45 +68,18 @@ public class ClientAccountFullDto {
         BeanUtils.copyProperties(clientAccountModel, this);
     }
 
-    public ClientAccountFullDto(Long id, String firstName, String lastName, String cpf, String email, String cellphoneNumber, Integer placedOrdersQuantity, StatusModel status, List<AddressModel> addresses, List<OrderModel> orders, String password, RoleEnum role, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ClientAccountFullDto(Long id, String firstName, String lastName, String cpf, String email, Integer placedOrdersQuantity, StatusModel status, List<AddressModel> addresses, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.cpf = cpf;
         this.email = email;
-        this.cellphoneNumber = cellphoneNumber;
         this.placedOrdersQuantity = placedOrdersQuantity;
         this.status = status;
         this.addresses = addresses;
         this.orders = orders;
-        this.password = password;
-        this.role = role;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public RoleEnum getRole() {
-        return role;
-    }
-
-    public void setRole(RoleEnum role) {
-        this.role = role;
-    }
-
-    public String getCellphoneNumber() {
-        return cellphoneNumber;
-    }
-
-    public void setCellphoneNumber(String cellphoneNumber) {
-        this.cellphoneNumber = cellphoneNumber;
     }
 
     public Long getId() {

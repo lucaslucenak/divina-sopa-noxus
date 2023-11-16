@@ -1,7 +1,6 @@
 package com.lucalucenak.Noxus.dtos;
 
 import com.lucalucenak.Noxus.models.*;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.BeanUtils;
@@ -12,32 +11,36 @@ public class OrderFullDto {
 
     private Long id;
 
+    @NotNull(message = "Field orderPrice shouldn't be null")
     private Double orderPrice;
-
-    private Double paidValue;
-
-    private Double change;
 
     private String observation;
 
+    @NotNull(message = "Field dispatchTime shouldn't be null")
     private LocalDateTime dispatchTime;
 
+    @NotNull(message = "Field arrivalForecast shouldn't be null")
     private LocalDateTime arrivalForecast;
 
-    private CouponModel coupon;
-
+    @NotNull(message = "Field status shouldn't be null")
     private StatusModel status;
 
-    private DeliveryModel delivery;
+    @NotNull(message = "Field address shouldn't be null")
+    private AddressModel address;
 
+    @NotNull(message = "Field clientAccount shouldn't be null")
     private ClientAccountModel clientAccount;
 
+    @NotNull(message = "Field paymentMethod shouldn't be null")
     private PaymentMethodModel paymentMethod;
 
-    private CashRegisterBalanceModel cashRegisterBalance;
+    @NotNull(message = "Field deliveryType shouldn't be null")
+    private DeliveryTypeModel deliveryType;
 
+    @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
 
+    @NotNull(message = "Field updatedAt shouldn't be null")
     private LocalDateTime updatedAt;
 
     public OrderFullDto() {
@@ -47,30 +50,19 @@ public class OrderFullDto {
         BeanUtils.copyProperties(orderModel, this);
     }
 
-    public OrderFullDto(Long id, Double orderPrice, Double paidValue, Double change, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, CouponModel coupon, StatusModel status, DeliveryModel delivery, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, CashRegisterBalanceModel cashRegisterBalance, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public OrderFullDto(Long id, Double orderPrice, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, StatusModel status, AddressModel address, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, DeliveryTypeModel deliveryType, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.orderPrice = orderPrice;
-        this.paidValue = paidValue;
-        this.change = change;
         this.observation = observation;
         this.dispatchTime = dispatchTime;
         this.arrivalForecast = arrivalForecast;
-        this.coupon = coupon;
         this.status = status;
-        this.delivery = delivery;
+        this.address = address;
         this.clientAccount = clientAccount;
         this.paymentMethod = paymentMethod;
-        this.cashRegisterBalance = cashRegisterBalance;
+        this.deliveryType = deliveryType;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-    }
-
-    public CouponModel getCoupon() {
-        return coupon;
-    }
-
-    public void setCoupon(CouponModel coupon) {
-        this.coupon = coupon;
     }
 
     public Long getId() {
@@ -88,14 +80,6 @@ public class OrderFullDto {
     public void setOrderPrice(Double orderPrice) {
         this.orderPrice = orderPrice;
     }
-
-    public Double getPaidValue() { return paidValue; }
-
-    public void setPaidValue(Double paidValue) { this.paidValue = paidValue; }
-
-    public Double getChange() { return change; }
-
-    public void setChange(Double change) { this.change = change; }
 
     public String getObservation() {
         return observation;
@@ -129,12 +113,12 @@ public class OrderFullDto {
         this.status = status;
     }
 
-    public DeliveryModel getDelivery() {
-        return delivery;
+    public AddressModel getAddress() {
+        return address;
     }
 
-    public void setDelivery(DeliveryModel delivery) {
-        this.delivery = delivery;
+    public void setAddress(AddressModel address) {
+        this.address = address;
     }
 
     public ClientAccountModel getClientAccount() {
@@ -153,12 +137,12 @@ public class OrderFullDto {
         this.paymentMethod = paymentMethod;
     }
 
-    public CashRegisterBalanceModel getCashRegisterBalance() {
-        return cashRegisterBalance;
+    public DeliveryTypeModel getDeliveryType() {
+        return deliveryType;
     }
 
-    public void setCashRegisterBalance(CashRegisterBalanceModel cashRegisterBalance) {
-        this.cashRegisterBalance = cashRegisterBalance;
+    public void setDeliveryType(DeliveryTypeModel deliveryType) {
+        this.deliveryType = deliveryType;
     }
 
     public LocalDateTime getCreatedAt() {

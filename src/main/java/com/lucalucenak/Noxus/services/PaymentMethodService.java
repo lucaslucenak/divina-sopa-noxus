@@ -4,7 +4,6 @@ import com.lucalucenak.Noxus.dtos.PaymentMethodFullDto;
 import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.PaymentMethodModel;
-import com.lucalucenak.Noxus.models.StatusModel;
 import com.lucalucenak.Noxus.repositories.PaymentMethodRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +19,6 @@ public class PaymentMethodService {
 
     @Autowired
     private PaymentMethodRepository paymentMethodRepository;
-    @Autowired
-    private StatusService statusService;
 
     @Transactional
     public PaymentMethodFullDto findPaymentMethodById(Long paymentMethodId) {
@@ -35,7 +32,7 @@ public class PaymentMethodService {
     }
 
     @Transactional
-    public Page<PaymentMethodFullDto> findAllPaymentMethodsPaginated(Pageable pageable) {
+    public Page<PaymentMethodFullDto> findAllPaymentMethodPaginated(Pageable pageable) {
         Page<PaymentMethodModel> pagedPaymentMethod = paymentMethodRepository.findAll(pageable);
         return pagedPaymentMethod.map(PaymentMethodFullDto::new);
     }
@@ -55,18 +52,8 @@ public class PaymentMethodService {
         PaymentMethodModel existingPaymentMethodModel = new PaymentMethodModel(this.findPaymentMethodById(paymentMethodId));
         PaymentMethodModel updatedPaymentMethodModel = new PaymentMethodModel(paymentMethodFullDto);
 
-        updatedPaymentMethodModel.setCreatedAt(existingPaymentMethodModel.getCreatedAt());
         BeanUtils.copyProperties(existingPaymentMethodModel, updatedPaymentMethodModel);
         return new PaymentMethodFullDto(paymentMethodRepository.save(updatedPaymentMethodModel));
-    }
-
-    @Transactional
-    public PaymentMethodFullDto inactivatePaymentMethodById(Long paymentMethodId) {
-        PaymentMethodModel paymentMethodModel = new PaymentMethodModel(this.findPaymentMethodById(paymentMethodId));
-        StatusModel inactiveStatsModel = new StatusModel(statusService.findStatusByStatus("INACTIVE"));
-        paymentMethodModel.setStatus(inactiveStatsModel);
-
-        return new PaymentMethodFullDto(paymentMethodRepository.save(paymentMethodModel));
     }
 
     @Transactional
