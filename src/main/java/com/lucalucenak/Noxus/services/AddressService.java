@@ -9,6 +9,7 @@ import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.AddressModel;
 import com.lucalucenak.Noxus.models.ClientAccountModel;
 import com.lucalucenak.Noxus.models.NeighbourhoodModel;
+import com.lucalucenak.Noxus.models.StatusModel;
 import com.lucalucenak.Noxus.repositories.AddressRepository;
 import com.lucalucenak.Noxus.repositories.ClientAccountRepository;
 import com.lucalucenak.Noxus.repositories.NeighbourhoodRepository;
@@ -34,6 +35,8 @@ public class AddressService {
     private ClientAccountService clientAccountService;
     @Autowired
     private NeighbourhoodService neighbourhoodService;
+    @Autowired
+    private StatusService statusService;
 
     @Transactional(readOnly = true)
     public AddressFullDto findAddressById(Long addressId) {
@@ -53,22 +56,21 @@ public class AddressService {
     }
 
     @Transactional
-    public AddressReturnDto saveAddress(AddressPostDto addressPostDto) {
+    public AddressFullDto saveAddress(AddressPostDto addressPostDto) {
         ClientAccountModel clientAccountModel = new ClientAccountModel(clientAccountService.findClientAccountById(addressPostDto.getClientAccountId()));
         NeighbourhoodModel neighbourhoodModel = new NeighbourhoodModel(neighbourhoodService.findNeighbourhoodById(addressPostDto.getNeighbourhoodId()));
+        StatusModel statusModel = new StatusModel(statusService.findStatusById(addressPostDto.getStatusId()));
 
         AddressModel addressModel = new AddressModel(addressPostDto);
         addressModel.setClientAccount(clientAccountModel);
         addressModel.setNeighbourhood(neighbourhoodModel);
+        addressModel.setStatus(statusModel);
 
-        addressRepository.save(addressModel);
-
-        AddressReturnDto addressReturnDto = new AddressReturnDto(addressModel);
-        return addressReturnDto;
+        return new AddressFullDto(addressRepository.save(addressModel));
     }
 
     @Transactional
-    public AddressReturnDto updateAddress(Long addressId, AddressPostDto addressPostDto) {
+    public AddressFullDto updateAddress(Long addressId, AddressPostDto addressPostDto) {
 
         if (!addressId.equals(addressPostDto.getId())) {
             throw new IncompatibleIdsException("Path param Id and body Id must be equals. Path Param Id: " + addressId + ", Body Id: " + addressPostDto.getId());
@@ -82,12 +84,13 @@ public class AddressService {
         updatedAddressModel.setClientAccount(clientAccountModel);
         NeighbourhoodModel neighbourhoodModel = new NeighbourhoodModel(neighbourhoodService.findNeighbourhoodById(addressPostDto.getNeighbourhoodId()));
         updatedAddressModel.setNeighbourhood(neighbourhoodModel);
+        StatusModel statusModel = new StatusModel(statusService.findStatusById(addressPostDto.getStatusId()));
+        updatedAddressModel.setStatus(statusModel);
+
+        updatedAddressModel.setCreatedAt(existentAddressModel.getCreatedAt());
         BeanUtils.copyProperties(updatedAddressModel, existentAddressModel, "createdAt, updatedAt");
 
-        addressRepository.save(existentAddressModel);
-
-        AddressReturnDto addressReturnDto = new AddressReturnDto(existentAddressModel);
-        return addressReturnDto;
+        return new AddressFullDto(addressRepository.save(existentAddressModel));
     }
 
     public void deleteAddressById(Long addressId) {
@@ -96,5 +99,65 @@ public class AddressService {
         } else {
             throw new ResourceNotFoundException("Resource: Address. Not found with id: " + addressId);
         }
+    }
+
+    public List<AddressFullDto> inactivateAddressesByClientAccountId(Long clientAccountId) {
+        if (clientAccountService.existsById(clientAccountId)) {
+            List<Optional<AddressModel>> foundAddresses = addressRepository.findByClientAccountId(clientAccountId);
+            StatusModel inactiveStatusModel = new StatusModel(statusService.findStatusByStatus("INACTIVE"));
+
+            List<AddressFullDto> updatedAddressesFulDto = new ArrayList<>();
+            for (Optional<AddressModel> i : foundAddresses) {
+                AddressModel addressModel = i.get();
+
+                addressModel.setStatus(inactiveStatusModel);
+                addressRepository.save(addressModel);
+
+                updatedAddressesFulDto.add(new AddressFullDto(addressModel));
+            }
+            return updatedAddressesFulDto;
+        }
+        else {
+            throw new ResourceNotFoundException("Resource: ClientAccount. Not found with id: " + clientAccountId);
+        }
+    }
+
+    public AddressFullDto inactivateAddressById(Long addressId) {
+        AddressModel addressModel = new AddressModel(this.findAddressById(addressId));
+        StatusModel inactiveStatusModel = new StatusModel(statusService.findStatusByStatus("INACTIVE"));
+
+        addressModel.setStatus(inactiveStatusModel);
+        return new AddressFullDto(addressRepository.save(addressModel));
+    }
+
+    @Transactional
+    public List<AddressFullDto> inactivateAddressesByNeighbourhoodId(Long neighbourhoodId) {
+        if (neighbourhoodService.existsById(neighbourhoodId)) {
+            List<Optional<AddressModel>> foundAddresses = addressRepository.findByNeighbourhoodId(neighbourhoodId);
+            StatusModel inactiveStatusModel = new StatusModel(statusService.findStatusByStatus("INACTIVE"));
+
+            List<AddressFullDto> updatedAddressesFullDto = new ArrayList<>();
+            for (Optional<AddressModel> i : foundAddresses) {
+                AddressModel addressModel = i.get();
+                addressModel.setStatus(inactiveStatusModel);
+                updatedAddressesFullDto.add(new AddressFullDto(addressRepository.save(addressModel)));
+            }
+            return updatedAddressesFullDto;
+        }
+        else {
+            throw new ResourceNotFoundException("Resource: Neighbourhood. Not found with id: " + neighbourhoodId);
+        }
+    }
+
+    public boolean belongsToClientAccount(Long clientAccountId) {
+        ClientAccountModel clientAccountModel = new ClientAccountModel(clientAccountService.findClientAccountById(clientAccountId));
+
+        for (AddressModel i : clientAccountModel.getAddresses()) {
+            if (i.getClientAccount().getId().equals(clientAccountModel.getId())) {
+                System.out.println(i.getId());
+                return true;
+            }
+        }
+        return false;
     }
 }

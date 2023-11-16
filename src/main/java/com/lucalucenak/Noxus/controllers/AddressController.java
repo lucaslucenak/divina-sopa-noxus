@@ -1,10 +1,8 @@
 package com.lucalucenak.Noxus.controllers;
 
 import com.lucalucenak.Noxus.dtos.AddressFullDto;
-import com.lucalucenak.Noxus.dtos.DrinkFullDto;
 import com.lucalucenak.Noxus.dtos.post.AddressPostDto;
 import com.lucalucenak.Noxus.dtos.response.AddressReturnDto;
-import com.lucalucenak.Noxus.dtos.response.DrinkReturnDto;
 import com.lucalucenak.Noxus.services.AddressService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/address")
+@CrossOrigin(origins = "http://localhost:4200")
 public class AddressController {
 
     @Autowired
@@ -42,12 +41,17 @@ public class AddressController {
 
     @PostMapping
     public ResponseEntity<AddressReturnDto> saveAddress(@RequestBody @Valid AddressPostDto addressPostDto) {
-        return ResponseEntity.ok().body(addressService.saveAddress(addressPostDto));
+        return ResponseEntity.ok().body(new AddressReturnDto(addressService.saveAddress(addressPostDto)));
     }
 
     @PutMapping(value = "/{addressId}")
     public ResponseEntity<AddressReturnDto> updateAddress(@PathVariable Long addressId, @RequestBody @Valid AddressPostDto addressPostDto) {
-        return ResponseEntity.ok().body(addressService.updateAddress(addressId, addressPostDto));
+        return ResponseEntity.ok().body(new AddressReturnDto(addressService.updateAddress(addressId, addressPostDto)));
+    }
+
+    @PostMapping(value = "/inactivate/{addressId}")
+    public ResponseEntity<AddressReturnDto> inactivateAddressById(@PathVariable Long addressId) {
+        return ResponseEntity.ok().body(new AddressReturnDto(addressService.inactivateAddressById(addressId)));
     }
 
     @DeleteMapping(value = "/{addressId}")

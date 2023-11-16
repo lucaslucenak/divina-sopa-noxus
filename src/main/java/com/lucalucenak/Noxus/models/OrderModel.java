@@ -3,19 +3,24 @@ package com.lucalucenak.Noxus.models;
 import com.lucalucenak.Noxus.dtos.OrderFullDto;
 import com.lucalucenak.Noxus.dtos.post.OrderPostDto;
 import com.lucalucenak.Noxus.dtos.response.OrderReturnDto;
+import com.lucalucenak.Noxus.utils.LocalDateTimeUtil;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 
 @Entity
 @Table(name = "orderr")
 @EntityListeners(AuditingEntityListener.class)
+@Builder
 public class OrderModel {
 
     @Id
@@ -23,27 +28,30 @@ public class OrderModel {
     private Long id;
 
     @Column(nullable = false)
-    @NotNull(message = "Field orderPrice shouldn't be null")
     private Double orderPrice;
+
+    @Column(nullable = true)
+    private Double paidValue;
+
+    @Column(nullable = true)
+    private Double change;
 
     @Column(nullable = true)
     private String observation;
 
-    @Column(nullable = false)
-    @NotNull(message = "Field dispatchTime shouldn't be null")
+    @Column(nullable = true)
     private LocalDateTime dispatchTime;
 
     @Column(nullable = false)
-    @NotNull(message = "Field arrivalForecast shouldn't be null")
     private LocalDateTime arrivalForecast;
+
+    @ManyToOne
+    @JoinColumn(name = "coupon_id", nullable = true)
+    private CouponModel coupon;
 
     @ManyToOne
     @JoinColumn(name = "status_id", nullable = false)
     private StatusModel status;
-
-    @ManyToOne
-    @JoinColumn(name = "address_id", nullable = false)
-    private AddressModel address;
 
     @ManyToOne
     @JoinColumn(name = "client_account_id", nullable = false)
@@ -54,8 +62,11 @@ public class OrderModel {
     private PaymentMethodModel paymentMethod;
 
     @ManyToOne
-    @JoinColumn(name = "delivery_type_id", nullable = false)
-    private DeliveryTypeModel deliveryType;
+    @JoinColumn(name = "cash_register_balance_id", nullable = false)
+    private CashRegisterBalanceModel cashRegisterBalance;
+
+    @OneToOne
+    private DeliveryModel delivery;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -78,19 +89,38 @@ public class OrderModel {
         BeanUtils.copyProperties(orderReturnDto, this);
     }
 
-    public OrderModel(Long id, Double orderPrice, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, StatusModel status, AddressModel address, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, DeliveryTypeModel deliveryType, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public OrderModel(Long id, Double orderPrice, Double paidValue, Double change, String observation, LocalDateTime dispatchTime, LocalDateTime arrivalForecast, CouponModel coupon, StatusModel status, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, CashRegisterBalanceModel cashRegisterBalance, DeliveryModel delivery, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.orderPrice = orderPrice;
+        this.paidValue = paidValue;
+        this.change = change;
         this.observation = observation;
         this.dispatchTime = dispatchTime;
         this.arrivalForecast = arrivalForecast;
+        this.coupon = coupon;
         this.status = status;
-        this.address = address;
         this.clientAccount = clientAccount;
         this.paymentMethod = paymentMethod;
-        this.deliveryType = deliveryType;
+        this.cashRegisterBalance = cashRegisterBalance;
+        this.delivery = delivery;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (observation != null) observation = observation.toUpperCase(Locale.ROOT);
+
+        LocalDateTimeUtil localDateTimeUtil = new LocalDateTimeUtil();
+        if (updatedAt != null) updatedAt = localDateTimeUtil.nowGMT3();
+    }
+
+    public CouponModel getCoupon() {
+        return coupon;
+    }
+
+    public void setCoupon(CouponModel coupon) {
+        this.coupon = coupon;
     }
 
     public Long getId() {
@@ -107,6 +137,22 @@ public class OrderModel {
 
     public void setOrderPrice(Double orderPrice) {
         this.orderPrice = orderPrice;
+    }
+
+    public Double getPaidValue() {
+        return paidValue;
+    }
+
+    public void setPaidValue(Double paidValue) {
+        this.paidValue = paidValue;
+    }
+
+    public Double getChange() {
+        return change;
+    }
+
+    public void setChange(Double change) {
+        this.change = change;
     }
 
     public String getObservation() {
@@ -141,14 +187,6 @@ public class OrderModel {
         this.status = status;
     }
 
-    public AddressModel getAddress() {
-        return address;
-    }
-
-    public void setAddress(AddressModel address) {
-        this.address = address;
-    }
-
     public ClientAccountModel getClientAccount() {
         return clientAccount;
     }
@@ -165,12 +203,20 @@ public class OrderModel {
         this.paymentMethod = paymentMethod;
     }
 
-    public DeliveryTypeModel getDeliveryType() {
-        return deliveryType;
+    public CashRegisterBalanceModel getCashRegisterBalance() {
+        return cashRegisterBalance;
     }
 
-    public void setDeliveryType(DeliveryTypeModel deliveryType) {
-        this.deliveryType = deliveryType;
+    public void setCashRegisterBalance(CashRegisterBalanceModel cashRegisterBalance) {
+        this.cashRegisterBalance = cashRegisterBalance;
+    }
+
+    public DeliveryModel getDelivery() {
+        return delivery;
+    }
+
+    public void setDelivery(DeliveryModel delivery) {
+        this.delivery = delivery;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -188,4 +234,5 @@ public class OrderModel {
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
 }

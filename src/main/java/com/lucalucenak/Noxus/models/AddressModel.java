@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lucalucenak.Noxus.dtos.AddressFullDto;
 import com.lucalucenak.Noxus.dtos.post.AddressPostDto;
 import com.lucalucenak.Noxus.dtos.response.AddressReturnDto;
+import com.lucalucenak.Noxus.utils.LocalDateTimeUtil;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -15,10 +17,12 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Locale;
 
 @Entity
 @Table(name = "address")
 @EntityListeners(AuditingEntityListener.class)
+@Builder
 public class AddressModel {
 
     @Id
@@ -26,31 +30,21 @@ public class AddressModel {
     private Long id;
 
     @Column(nullable = false)
-    @NotNull(message = "Field streetName shouldn't be null")
-    @NotEmpty(message = "Field streetName shouldn't be empty")
-    @NotBlank(message = "Field streetName shouldn't be blank")
     private String streetName;
+
     @Column(nullable = false)
-    @NotNull(message = "Field houseNumber shouldn't be null")
-    @NotEmpty(message = "Field houseNumber shouldn't be empty")
-    @NotBlank(message = "Field houseNumber shouldn't be blank")
     private String houseNumber;
+
     @Column(nullable = false)
-    @NotNull(message = "Field city shouldn't be null")
-    @NotEmpty(message = "Field city shouldn't be empty")
-    @NotBlank(message = "Field city shouldn't be blank")
     private String city;
+
     @Column(nullable = false)
-    @NotNull(message = "Field cep shouldn't be null")
-    @NotEmpty(message = "Field cep shouldn't be empty")
-    @NotBlank(message = "Field cep shouldn't be blank")
     private String cep;
+
     @Column(nullable = true)
     private String complement;
+
     @Column(nullable = false)
-    @NotNull(message = "Field referencePoint shouldn't be null")
-    @NotEmpty(message = "Field referencePoint shouldn't be empty")
-    @NotBlank(message = "Field referencePoint shouldn't be blank")
     private String referencePoint;
 
     @ManyToOne
@@ -61,9 +55,13 @@ public class AddressModel {
     @JoinColumn(name = "client_account_id", nullable = false)
     private ClientAccountModel clientAccount;
 
+    @ManyToOne
+    @JoinColumn(name = "status_id", nullable = false)
+    private StatusModel status;
+
     @JsonIgnore
     @OneToMany(mappedBy = "address", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<OrderModel> orders;
+    private List<DeliveryModel> deliveries;
 
     @CreatedDate
     private LocalDateTime createdAt;
@@ -86,7 +84,7 @@ public class AddressModel {
         BeanUtils.copyProperties(addressPostDto, this);
     }
 
-    public AddressModel(Long id, String streetName, String houseNumber, String city, String cep, String complement, String referencePoint, NeighbourhoodModel neighbourhood, ClientAccountModel clientAccount, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public AddressModel(Long id, String streetName, String houseNumber, String city, String cep, String complement, String referencePoint, NeighbourhoodModel neighbourhood, ClientAccountModel clientAccount, StatusModel status, List<DeliveryModel> deliveries, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.streetName = streetName;
         this.houseNumber = houseNumber;
@@ -96,9 +94,23 @@ public class AddressModel {
         this.referencePoint = referencePoint;
         this.neighbourhood = neighbourhood;
         this.clientAccount = clientAccount;
-        this.orders = orders;
+        this.status = status;
+        this.deliveries = deliveries;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (streetName != null) streetName = streetName.toUpperCase(Locale.ROOT);
+        if (houseNumber != null) houseNumber = houseNumber.toUpperCase(Locale.ROOT);
+        if (city != null) city = city.toUpperCase(Locale.ROOT);
+        if (cep != null) cep = cep.toUpperCase(Locale.ROOT);
+        if (complement != null) complement = complement.toUpperCase(Locale.ROOT);
+        if (referencePoint != null) referencePoint = referencePoint.toUpperCase(Locale.ROOT);
+
+        LocalDateTimeUtil localDateTimeUtil = new LocalDateTimeUtil();
+        if (updatedAt != null) updatedAt = localDateTimeUtil.nowGMT3();
     }
 
     public Long getId() {
@@ -173,12 +185,12 @@ public class AddressModel {
         this.clientAccount = clientAccount;
     }
 
-    public List<OrderModel> getOrders() {
-        return orders;
+    public List<DeliveryModel> getDeliveries() {
+        return deliveries;
     }
 
-    public void setOrders(List<OrderModel> orders) {
-        this.orders = orders;
+    public void setDeliveries(List<DeliveryModel> deliveries) {
+        this.deliveries = deliveries;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -187,6 +199,14 @@ public class AddressModel {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public StatusModel getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusModel status) {
+        this.status = status;
     }
 
     public LocalDateTime getUpdatedAt() {

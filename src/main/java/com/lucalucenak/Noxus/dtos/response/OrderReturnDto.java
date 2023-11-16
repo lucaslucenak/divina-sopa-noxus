@@ -1,60 +1,45 @@
 package com.lucalucenak.Noxus.dtos.response;
 
-import com.lucalucenak.Noxus.dtos.DrinkFullDto;
-import com.lucalucenak.Noxus.dtos.SoupFullDto;
 import com.lucalucenak.Noxus.models.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
-import java.util.Map;
+import java.util.List;
 
 public class OrderReturnDto {
 
     private Long id;
 
-    @NotNull(message = "Field orderPrice shouldn't be null")
-    @NotEmpty(message = "Field orderPrice shouldn't be empty")
-    @NotBlank(message = "Field orderPrice shouldn't be blank")
     private Double orderPrice;
+
+    private Double paidValue;
+
+    private Double change;
 
     private String observation;
 
-    private Map<SoupFullDto, Integer> soups;
+    private List<OrderReturnProductFieldDto> products;
 
-    private Map<DrinkFullDto, Integer> drinks;
-
-    @NotNull(message = "Field status shouldn't be null")
     private StatusModel status;
 
-    @NotNull(message = "Field address shouldn't be null")
-    private AddressModel address;
-
-    @NotNull(message = "Field clientAccount shouldn't be null")
     private ClientAccountModel clientAccount;
 
-    @NotNull(message = "Field paymentMethod shouldn't be null")
     private PaymentMethodModel paymentMethod;
 
-    @NotNull(message = "Field deliveryType shouldn't be null")
-    private DeliveryTypeModel deliveryType;
+    private CashRegisterBalanceModel cashRegisterBalance;
 
-    @NotNull(message = "Field createdAt shouldn't be null")
+    private CouponModel coupon;
+
+    private DeliveryModel delivery;
+
+    private DeliverymanModel deliveryman;
+
     private LocalDateTime createdAt;
 
-    @NotNull(message = "Field updatedAt shouldn't be null")
     private LocalDateTime updatedAt;
 
-    @NotNull(message = "Field dispatchTime shouldn't be null")
-    @NotEmpty(message = "Field dispatchTime shouldn't be empty")
-    @NotBlank(message = "Field dispatchTime shouldn't be blank")
     private LocalDateTime dispatchTime;
 
-    @NotNull(message = "Field arrivalForecast shouldn't be null")
-    @NotEmpty(message = "Field arrivalForecast shouldn't be empty")
-    @NotBlank(message = "Field arrivalForecast shouldn't be blank")
     private LocalDateTime arrivalForecast;
 
     public OrderReturnDto() {
@@ -64,21 +49,40 @@ public class OrderReturnDto {
         BeanUtils.copyProperties(orderModel, this);
     }
 
-    public OrderReturnDto(Long id, Double orderPrice, String observation, Map<SoupFullDto, Integer> soups, Map<DrinkFullDto, Integer> drinks, StatusModel status, AddressModel address, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, DeliveryTypeModel deliveryType, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime dispatchTime, LocalDateTime arrivalForecast) {
+    public OrderReturnDto(Long id, Double orderPrice, Double paidValue, Double change, String observation, List<OrderReturnProductFieldDto> products, StatusModel status, ClientAccountModel clientAccount, PaymentMethodModel paymentMethod, CashRegisterBalanceModel cashRegisterBalance, CouponModel coupon, DeliveryModel delivery, DeliverymanModel deliveryman, LocalDateTime createdAt, LocalDateTime updatedAt, LocalDateTime dispatchTime, LocalDateTime arrivalForecast) {
         this.id = id;
         this.orderPrice = orderPrice;
+        this.paidValue = paidValue;
+        this.change = change;
         this.observation = observation;
-        this.soups = soups;
-        this.drinks = drinks;
+        this.products = products;
         this.status = status;
-        this.address = address;
         this.clientAccount = clientAccount;
         this.paymentMethod = paymentMethod;
-        this.deliveryType = deliveryType;
+        this.cashRegisterBalance = cashRegisterBalance;
+        this.coupon = coupon;
+        this.delivery = delivery;
+        this.deliveryman = deliveryman;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.dispatchTime = dispatchTime;
         this.arrivalForecast = arrivalForecast;
+    }
+
+    public CouponModel getCoupon() {
+        return coupon;
+    }
+
+    public void setCoupon(CouponModel coupon) {
+        this.coupon = coupon;
+    }
+
+    public DeliverymanModel getDeliveryman() {
+        return deliveryman;
+    }
+
+    public void setDeliveryman(DeliverymanModel deliveryman) {
+        this.deliveryman = deliveryman;
     }
 
     public Long getId() {
@@ -97,6 +101,14 @@ public class OrderReturnDto {
         this.orderPrice = orderPrice;
     }
 
+    public Double getPaidValue() { return paidValue; }
+
+    public void setPaidValue(Double paidValue) { this.paidValue = paidValue; }
+
+    public Double getChange() { return change; }
+
+    public void setChange(Double change) { this.change = change; }
+
     public String getObservation() {
         return observation;
     }
@@ -105,20 +117,12 @@ public class OrderReturnDto {
         this.observation = observation;
     }
 
-    public Map<SoupFullDto, Integer> getSoups() {
-        return soups;
+    public List<OrderReturnProductFieldDto> getProducts() {
+        return products;
     }
 
-    public void setSoups(Map<SoupFullDto, Integer> soups) {
-        this.soups = soups;
-    }
-
-    public Map<DrinkFullDto, Integer> getDrinks() {
-        return drinks;
-    }
-
-    public void setDrinks(Map<DrinkFullDto, Integer> drinks) {
-        this.drinks = drinks;
+    public void setProducts(List<OrderReturnProductFieldDto> products) {
+        this.products = products;
     }
 
     public StatusModel getStatus() {
@@ -127,14 +131,6 @@ public class OrderReturnDto {
 
     public void setStatus(StatusModel status) {
         this.status = status;
-    }
-
-    public AddressModel getAddress() {
-        return address;
-    }
-
-    public void setAddress(AddressModel address) {
-        this.address = address;
     }
 
     public ClientAccountModel getClientAccount() {
@@ -153,12 +149,20 @@ public class OrderReturnDto {
         this.paymentMethod = paymentMethod;
     }
 
-    public DeliveryTypeModel getDeliveryType() {
-        return deliveryType;
+    public CashRegisterBalanceModel getCashRegisterBalance() {
+        return cashRegisterBalance;
     }
 
-    public void setDeliveryType(DeliveryTypeModel deliveryType) {
-        this.deliveryType = deliveryType;
+    public void setCashRegisterBalance(CashRegisterBalanceModel cashRegisterBalance) {
+        this.cashRegisterBalance = cashRegisterBalance;
+    }
+
+    public DeliveryModel getDelivery() {
+        return delivery;
+    }
+
+    public void setDelivery(DeliveryModel delivery) {
+        this.delivery = delivery;
     }
 
     public LocalDateTime getCreatedAt() {

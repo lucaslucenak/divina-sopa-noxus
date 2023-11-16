@@ -41,10 +41,13 @@ public class AddressPostDto {
     @NotNull(message = "Field clientAccountId shouldn't be null")
     private Long clientAccountId;
 
+    @NotNull(message = "Field status shouldn't be null")
+    private Long statusId;
+
     public AddressPostDto() {
     }
 
-    public AddressPostDto(Long id, String streetName, String houseNumber, String city, String cep, String complement, String referencePoint, Long neighbourhoodId, Long clientAccountId) {
+    public AddressPostDto(Long id, String streetName, String houseNumber, String city, String cep, String complement, String referencePoint, Long neighbourhoodId, Long clientAccountId, Long statusId) {
         this.id = id;
         this.streetName = streetName;
         this.houseNumber = houseNumber;
@@ -54,6 +57,7 @@ public class AddressPostDto {
         this.referencePoint = referencePoint;
         this.neighbourhoodId = neighbourhoodId;
         this.clientAccountId = clientAccountId;
+        this.statusId = statusId;
     }
 
     public Long getId() {
@@ -126,5 +130,13 @@ public class AddressPostDto {
 
     public void setClientAccountId(Long clientAccountId) {
         this.clientAccountId = clientAccountId;
+    }
+
+    public Long getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(Long statusId) {
+        this.statusId = statusId;
     }
 }

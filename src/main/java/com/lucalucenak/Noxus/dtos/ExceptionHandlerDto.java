@@ -1,6 +1,7 @@
 package com.lucalucenak.Noxus.dtos;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.springframework.http.HttpStatus;
 
 import java.time.ZonedDateTime;
@@ -13,8 +14,9 @@ public class ExceptionHandlerDto<VE> {
     private Map<String, String> errors;
     private HttpStatus httpStatus;
     private ZonedDateTime zonedDateTime;
-    private List<? extends VE> validExamples;
 
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private List<? extends VE> validExamples;
 
     public ExceptionHandlerDto() {
     }

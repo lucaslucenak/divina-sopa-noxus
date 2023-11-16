@@ -1,0 +1,82 @@
+package com.lucalucenak.Noxus.dtos;
+
+import com.lucalucenak.Noxus.models.OrderProductModel;
+import com.lucalucenak.Noxus.models.pks.OrderProductPk;
+import jakarta.persistence.Column;
+import org.springframework.beans.BeanUtils;
+
+import java.time.LocalDateTime;
+
+public class OrderProductFullDto {
+
+    private OrderProductPk id;
+
+    private Integer quantity;
+
+    private String additions;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime updatedAt;
+
+    public OrderProductFullDto() {
+    }
+
+    public OrderProductFullDto(OrderProductModel orderSoupModel) {
+        BeanUtils.copyProperties(orderSoupModel, this);
+    }
+
+    public OrderProductFullDto(OrderProductPk id, Integer quantity, String additions, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.quantity = quantity;
+        this.additions = additions;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public OrderProductFullDto(OrderProductPk id, String additions, Integer quantity) {
+        this.id = id;
+        this.additions = additions;
+        this.quantity = quantity;
+    }
+
+    public String getAdditions() {
+        return additions;
+    }
+
+    public void setAdditions(String additions) {
+        this.additions = additions;
+    }
+
+    public OrderProductPk getId() {
+        return id;
+    }
+
+    public void setId(OrderProductPk id) {
+        this.id = id;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+}

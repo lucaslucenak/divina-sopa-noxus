@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 
 @RestController
 @RequestMapping(value = "/order")
+@CrossOrigin(origins = "http://localhost:4200")
 public class OrderController {
 
     @Autowired
@@ -29,17 +30,27 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderReturnDto> saveOrder(@RequestBody @Valid OrderPostDto orderPostDto) {
+    public ResponseEntity<OrderReturnDto> saveOrder(@RequestBody @Valid OrderPostDto orderPostDto) throws Exception {
         return ResponseEntity.ok().body(orderService.saveOrder(orderPostDto));
     }
 
     @PutMapping(value = "/{orderId}")
-    public ResponseEntity<OrderReturnDto> updateOrder(@PathVariable Long orderId, @RequestBody @Valid OrderPostDto orderPostDto) {
+    public ResponseEntity<OrderReturnDto> updateOrder(@PathVariable Long orderId, @RequestBody @Valid OrderPostDto orderPostDto) throws Exception {
         return ResponseEntity.ok().body(orderService.updateOrder(orderId, orderPostDto));
     }
 
+    @PostMapping(value = "/finish/{orderId}")
+    public ResponseEntity<OrderReturnDto> finishOrderById(@PathVariable Long orderId) {
+        return ResponseEntity.ok().body(orderService.finishOrderById(orderId));
+    }
+
+    @PostMapping(value = "/dispatch/{orderId}")
+    public ResponseEntity<OrderReturnDto> dispatchOrderById(@PathVariable Long orderId) {
+        return ResponseEntity.ok().body(orderService.dispatchOrderById(orderId));
+    }
+
     @DeleteMapping(value = "/{orderId}")
-    public ResponseEntity<OrderReturnDto> deleteOrderById(@PathVariable Long orderId) {
+    public ResponseEntity<Void> deleteOrderById(@PathVariable Long orderId) {
         orderService.deleteOrderById(orderId);
         return ResponseEntity.noContent().build();
     }

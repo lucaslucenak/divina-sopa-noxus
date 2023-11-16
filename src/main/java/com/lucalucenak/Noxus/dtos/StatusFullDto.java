@@ -6,30 +6,25 @@ import com.lucalucenak.Noxus.models.StatusModel;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Builder
 public class StatusFullDto {
 
     private Long id;
 
-    @NotNull(message = "Field status shouldn't be null")
-    @NotEmpty(message = "Field status shouldn't be empty")
-    @NotBlank(message = "Field status shouldn't be blank")
     private String status;
 
-    @NotNull(message = "Field clientAccounts shouldn't be null")
     private List<ClientAccountModel> clientAccounts;
 
-    @NotNull(message = "Field orders shouldn't be null")
     private List<OrderModel> orders;
 
-    @NotNull(message = "Field createdAt shouldn't be null")
     private LocalDateTime createdAt;
 
-    @NotNull(message = "Field updatedAt shouldn't be null")
     private LocalDateTime updatedAt;
 
     public StatusFullDto() {

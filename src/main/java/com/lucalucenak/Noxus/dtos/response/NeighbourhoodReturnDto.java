@@ -1,32 +1,23 @@
 package com.lucalucenak.Noxus.dtos.response;
 
-import com.lucalucenak.Noxus.dtos.DrinkFullDto;
 import com.lucalucenak.Noxus.dtos.NeighbourhoodFullDto;
-import com.lucalucenak.Noxus.models.AddressModel;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import com.lucalucenak.Noxus.models.StatusModel;
 import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class NeighbourhoodReturnDto {
 
     private Long id;
 
-    @NotNull(message = "Field neighbourhood shouldn't be null")
-    @NotEmpty(message = "Field neighbourhood shouldn't be empty")
-    @NotBlank(message = "Field neighbourhood shouldn't be blank")
     private String neighbourhood;
 
-    @NotNull(message = "Field deliveryTax shouldn't be null")
     private Double deliveryTax;
 
-    @NotNull(message = "Field createdAt shouldn't be null")
+    private StatusModel status;
+
     private LocalDateTime createdAt;
 
-    @NotNull(message = "Field updatedAt shouldn't be null")
     private LocalDateTime updatedAt;
 
     public NeighbourhoodReturnDto() {
@@ -36,10 +27,11 @@ public class NeighbourhoodReturnDto {
         BeanUtils.copyProperties(neighbourhoodFullDto, this);
     }
 
-    public NeighbourhoodReturnDto(Long id, String neighbourhood, Double deliveryTax, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public NeighbourhoodReturnDto(Long id, String neighbourhood, Double deliveryTax, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.neighbourhood = neighbourhood;
         this.deliveryTax = deliveryTax;
+        this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -66,6 +58,14 @@ public class NeighbourhoodReturnDto {
 
     public void setDeliveryTax(Double deliveryTax) {
         this.deliveryTax = deliveryTax;
+    }
+
+    public StatusModel getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusModel status) {
+        this.status = status;
     }
 
     public LocalDateTime getCreatedAt() {

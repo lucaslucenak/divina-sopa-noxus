@@ -4,57 +4,62 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lucalucenak.Noxus.dtos.ClientAccountFullDto;
 import com.lucalucenak.Noxus.dtos.post.ClientAccountPostDto;
 import com.lucalucenak.Noxus.dtos.response.ClientAccountReturnDto;
+import com.lucalucenak.Noxus.enums.RoleEnum;
+import com.lucalucenak.Noxus.utils.LocalDateTimeUtil;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.Builder;
 import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 @Entity
 @Table(name = "client_account")
 @EntityListeners(AuditingEntityListener.class)
-public class ClientAccountModel {
+@Builder
+public class ClientAccountModel implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    @NotNull(message = "Field firstName shouldn't be null")
-    @NotEmpty(message = "Field firstName shouldn't be empty")
-    @NotBlank(message = "Field firstName shouldn't be blank")
     private String firstName;
 
     @Column(nullable = false)
-    @NotNull(message = "Field lastName shouldn't be null")
-    @NotEmpty(message = "Field lastName shouldn't be empty")
-    @NotBlank(message = "Field lastName shouldn't be blank")
     private String lastName;
 
     @Column(nullable = false)
-    @NotNull(message = "Field cpf shouldn't be null")
-    @NotEmpty(message = "Field cpf shouldn't be empty")
-    @NotBlank(message = "Field cpf shouldn't be blank")
-    @CPF
     private String cpf;
 
     @Column(nullable = false)
-    @NotNull(message = "Field email shouldn't be null")
-    @NotEmpty(message = "Field email shouldn't be empty")
-    @NotBlank(message = "Field email shouldn't be blank")
-    @Email
     private String email;
 
     @Column(nullable = false)
+    private String cellphoneNumber;
+
+    @Column(nullable = false)
     private Integer placedOrdersQuantity;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false)
+    @Enumerated(value = EnumType.STRING)
+    private RoleEnum role;
 
     @ManyToOne
     @JoinColumn(name = "status_id", nullable = false)
@@ -89,18 +94,45 @@ public class ClientAccountModel {
         BeanUtils.copyProperties(clientAccountReturnDto, this);
     }
 
-    public ClientAccountModel(Long id, String firstName, String lastName, String cpf, String email, Integer placedOrdersQuantity, StatusModel status, List<AddressModel> addresses, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ClientAccountModel(Long id, String firstName, String lastName, String cpf, String email, String cellphoneNumber, Integer placedOrdersQuantity, String password, RoleEnum role, StatusModel status, List<AddressModel> addresses, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.cpf = cpf;
         this.email = email;
+        this.cellphoneNumber = cellphoneNumber;
         this.placedOrdersQuantity = placedOrdersQuantity;
+        this.password = password;
+        this.role = role;
         this.status = status;
         this.addresses = addresses;
         this.orders = orders;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        if (firstName != null) firstName = firstName.toUpperCase(Locale.ROOT);
+        if (lastName != null) lastName = lastName.toUpperCase(Locale.ROOT);
+        if (cpf != null) cpf = cpf.replaceAll("[^0-9]", "");
+        if (email != null) email = email.toLowerCase(Locale.ROOT);
+        if (cellphoneNumber != null) cellphoneNumber = cellphoneNumber.replaceAll("[^0-9]", "");
+
+        LocalDateTimeUtil localDateTimeUtil = new LocalDateTimeUtil();
+        if (updatedAt != null) updatedAt = localDateTimeUtil.nowGMT3();
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getCellphoneNumber() {
+        return cellphoneNumber;
+    }
+
+    public void setCellphoneNumber(String cellphoneNumber) {
+        this.cellphoneNumber = cellphoneNumber;
     }
 
     public Long getId() {
@@ -189,5 +221,52 @@ public class ClientAccountModel {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public RoleEnum getRole() {
+        return role;
+    }
+
+    public void setRole(RoleEnum role) {
+        this.role = role;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if (role == RoleEnum.ADMIN) {
+            return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+        } else {
+            return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+        }
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return cpf;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }

@@ -3,9 +3,11 @@ package com.lucalucenak.Noxus.dtos;
 import com.lucalucenak.Noxus.enums.PaymentMethodEnum;
 import com.lucalucenak.Noxus.models.OrderModel;
 import com.lucalucenak.Noxus.models.PaymentMethodModel;
+import com.lucalucenak.Noxus.models.StatusModel;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jdk.jshell.Snippet;
 import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
@@ -15,18 +17,14 @@ public class PaymentMethodFullDto {
 
     private Long id;
 
-    @NotNull(message = "Field paymentMethod shouldn't be null")
-    @NotEmpty(message = "Field paymentMethod shouldn't be empty")
-    @NotBlank(message = "Field paymentMethod shouldn't be blank")
     private PaymentMethodEnum paymentMethod;
 
-    @NotNull(message = "Field orders shouldn't be null")
     private List<OrderModel> orders;
 
-    @NotNull(message = "Field createdAt shouldn't be null")
+    private StatusModel status;
+
     private LocalDateTime createdAt;
 
-    @NotNull(message = "Field updatedAt shouldn't be null")
     private LocalDateTime updatedAt;
 
     public PaymentMethodFullDto() {
@@ -36,12 +34,21 @@ public class PaymentMethodFullDto {
         BeanUtils.copyProperties(paymentMethodModel, this);
     }
 
-    public PaymentMethodFullDto(Long id, PaymentMethodEnum paymentMethod, List<OrderModel> orders, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public PaymentMethodFullDto(Long id, PaymentMethodEnum paymentMethod, List<OrderModel> orders, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.paymentMethod = paymentMethod;
         this.orders = orders;
+        this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+    public StatusModel getStatus() {
+        return status;
+    }
+
+    public void setStatus(StatusModel status) {
+        this.status = status;
     }
 
     public Long getId() {

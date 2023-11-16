@@ -4,6 +4,7 @@ import com.lucalucenak.Noxus.dtos.ClientAccountFullDto;
 import com.lucalucenak.Noxus.dtos.ClientAccountFullDto;
 import com.lucalucenak.Noxus.dtos.post.ClientAccountPostDto;
 import com.lucalucenak.Noxus.dtos.response.ClientAccountReturnDto;
+import com.lucalucenak.Noxus.exceptions.AlreadyUsedCpfException;
 import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.ClientAccountModel;
@@ -17,6 +18,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +35,10 @@ public class ClientAccountService {
     private ClientAccountRepository clientAccountRepository;
     @Autowired
     private StatusService statusService;
+    @Autowired
+    private AddressService addressService;
+    @Autowired
+    private PasswordEncoder bCryptPasswordEncoder;
 
     @Transactional(readOnly = true)
     public ClientAccountFullDto findClientAccountById(Long clientAccountId) {
@@ -44,6 +52,28 @@ public class ClientAccountService {
     }
 
     @Transactional(readOnly = true)
+    public ClientAccountFullDto findClientAccountFullDtoByCpf(String clientAccountCpf) {
+        Optional<ClientAccountModel> clientAccountOptional = clientAccountRepository.findClientAccountModelByCpf(clientAccountCpf);
+
+        if (clientAccountOptional.isPresent()) {
+            return new ClientAccountFullDto(clientAccountOptional.get());
+        } else {
+            throw new ResourceNotFoundException("Resource: Client. Not found with id: " + clientAccountCpf);
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public UserDetails findClientAccountByCpf(String clientAccountCpf) {
+        Optional<UserDetails> clientAccountOptional = clientAccountRepository.findUserDetailsByCpf(clientAccountCpf);
+
+        if (clientAccountOptional.isPresent()) {
+            return clientAccountOptional.get();
+        } else {
+            throw new ResourceNotFoundException("Resource: Client. Not found with cpf: " + clientAccountCpf);
+        }
+    }
+
+    @Transactional(readOnly = true)
     public Page<ClientAccountFullDto> findAllClientAccountsPaginated(Pageable pageable) {
         Page<ClientAccountModel> pagedClientAccounts = clientAccountRepository.findAll(pageable);
 
@@ -51,20 +81,28 @@ public class ClientAccountService {
     }
 
     @Transactional
-    public ClientAccountReturnDto saveClientAccount(ClientAccountPostDto clientAccountPostDto) {
+    public ClientAccountFullDto saveClientAccount(ClientAccountPostDto clientAccountPostDto) {
+
+        if (clientAccountRepository.existsByCpf(clientAccountPostDto.getCpf())) {
+            ClientAccountModel existentClientAccountModel = new ClientAccountModel(this.findClientAccountFullDtoByCpf(clientAccountPostDto.getCpf()));
+            throw new AlreadyUsedCpfException("CPF Already used for this CPF. See Client Account with id: " + existentClientAccountModel.getId());
+        }
+
         ClientAccountModel clientAccountModel = new ClientAccountModel(clientAccountPostDto);
         StatusModel statusModel = new StatusModel(statusService.findStatusById(clientAccountPostDto.getStatusId()));
         clientAccountModel.setStatus(statusModel);
         clientAccountModel.setPlacedOrdersQuantity(0);
 
+        String encryptedPassword = bCryptPasswordEncoder.encode(clientAccountPostDto.getPassword());
+        clientAccountModel.setPassword(encryptedPassword);
+
         clientAccountRepository.save(clientAccountModel);
 
-        ClientAccountReturnDto clientAccountReturnDto = new ClientAccountReturnDto(clientAccountModel);
-        return clientAccountReturnDto;
+        return new ClientAccountFullDto(clientAccountModel);
     }
 
     @Transactional
-    public ClientAccountReturnDto updateClientAccount(Long clientAccountId, ClientAccountPostDto clientAccountPostDto) {
+    public ClientAccountFullDto updateClientAccount(Long clientAccountId, ClientAccountPostDto clientAccountPostDto) {
         if (!clientAccountId.equals(clientAccountPostDto.getId())) {
             throw new IncompatibleIdsException("Path param Id and body Id must be equals. Path Param Id: " + clientAccountId + ", Body Id: " + clientAccountPostDto.getId());
         }
@@ -77,17 +115,21 @@ public class ClientAccountService {
         updatedClientAccountModel.setStatus(statusModel);
         updatedClientAccountModel.setPlacedOrdersQuantity(existentClientAccountModel.getPlacedOrdersQuantity());
 
+        updatedClientAccountModel.setCreatedAt(existentClientAccountModel.getCreatedAt());
         BeanUtils.copyProperties(updatedClientAccountModel, existentClientAccountModel, "updatedAt, createdAt");
 
         clientAccountRepository.save(existentClientAccountModel);
 
-        ClientAccountReturnDto clientAccountReturnDto = new ClientAccountReturnDto(existentClientAccountModel);
-        return clientAccountReturnDto;
+        // Inactivate All Referent Addresses
+        if (existentClientAccountModel.getStatus().getStatus().equals("INACTIVE")) {
+            addressService.inactivateAddressesByClientAccountId(clientAccountId);
+        }
+
+        return new ClientAccountFullDto(existentClientAccountModel);
     }
 
     @Transactional
     public void deleteClientAccountById(Long clientAccountId) {
-        System.out.println(clientAccountId);
         if (clientAccountRepository.existsById(clientAccountId)) {
             clientAccountRepository.deleteById(clientAccountId);
         } else {
@@ -95,11 +137,36 @@ public class ClientAccountService {
         }
     }
 
-    public ClientAccountReturnDto increasePlacedOrdersQuantityByClientAccountId(Long clientAccountId) {
+    public boolean existsById(Long clientAccountId) {
+            return clientAccountRepository.existsById(clientAccountId);
+    }
+
+    @Transactional
+    public ClientAccountFullDto increasePlacedOrdersQuantityByClientAccountId(Long clientAccountId) {
         ClientAccountModel clientAccountModel = new ClientAccountModel(this.findClientAccountById(clientAccountId));
         clientAccountModel.setPlacedOrdersQuantity(clientAccountModel.getPlacedOrdersQuantity() + 1);
         clientAccountRepository.save(clientAccountModel);
 
-        return new ClientAccountReturnDto(clientAccountModel);
+        return new ClientAccountFullDto(clientAccountModel);
+    }
+
+    @Transactional
+    public ClientAccountFullDto increasePlacedOrdersQuantityByClientAccountCpf(String clientAccountCpf) {
+        ClientAccountModel clientAccountModel = new ClientAccountModel(this.findClientAccountFullDtoByCpf(clientAccountCpf));
+        clientAccountModel.setPlacedOrdersQuantity(clientAccountModel.getPlacedOrdersQuantity() + 1);
+        clientAccountRepository.save(clientAccountModel);
+
+        return new ClientAccountFullDto(clientAccountModel);
+    }
+
+    @Transactional
+    public ClientAccountFullDto inactivateClientAccountById(Long clientAccountId) {
+        ClientAccountModel clientAccountModel = new ClientAccountModel(this.findClientAccountById(clientAccountId));
+        StatusModel inactiveStatusModel = new StatusModel(statusService.findStatusByStatus("INACTIVE"));
+        clientAccountModel.setStatus(inactiveStatusModel);
+
+        addressService.inactivateAddressesByClientAccountId(clientAccountId);
+
+        return new ClientAccountFullDto(clientAccountRepository.save(clientAccountModel));
     }
 }
