@@ -11,6 +11,8 @@ import java.time.Instant;
 import java.time.temporal.TemporalAmount;
 import java.time.temporal.TemporalUnit;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class JwtTokenService {
@@ -21,9 +23,12 @@ public class JwtTokenService {
     public String generateJwtToken(ClientAccountModel clientAccountModel) {
         Algorithm algorithm = Algorithm.HMAC256(secret);
 
+        Map<String, Object> claims = new HashMap<>();
+
         String jwtToken = JWT.create()
-                .withIssuer("auth-api")
+                .withIssuer("noxus-api")
                 .withSubject(clientAccountModel.getCpf())
+                .withClaim("role", clientAccountModel.getRole().toString())
                 .withExpiresAt(this.getExpirationDate())
                 .sign(algorithm);
 
