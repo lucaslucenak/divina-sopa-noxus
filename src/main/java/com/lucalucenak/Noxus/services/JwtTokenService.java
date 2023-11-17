@@ -38,7 +38,7 @@ public class JwtTokenService {
     public String validateJwtToken(String jwtToken) {
         Algorithm algorithm = Algorithm.HMAC256(secret);
         return JWT.require(algorithm)
-                .withIssuer("auth-api")
+                .withIssuer("noxus-api")
                 .build()
                 .verify(jwtToken)
                 .getSubject();

@@ -32,6 +32,9 @@ public class ProductModel {
     @Column(nullable = false)
     private Double price;
 
+    @Column(nullable = true)
+    private String imageUrl;
+
     @ManyToOne
     @JoinColumn(name = "size_id", nullable = false)
     private SizeModel size;
@@ -61,11 +64,12 @@ public class ProductModel {
         BeanUtils.copyProperties(productTypePostDto, this);
     }
 
-    public ProductModel(Long id, String name, String description, Double price, SizeModel size, ProductTypeModel productType, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ProductModel(Long id, String name, String description, Double price, String imageUrl, SizeModel size, ProductTypeModel productType, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
+        this.imageUrl = imageUrl;
         this.size = size;
         this.productType = productType;
         this.status = status;
@@ -120,6 +124,14 @@ public class ProductModel {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public ProductTypeModel getProductType() {

@@ -16,6 +16,8 @@ public class ProductFullDto {
 
     private Double price;
 
+    private String imageUrl;
+
     private ProductTypeModel productType;
 
     private StatusModel status;
@@ -37,11 +39,12 @@ public class ProductFullDto {
         BeanUtils.copyProperties(productReturnDto, this);
     }
 
-    public ProductFullDto(Long id, String name, String description, Double price, ProductTypeModel productType, StatusModel status, SizeModel size, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ProductFullDto(Long id, String name, String description, Double price, String imageUrl, ProductTypeModel productType, StatusModel status, SizeModel size, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
+        this.imageUrl = imageUrl;
         this.productType = productType;
         this.status = status;
         this.size = size;
@@ -87,6 +90,14 @@ public class ProductFullDto {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public ProductTypeModel getProductType() {
