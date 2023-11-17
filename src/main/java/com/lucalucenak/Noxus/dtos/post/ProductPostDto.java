@@ -25,6 +25,8 @@ public class ProductPostDto {
     @DecimalMin(value = "0.0", inclusive = true)
     private Double price;
 
+    private String imageUrl;
+
     @NotNull(message = "Field productTypeId shouldn't be null")
     private Long sizeId;
 
@@ -37,11 +39,12 @@ public class ProductPostDto {
     public ProductPostDto() {
     }
 
-    public ProductPostDto(Long id, String name, String description, Double price, Long sizeId, Long productTypeId, Long statusId) {
+    public ProductPostDto(Long id, String name, String description, Double price, String imageUrl, Long sizeId, Long productTypeId, Long statusId) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
+        this.imageUrl = imageUrl;
         this.sizeId = sizeId;
         this.productTypeId = productTypeId;
         this.statusId = statusId;
@@ -85,6 +88,14 @@ public class ProductPostDto {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public Long getProductTypeId() {
