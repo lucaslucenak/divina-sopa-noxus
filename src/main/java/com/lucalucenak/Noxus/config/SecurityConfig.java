@@ -49,6 +49,7 @@ public class SecurityConfig {
                 .requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/order/find-by-client-account-id/{clientAccountId}")).hasRole("USER")
                 // Product Routes
                 .requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/product")).permitAll()
+                .requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.GET, "/product-type")).permitAll()
 
                 .anyRequest().hasRole("ADMIN")
         );
