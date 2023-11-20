@@ -15,10 +15,8 @@ import com.lucalucenak.Noxus.utils.LocalDateTimeUtil;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
+import org.springframework.data.jpa.domain.JpaSort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -109,6 +107,46 @@ public class OrderService {
 
             orderReturnDtos.add(orderReturnDto);
         }
+
+        Page<OrderReturnDto> orderReturnDtoPage = new PageImpl<>(orderReturnDtos, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()), orderReturnDtos.size());
+        return orderReturnDtoPage;
+    }
+
+    @Transactional
+    public Page<OrderReturnDto> findAllOrdersByStatusPaginated(Pageable pageable) {
+        Page<OrderModel> pagedOrders = orderRepository.findAll(pageable);
+
+        List<OrderReturnDto> orderReturnDtos = new ArrayList<>();
+        for (OrderModel i : pagedOrders) {
+            OrderReturnDto orderReturnDto = new OrderReturnDto(i);
+
+            List<OrderReturnProductFieldDto> products = new ArrayList<>();
+            for (OrderProductFullDto j : orderProductService.findOrderProductsByOrderId(i.getId())) {
+                ProductFullDto productFullDto = productService.findProductById(j.getId().getProduct().getId());
+                Integer productQuantity = j.getQuantity();
+                String productAdditions = j.getAdditions();
+
+                OrderReturnProductFieldDto product = new OrderReturnProductFieldDto(
+                        new ProductModel(productFullDto),
+                        productQuantity,
+                        productAdditions,
+                        productFullDto.getPrice() * productQuantity
+                );
+                products.add(product);
+            }
+            orderReturnDto.setProducts(products);
+
+            orderReturnDtos.add(orderReturnDto);
+        }
+
+        List<Long> statusPriority = Arrays.asList(
+                2L, 6L, 3L, 7L // Exemplo de IDs de status correspondentes a ORDERED, DISPATCHED, FINISHED, CANCELLED
+        );
+
+        orderReturnDtos.sort(Comparator.comparingLong(order ->
+                statusPriority.indexOf(order.getStatus().getId())
+        ));
+
 
         Page<OrderReturnDto> orderReturnDtoPage = new PageImpl<>(orderReturnDtos, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()), orderReturnDtos.size());
         return orderReturnDtoPage;

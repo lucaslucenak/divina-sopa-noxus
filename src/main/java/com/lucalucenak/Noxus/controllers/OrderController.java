@@ -29,6 +29,11 @@ public class OrderController {
         return ResponseEntity.ok().body(orderService.findAllOrdersPaginated(pageable));
     }
 
+    @GetMapping(value = "/sort-by-status")
+    public ResponseEntity<Page<OrderReturnDto>> findAllOrdersByStatusPaginated(Pageable pageable) {
+        return ResponseEntity.ok().body(orderService.findAllOrdersByStatusPaginated(pageable));
+    }
+
     @PostMapping
     public ResponseEntity<OrderReturnDto> saveOrder(@RequestBody @Valid OrderPostDto orderPostDto) throws Exception {
         return ResponseEntity.ok().body(orderService.saveOrder(orderPostDto));

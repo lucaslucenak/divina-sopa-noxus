@@ -4,6 +4,7 @@ insert into status(status, created_at, updated_at) values ('FINISHED', NOW(), NO
 insert into status(status, created_at, updated_at) values ('INACTIVE', NOW(), NOW());
 insert into status(status, created_at, updated_at) values ('EXPIRED', NOW(), NOW());
 insert into status(status, created_at, updated_at) values ('DISPATCHED', NOW(), NOW());
+insert into status(status, created_at, updated_at) values ('CANCELLED', NOW(), NOW());
 
 insert into delivery_type(delivery_type, created_at, updated_at) values ('DELIVERY', NOW(), NOW());
 insert into delivery_type(delivery_type, created_at, updated_at) values ('WITHDRAWAL', NOW(), NOW());
