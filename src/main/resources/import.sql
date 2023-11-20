@@ -21,9 +21,12 @@ insert into address(street_name, house_number, city, cep, complement, reference_
 
 insert into delivery (address_id, deliveryman_id, delivery_type_id, distance_tax_id, status_id, tax, distance, created_at, updated_at) values (1, 1, 1, 1, 1, 5.0, 2.3, NOW(), NOW());
 insert into coupon (description, coupon_value, minimum_order_value, max_usages, start_at, finish_at, status_id) values ('Pedido acima de R$50,00', 10.0, 50.0, 1, NOW(), NOW(), 1);
-insert into product_type (type, description, status_id, created_at, updated_at) values ('SOUP', 'soups with water', 1, NOW(), NOW());
+insert into product_type (type, description, status_id, created_at, updated_at) values ('DIVERSOS', 'Produtos diversos', 1, NOW(), NOW());
+insert into product_type (type, description, status_id, created_at, updated_at) values ('Sopas', 'Sopas de todos os tipos', 1, NOW(), NOW());
+insert into product_type (type, description, status_id, created_at, updated_at) values ('Bebidas', 'Bebidas de todos os sabores', 1, NOW(), NOW());
+insert into product_type (type, description, status_id, created_at, updated_at) values ('Açaí', 'Açaí', 1, NOW(), NOW());
 insert into product (name, description, price, image_url, size_id, status_id, product_type_id, created_at, updated_at) values ('CALDO DE KENGA', 'Delicioso caldo de kenga (creme de macaxeira, bacon, calabresa, frango desfiado, coentro e especiarias da casa.)', 8.00, 'https://zaun-test.s3.amazonaws.com/caldoDeKenga.jpeg', 1, 1, 1, NOW(), NOW());
-
+insert into product (name, description, price, image_url, size_id, status_id, product_type_id, created_at, updated_at) values ('CHARQUE', ' teste descrição pequena.)', 123.00, 'https://zaun-test.s3.amazonaws.com/sopaCarne.jpeg', 1, 1, 1, NOW(), NOW());
 
 --insert into soup (name, price, size_id, status_id, created_at, updated_at) values ('FEIJÃO', 10.00, 1, 1, NOW(), NOW());
 --insert into drink (name, price, status_id, created_at, updated_at) values ('COCA COLA 500ML', 8.0, 1, NOW(), NOW());
