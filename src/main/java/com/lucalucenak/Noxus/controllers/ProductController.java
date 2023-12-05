@@ -39,6 +39,17 @@ public class ProductController {
         return ResponseEntity.ok().body(productReturnDtoPage);
     }
 
+    @GetMapping("/active")
+    public ResponseEntity<Page<ProductReturnDto>> getProductsByStatusPaginated(Pageable pageable) {
+        List<ProductReturnDto> productReturnDtos = new ArrayList<>();
+        for (ProductFullDto i : productService.findAllActiveProductsPaginated(pageable)) {
+            productReturnDtos.add(new ProductReturnDto(i));
+        }
+        Page<ProductReturnDto> productReturnDtoPage = new PageImpl<>(productReturnDtos, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()), productReturnDtos.size());
+        return ResponseEntity.ok().body(productReturnDtoPage);
+    }
+
+
     @PostMapping
     public ResponseEntity<ProductReturnDto> saveProduct(@RequestBody @Valid ProductPostDto productPostDto) {
         return ResponseEntity.ok().body(new ProductReturnDto(productService.saveProduct(productPostDto)));
