@@ -49,6 +49,13 @@ public class ProductService {
         return pagedProducts.map(ProductFullDto::new);
     }
 
+    @Transactional(readOnly = true)
+    public Page<ProductFullDto> findAllActiveProductsPaginated(Pageable pageable) {
+        Long activeStatusId = 1L;
+        Page<ProductModel> pagedProducts = productRepository.findByStatusId(activeStatusId, pageable);
+        return pagedProducts.map(ProductFullDto::new);
+    }
+
     @Transactional
     public ProductFullDto saveProduct(ProductPostDto productPostDto) {
         ProductModel productModel = new ProductModel(productPostDto);
