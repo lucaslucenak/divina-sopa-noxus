@@ -17,6 +17,9 @@ public class AdditionalPostDto {
     @NotNull(message = "Field price shouldn't be null")
     private Double price;
 
+    @NotNull(message = "Field limitValue shouldn't be null")
+    private Integer limitValue;
+
     @NotNull(message = "Field additionalTypeId shouldn't be null")
     private Long additionalTypeId;
 
@@ -25,11 +28,12 @@ public class AdditionalPostDto {
     public AdditionalPostDto() {
     }
 
-    public AdditionalPostDto(Long id, String name, String description, Double price, Long additionalTypeId, Long statusId) {
+    public AdditionalPostDto(Long id, String name, String description, Double price, Integer limitValue, Long additionalTypeId, Long statusId) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
+        this.limitValue = limitValue;
         this.additionalTypeId = additionalTypeId;
         this.statusId = statusId;
     }
@@ -72,6 +76,14 @@ public class AdditionalPostDto {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Integer getLimitValue() {
+        return limitValue;
+    }
+
+    public void setLimitValue(Integer limitValue) {
+        this.limitValue = limitValue;
     }
 
     public Long getAdditionalTypeId() {

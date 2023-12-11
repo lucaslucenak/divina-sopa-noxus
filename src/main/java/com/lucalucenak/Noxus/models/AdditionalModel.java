@@ -32,6 +32,9 @@ public class AdditionalModel {
     @Column(nullable = false)
     private Double price;
 
+    @Column(nullable = false)
+    private Integer limitValue;
+
     @ManyToOne
     @JoinColumn(name = "additional_type_id", nullable = false)
     private AdditionalTypeModel additionalType;
@@ -57,11 +60,12 @@ public class AdditionalModel {
         BeanUtils.copyProperties(additionalPostDto, this);
     }
 
-    public AdditionalModel(Long id, String name, String description, Double price, AdditionalTypeModel additionalType, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public AdditionalModel(Long id, String name, String description, Double price, Integer limitValue, AdditionalTypeModel additionalType, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
+        this.limitValue = limitValue;
         this.additionalType = additionalType;
         this.status = status;
         this.createdAt = createdAt;
@@ -134,6 +138,14 @@ public class AdditionalModel {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Integer getLimitValue() {
+        return limitValue;
+    }
+
+    public void setLimitValue(Integer limitValue) {
+        this.limitValue = limitValue;
     }
 
     public AdditionalTypeModel getAdditionalType() {

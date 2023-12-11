@@ -23,6 +23,8 @@ public class AdditionalFullDto {
 
     private Double price;
 
+    private Integer limitValue;
+
     private AdditionalTypeModel additionalType;
 
     private StatusModel status;
@@ -42,11 +44,12 @@ public class AdditionalFullDto {
         BeanUtils.copyProperties(additionalReturnDto, this);
     }
 
-    public AdditionalFullDto(Long id, String name, String description, Double price, AdditionalTypeModel additionalType, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public AdditionalFullDto(Long id, String name, String description, Double price, Integer limitValue, AdditionalTypeModel additionalType, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
+        this.limitValue = limitValue;
         this.additionalType = additionalType;
         this.status = status;
         this.createdAt = createdAt;
@@ -107,6 +110,14 @@ public class AdditionalFullDto {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public Integer getLimitValue() {
+        return limitValue;
+    }
+
+    public void setLimitValue(Integer limitValue) {
+        this.limitValue = limitValue;
     }
 
     public AdditionalTypeModel getAdditionalType() {
