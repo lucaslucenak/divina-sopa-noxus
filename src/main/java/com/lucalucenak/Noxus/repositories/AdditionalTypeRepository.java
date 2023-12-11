@@ -10,5 +10,5 @@ import java.util.Optional;
 @Repository
 public interface AdditionalTypeRepository extends JpaRepository<AdditionalTypeModel, Long> {
 
-    Optional<AdditionalTypeModel> findByType(String type);
+    Optional<AdditionalTypeModel> findByName(String name);
 }
