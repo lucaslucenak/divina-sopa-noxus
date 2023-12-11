@@ -6,6 +6,7 @@ import com.lucalucenak.Noxus.dtos.post.AdditionalTypePostDto;
 import com.lucalucenak.Noxus.dtos.post.ProductTypePostDto;
 import com.lucalucenak.Noxus.dtos.response.AdditionalTypeReturnDto;
 import com.lucalucenak.Noxus.dtos.response.ProductTypeReturnDto;
+import com.lucalucenak.Noxus.enums.SelectionType;
 import com.lucalucenak.Noxus.utils.LocalDateTimeUtil;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -29,7 +30,7 @@ public class AdditionalTypeModel {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    private String type;
+    private String name;
 
     @Column(nullable = true)
     private String description;
@@ -43,6 +44,12 @@ public class AdditionalTypeModel {
 
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    @Column(nullable = false)
+    private Boolean isMandatory;
+
+    @Column(nullable = false)
+    private SelectionType selectionType;
 
     public AdditionalTypeModel(){
     }
@@ -60,19 +67,21 @@ public class AdditionalTypeModel {
         BeanUtils.copyProperties(additionalTypePostDto, this);
     }
 
-    public AdditionalTypeModel(Long id, String type, String description, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public AdditionalTypeModel(Long id, String name, String description, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt, Boolean isMandatory, SelectionType selectionType) {
         this.id = id;
-        this.type = type;
+        this.name = name;
         this.description = description;
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.isMandatory = isMandatory;
+        this.selectionType = selectionType;
     }
 
     @PrePersist
     public void prePersist() {
-        if (type != null) {
-            type = type.toUpperCase(Locale.ROOT);
+        if (name != null) {
+            name = name.toUpperCase(Locale.ROOT);
         }
 
         LocalDateTimeUtil localDateTimeUtil = new LocalDateTimeUtil();
@@ -89,12 +98,12 @@ public class AdditionalTypeModel {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
+    public String getName() {
+        return name;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -127,5 +136,21 @@ public class AdditionalTypeModel {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Boolean getIsMandatory() {
+        return isMandatory;
+    }
+
+    public void setIsMandatory(Boolean isMandatory) {
+        this.isMandatory = isMandatory;
+    }
+
+    public SelectionType getSelectionType() {
+        return selectionType;
+    }
+
+    public void setSelectionType(SelectionType selectionType) {
+        this.selectionType = selectionType;
     }
 }

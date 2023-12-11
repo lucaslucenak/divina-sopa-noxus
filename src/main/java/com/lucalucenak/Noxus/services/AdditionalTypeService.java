@@ -38,13 +38,13 @@ public class AdditionalTypeService {
     }
 
     @Transactional
-    public AdditionalTypeFullDto findAdditionalTypeByType(String type) {
-        Optional<AdditionalTypeModel> additionalTypeOptional = additionalTypeRepository.findByType(type);
+    public AdditionalTypeFullDto findAdditionalTypeByType(String name) {
+        Optional<AdditionalTypeModel> additionalTypeOptional = additionalTypeRepository.findByName(name);
 
         if (additionalTypeOptional.isPresent()) {
             return new AdditionalTypeFullDto(additionalTypeOptional.get());
         } else {
-            throw new ResourceNotFoundException("Resource: AdditionalType. Not found with type: " + type);
+            throw new ResourceNotFoundException("Resource: AdditionalType. Not found with type: " + name);
         }
     }
 

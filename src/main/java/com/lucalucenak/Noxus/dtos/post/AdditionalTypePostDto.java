@@ -1,7 +1,9 @@
 package com.lucalucenak.Noxus.dtos.post;
 
+import com.lucalucenak.Noxus.enums.SelectionType;
 import com.lucalucenak.Noxus.models.AdditionalTypeModel;
 import com.lucalucenak.Noxus.models.StatusModel;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -13,10 +15,10 @@ public class AdditionalTypePostDto {
 
     private Long id;
 
-    @NotNull(message = "Field type shouldn't be null")
-    @NotEmpty(message = "Field type shouldn't be empty")
-    @NotBlank(message = "Field type shouldn't be blank")
-    private String type;
+    @NotNull(message = "Field name shouldn't be null")
+    @NotEmpty(message = "Field name shouldn't be empty")
+    @NotBlank(message = "Field name shouldn't be blank")
+    private String name;
 
     @NotNull(message = "Field description shouldn't be null")
     @NotEmpty(message = "Field description shouldn't be empty")
@@ -26,14 +28,22 @@ public class AdditionalTypePostDto {
     @NotNull(message = "Field statusId shouldn't be null")
     private Long statusId;
 
+    @NotNull(message = "Field isMandatory shouldn't be null")
+    private Boolean isMandatory;
+
+    @NotNull(message = "Field selectionType shouldn't be null")
+    private SelectionType selectionType;
+
     public AdditionalTypePostDto(){
     }
 
-    public AdditionalTypePostDto(Long id, String type, String description, Long statusId) {
+    public AdditionalTypePostDto(Long id, String name, String description, Long statusId, Boolean isMandatory, SelectionType selectionType) {
         this.id = id;
-        this.type = type;
+        this.name = name;
         this.description = description;
         this.statusId = statusId;
+        this.isMandatory = isMandatory;
+        this.selectionType = selectionType;
     }
 
     public Long getId() {
@@ -44,12 +54,12 @@ public class AdditionalTypePostDto {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
+    public String getName() {
+        return name;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -68,4 +78,19 @@ public class AdditionalTypePostDto {
         this.statusId = statusId;
     }
 
+    public Boolean getIsMandatory() {
+        return isMandatory;
+    }
+
+    public void setIsMandatory(Boolean isMandatory) {
+        this.isMandatory = isMandatory;
+    }
+
+    public SelectionType getSelectionType() {
+        return selectionType;
+    }
+
+    public void setSelectionType(SelectionType selectionType) {
+        this.selectionType = selectionType;
+    }
 }

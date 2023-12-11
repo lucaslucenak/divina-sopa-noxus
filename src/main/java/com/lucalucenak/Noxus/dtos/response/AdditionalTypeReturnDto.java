@@ -2,9 +2,13 @@ package com.lucalucenak.Noxus.dtos.response;
 
 import com.lucalucenak.Noxus.dtos.AdditionalTypeFullDto;
 import com.lucalucenak.Noxus.dtos.ProductTypeFullDto;
+import com.lucalucenak.Noxus.enums.SelectionType;
 import com.lucalucenak.Noxus.models.AdditionalTypeModel;
 import com.lucalucenak.Noxus.models.ProductTypeModel;
 import com.lucalucenak.Noxus.models.StatusModel;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.BeanUtils;
 
 import java.time.LocalDateTime;
@@ -13,7 +17,7 @@ public class AdditionalTypeReturnDto {
 
     private Long id;
 
-    private String type;
+    private String name;
 
     private String description;
 
@@ -22,6 +26,10 @@ public class AdditionalTypeReturnDto {
     private LocalDateTime createdAt;
 
     private LocalDateTime updatedAt;
+
+    private Boolean isMandatory;
+
+    private SelectionType selectionType;
 
     public AdditionalTypeReturnDto(){
     }
@@ -34,13 +42,15 @@ public class AdditionalTypeReturnDto {
         BeanUtils.copyProperties(additionalTypeFullDto, this);
     }
 
-    public AdditionalTypeReturnDto(Long id, String type, String description, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public AdditionalTypeReturnDto(Long id, String name, String description, StatusModel status, LocalDateTime createdAt, LocalDateTime updatedAt, Boolean isMandatory, SelectionType selectionType) {
         this.id = id;
-        this.type = type;
+        this.name = name;
         this.description = description;
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+        this.isMandatory = isMandatory;
+        this.selectionType = selectionType;
     }
 
     public Long getId() {
@@ -51,12 +61,12 @@ public class AdditionalTypeReturnDto {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
+    public String getName() {
+        return name;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -89,5 +99,21 @@ public class AdditionalTypeReturnDto {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public Boolean getIsMandatory() {
+        return isMandatory;
+    }
+
+    public void setIsMandatory(Boolean isMandatory) {
+        this.isMandatory = isMandatory;
+    }
+
+    public SelectionType getSelectionType() {
+        return selectionType;
+    }
+
+    public void setSelectionType(SelectionType selectionType) {
+        this.selectionType = selectionType;
     }
 }
