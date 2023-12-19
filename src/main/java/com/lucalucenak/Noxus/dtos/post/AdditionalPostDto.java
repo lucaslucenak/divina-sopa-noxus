@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.List;
+
 public class AdditionalPostDto {
     private Long id;
 
@@ -24,6 +26,8 @@ public class AdditionalPostDto {
     private Long additionalTypeId;
 
     private Long statusId;
+
+    private List<Long> productIds;
 
     public AdditionalPostDto() {
     }
@@ -92,5 +96,13 @@ public class AdditionalPostDto {
 
     public void setAdditionalTypeId(Long additionalTypeId) {
         this.additionalTypeId = additionalTypeId;
+    }
+
+    public List<Long> getProductIds() {
+        return productIds;
+    }
+
+    public void setProductIds(List<Long> productIds) {
+        this.productIds = productIds;
     }
 }

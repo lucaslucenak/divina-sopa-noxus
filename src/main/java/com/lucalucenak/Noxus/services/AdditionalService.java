@@ -2,14 +2,20 @@ package com.lucalucenak.Noxus.services;
 
 import com.lucalucenak.Noxus.dtos.AdditionalFullDto;
 import com.lucalucenak.Noxus.dtos.AdditionalFullDto;
+import com.lucalucenak.Noxus.dtos.OrderProductFullDto;
 import com.lucalucenak.Noxus.dtos.post.AdditionalPostDto;
 import com.lucalucenak.Noxus.dtos.post.AdditionalPostDto;
 import com.lucalucenak.Noxus.dtos.response.AdditionalReturnDto;
 import com.lucalucenak.Noxus.exceptions.IncompatibleIdsException;
 import com.lucalucenak.Noxus.exceptions.ResourceNotFoundException;
 import com.lucalucenak.Noxus.models.*;
+import com.lucalucenak.Noxus.models.pks.OrderProductPk;
+import com.lucalucenak.Noxus.models.pks.ProductAdditionalPK;
 import com.lucalucenak.Noxus.repositories.AdditionalRepository;
 import com.lucalucenak.Noxus.repositories.AdditionalRepository;
+import com.lucalucenak.Noxus.repositories.ProductAdditionaltRepository;
+import com.lucalucenak.Noxus.repositories.ProductRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,6 +35,11 @@ public class AdditionalService {
     private StatusService statusService;
     @Autowired
     private AdditionalTypeService additionalTypeService;
+    @Autowired
+    private ProductRepository productRepository;
+    @Autowired
+    private ProductAdditionaltRepository productAdditionalRepository;
+
 
     @Transactional(readOnly = true)
     public AdditionalFullDto findAdditionalById(Long additionalId) {
@@ -55,9 +66,20 @@ public class AdditionalService {
         AdditionalTypeModel additionalTypeModel = new AdditionalTypeModel(additionalTypeService.findAdditionalTypeById(additionalPostDto.getAdditionalTypeId()));
         additionalModel.setAdditionalType(additionalTypeModel);
 
-        return new AdditionalFullDto(additionalRepository.save(additionalModel));
+        additionalModel = additionalRepository.save(additionalModel);
+
+        for (Long productId : additionalPostDto.getProductIds()) {
+            ProductModel product = productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException("Product with ID " + productId + " not found"));
+            ProductAdditionalPK productAdditionalPK = new ProductAdditionalPK(product, additionalModel);
+            ProductAdditionalModel productAdditionalModel = new ProductAdditionalModel(productAdditionalPK, LocalDateTime.now(), LocalDateTime.now());
+            productAdditionalRepository.save(productAdditionalModel);
+        }
+
+        return new AdditionalFullDto(additionalModel);
     }
 
+
+    @Transactional
     public AdditionalFullDto updateAdditional(Long additionalId, AdditionalPostDto additionalPostDto) {
         if (!additionalId.equals(additionalPostDto.getId())) {
             throw new IncompatibleIdsException("Path param Id and body Id must be equals. Path Param Id: " + additionalId + ", Body Id: " + additionalPostDto.getId());
@@ -72,7 +94,21 @@ public class AdditionalService {
 
         updatedAdditionalModel.setCreatedAt(existingAdditionalModel.getCreatedAt());
         BeanUtils.copyProperties(updatedAdditionalModel, existingAdditionalModel);
-        return new AdditionalFullDto(additionalRepository.save(updatedAdditionalModel));
+
+        // Salvar existingAdditionalModel para persistir as atualizações
+        existingAdditionalModel = additionalRepository.save(updatedAdditionalModel);
+
+        // Excluir as associações existentes e recriá-las
+        productAdditionalRepository.deleteByIdAdditionalId(additionalId);
+        for (Long productId : additionalPostDto.getProductIds()) {
+            ProductModel product = productRepository.findById(productId)
+                    .orElseThrow(() -> new EntityNotFoundException("Product with ID " + productId + " not found"));
+            ProductAdditionalPK productAdditionalPK = new ProductAdditionalPK(product, existingAdditionalModel);
+            ProductAdditionalModel productAdditionalModel = new ProductAdditionalModel(productAdditionalPK, LocalDateTime.now(), LocalDateTime.now());
+            productAdditionalRepository.save(productAdditionalModel);
+        }
+
+        return new AdditionalFullDto(existingAdditionalModel);
     }
 
     @Transactional

@@ -155,4 +155,19 @@ public class AdditionalModel {
     public void setAdditionalType(AdditionalTypeModel additionalType) {
         this.additionalType = additionalType;
     }
+
+    @Override
+    public String toString() {
+        return "AdditionalModel{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                ", limitValue=" + limitValue +
+                ", additionalType=" + additionalType +
+                ", status=" + status +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
 }
