@@ -1,8 +1,11 @@
 package com.lucalucenak.Noxus.models;
 
+import com.lucalucenak.Noxus.dtos.OrderProductFullDto;
+import com.lucalucenak.Noxus.dtos.ProductAdditionalFullDto;
 import com.lucalucenak.Noxus.models.pks.ProductAdditionalPK;
 import jakarta.persistence.*;
 import lombok.Builder;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -25,9 +28,19 @@ public class ProductAdditionalModel {
 
     public ProductAdditionalModel() {};
 
+    public ProductAdditionalModel(ProductAdditionalFullDto productAdditionalFullDto) {
+        BeanUtils.copyProperties(productAdditionalFullDto, this);
+    }
+
     public ProductAdditionalModel(ProductModel product, AdditionalModel additional, LocalDateTime createdAt, LocalDateTime updatedAt) {
         id.setProduct(product);
         id.setAdditional(additional);
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    public ProductAdditionalModel(ProductAdditionalPK id, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
@@ -66,5 +79,14 @@ public class ProductAdditionalModel {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductAdditionalModel{" +
+                "id=" + id +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }

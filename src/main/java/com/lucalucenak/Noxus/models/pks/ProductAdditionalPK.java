@@ -41,4 +41,12 @@ public class ProductAdditionalPK implements Serializable {
     public void setAdditional(AdditionalModel additional) {
         this.additional = additional;
     }
+
+    @Override
+    public String toString() {
+        return "ProductAdditionalPK{" +
+                "product=" + product +
+                ", additional=" + additional +
+                '}';
+    }
 }
